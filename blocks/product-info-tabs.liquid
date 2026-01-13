@@ -1,0 +1,654 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  /* Minimal, purpose-only styles for tabs */
+  .ai-product-tabs { width: 100%; max-width: 100%; }
+
+  .ai-product-tabs-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: {{ block.settings.tab_spacing }}px;
+    margin-bottom: {{ block.settings.content_spacing }}px;
+  }
+
+  .ai-product-tabs-button {
+    background: none;
+    border: 0;
+    padding: 0 0 {{ block.settings.tab_padding }}px 0;
+    cursor: pointer;
+    font-size: {{ block.settings.tab_font_size }}px;
+    font-weight: {{ block.settings.tab_font_weight }};
+    text-transform: {{ block.settings.tab_text_transform }};
+    color: {{ block.settings.inactive_tab_color }};
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .ai-product-tabs-button:hover { color: {{ block.settings.hover_tab_color }}; }
+  .ai-product-tabs-button.active {
+    color: {{ block.settings.active_tab_color }};
+    border-bottom-color: {{ block.settings.active_underline_color }};
+  }
+
+  .ai-product-tabs-content { position: relative; }
+
+  .ai-product-tabs-panel {
+    display: none;
+    color: {{ block.settings.content_text_color }};
+    line-height: {{ block.settings.content_line_height }};
+  }
+  .ai-product-tabs-panel.active { display: block !important; }
+
+  /* Images inside tabs */
+  .ai-tab-images { line-height: 0; }
+  .ai-tab-img { display: block; width: 100%; height: auto; margin: 0 !important; }
+
+  /* Variant/specs visibility toggles */
+  .ai-tab-variant-images { display: none; }
+  .ai-tab-product-images { display: block; }
+  .ai-specs-variant-images { display: none; }
+  .ai-specs-product-images { display: block; }
+{% endstyle %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+
+
+{% assign metafields = product.metafields.custom %}
+{% assign specs_images = product.metafields.custom.specs_images %}
+{% assign specs_variant_1 = product.metafields.custom.specs_variant_1 %}
+{% assign specs_variant_1_images = product.metafields.custom.specs_variant_1_images %}
+{% assign specs_variant_2 = product.metafields.custom.specs_variant_2 %}
+{% assign specs_variant_2_images = product.metafields.custom.specs_variant_2_images %}
+{% assign DEBUG_TABS = false %}
+
+{% assign tab_items = "1,2,3" | split: "," %}
+<div class="ai-product-tabs-nav">
+  <button class="ai-product-tabs-button active" data-tab="description" aria-selected="true" role="tab">
+    Description
+  </button>
+  {% for index in tab_items %}
+    {% assign title_key = "tab_" | append: index | append: "_title" %}
+    {% if metafields[title_key] and metafields[title_key].value != blank %}
+      <button class="ai-product-tabs-button" data-tab="tab{{ index }}" role="tab">
+        {{ metafields[title_key].value }}
+      </button>
+    {% endif %}
+  {% endfor %}
+  
+</div>
+
+<div class="ai-product-tabs-content">
+  <div class="ai-product-tabs-panel active" data-panel="description" role="tabpanel">
+    {% if product.description != blank %}
+      {{ product.description }}
+    {% else %}
+      <p>No product description available.</p>
+    {% endif %}
+  </div>
+{% for index in tab_items %}
+  {% assign content_key = "tab_" | append: index | append: "_content" %}
+  {% assign images_key  = "tab_" | append: index | append: "_images" %}
+  {% assign title_key = "tab_" | append: index | append: "_title" %}
+  {% assign tab_title_text = '' %}
+  {% if metafields[title_key] and metafields[title_key].value != blank %}
+    {% assign tab_title_text = metafields[title_key].value | downcase %}
+  {% endif %}
+  {% assign is_specs_tab = false %}
+  {% if tab_title_text contains 'specs' or tab_title_text contains 'specifications' or tab_title_text contains 'size' %}
+    {% assign is_specs_tab = true %}
+  {% endif %}
+
+  {%- assign text_mf = metafields[content_key] -%}
+  {%- assign imgs_mf = metafields[images_key] -%}
+
+  {%- assign has_text = false -%}
+  {%- if text_mf and text_mf.value != blank -%}
+    {%- assign has_text = true -%}
+  {%- endif -%}
+
+  {%- comment -%} Normalize possible shapes for List of files {%- endcomment -%}
+  {%- assign files_array = nil -%}
+  {%- if imgs_mf and imgs_mf.value -%}
+    {%- assign files_array = imgs_mf.value -%}
+  {%- elsif imgs_mf and imgs_mf.files -%}
+    {%- assign files_array = imgs_mf.files -%}
+  {%- elsif imgs_mf and imgs_mf.size -%}
+    {%- assign files_array = imgs_mf -%}
+  {%- endif -%}
+
+  {%- assign has_images = false -%}
+  {%- assign files_count = files_array | size -%}
+  {%- if files_count > 0 -%}
+    {%- assign has_images = true -%}
+  {%- endif -%}
+
+  {% if has_text or has_images or is_specs_tab %}
+    <div class="ai-product-tabs-panel {{ block.settings.content_font_class }}" data-panel="tab{{ index }}" role="tabpanel">
+  {% if DEBUG_TABS %}
+  <div style="font:12px/1.5 monospace;color:#555;background:#fafafa;border:1px dashed #ddd;padding:8px;margin:8px 0;">
+    <div>🧪 <strong>Tab {{ index }}</strong> — title: <code>{{ tab_title_text }}</code></div>
+    <div>is_specs_tab: <code>{% if is_specs_tab %}true{% else %}false{% endif %}</code></div>
+    {% assign imgs_val_count = 0 %}
+    {% if imgs_mf and imgs_mf.value %}{% assign imgs_val_count = imgs_mf.value | size %}{% endif %}
+    {% assign imgs_files_count = 0 %}
+    {% if imgs_mf and imgs_mf.files %}{% assign imgs_files_count = imgs_mf.files | size %}{% endif %}
+    <div>tab images: value-size=<code>{{ imgs_val_count }}</code> files-size=<code>{{ imgs_files_count }}</code></div>
+    <div>currentVariantId (live): <code data-variant-badge></code></div>
+    </div>
+{% endif %}
+      {%- if has_text -%}
+        {%- case text_mf.type -%}
+          {%- when 'rich_text' -%}
+            {{ text_mf | metafield_tag }}
+          {%- when 'multi_line_text_field' -%}
+            {{ text_mf.value | newline_to_br }}
+          {%- else -%}
+            {{ text_mf.value }}
+        {%- endcase -%}
+      {%- endif -%}
+      {% unless is_specs_tab %}
+      {%- comment -%} IMAGES (product-level, used as fallback) {%- endcomment -%}
+      {%- assign any_images_rendered = false -%}
+      <div class="ai-tab-product-images" data-tab="{{ index }}">
+        {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">(debug) rendering tab-level product images…</div>{% endif %}
+        {%- if imgs_mf and imgs_mf.value -%}
+          {%- for f in imgs_mf.value -%}
+            {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">• file via .value</div>{% endif %}
+            {%- assign is_image = false -%}
+            {%- if f.media_type == 'image' or f.content_type contains 'image' or f.mime_type contains 'image' or f.image -%}
+              {%- assign is_image = true -%}
+            {%- endif -%}
+            {%- if is_image -%}
+              {{ f | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- assign any_images_rendered = true -%}
+            {%- elsif f.preview_image -%}
+              {{ f.preview_image | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- assign any_images_rendered = true -%}
+            {%- else -%}
+              {%- assign fallback_url = f | file_url -%}
+              {%- if fallback_url != blank -%}
+                <img class="ai-tab-img" src="{{ fallback_url | escape }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+                {%- assign any_images_rendered = true -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- if any_images_rendered == false and imgs_mf and imgs_mf.files -%}
+          {%- for f in imgs_mf.files -%}
+            {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">• file via .files</div>{% endif %}
+            {%- assign is_image = false -%}
+            {%- if f.media_type == 'image' or f.content_type contains 'image' or f.mime_type contains 'image' or f.image -%}
+              {%- assign is_image = true -%}
+            {%- endif -%}
+            {%- if is_image -%}
+              {{ f | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- assign any_images_rendered = true -%}
+            {%- elsif f.preview_image -%}
+              {{ f.preview_image | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- assign any_images_rendered = true -%}
+            {%- else -%}
+              {%- assign fallback_url = f | file_url -%}
+              {%- if fallback_url != blank -%}
+                <img class="ai-tab-img" src="{{ fallback_url | escape }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+                {%- assign any_images_rendered = true -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+
+      {%- comment -%} IMAGES (variant-level, overrides product-level when present) {%- endcomment -%}
+      {%- for v in product.variants -%}
+        {%- assign v_images_key = "tab_" | append: index | append: "_images" -%}
+        {%- assign v_imgs_mf = v.metafields.custom[v_images_key] -%}
+        {%- if v_imgs_mf and v_imgs_mf.value -%}
+          <div class="ai-tab-variant-images" data-tab="{{ index }}" data-variant-id="{{ v.id }}">
+            {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">(debug) has variant tab images for variant {{ v.id }}</div>{% endif %}
+            {%- for f in v_imgs_mf.value -%}
+              {%- assign v_is_image = false -%}
+              {%- if f.media_type == 'image' or f.content_type contains 'image' or f.mime_type contains 'image' or f.image -%}
+                {%- assign v_is_image = true -%}
+              {%- endif -%}
+              {%- if v_is_image -%}
+                {{ f | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- elsif f.preview_image -%}
+                {{ f.preview_image | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- else -%}
+                {%- assign v_fallback_url = f | file_url -%}
+                {%- if v_fallback_url != blank -%}
+                  <img class="ai-tab-img" src="{{ v_fallback_url | escape }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {% endunless %}
+
+      {%- comment -%} SPECS IMAGES (product-level + variant-group overrides) {%- endcomment -%}
+      {% if is_specs_tab %}
+        {% if DEBUG_TABS %}
+          <div style="font:12px/1.5 monospace;color:#555;background:#fff7e6;border:1px dashed #f0c36d;padding:8px;margin:8px 0;">
+            <div>🧪 <strong>Specs Debug</strong></div>
+            {% assign specs_val_count = 0 %}
+            {% if specs_images and specs_images.value %}{% assign specs_val_count = specs_images.value | size %}{% endif %}
+            <div>product specs_images count: <code>{{ specs_val_count }}</code></div>
+          </div>
+        {% endif %}
+        {%- comment -%} Product-level specs images as fallback {%- endcomment -%}
+        <div class="ai-specs-product-images" data-tab="{{ index }}">
+          {%- if specs_images and specs_images.value -%}
+            {%- for f in specs_images.value -%}
+              {%- assign is_img = false -%}
+              {%- if f.media_type == 'image' or f.content_type contains 'image' or f.mime_type contains 'image' or f.image -%}
+                {%- assign is_img = true -%}
+              {%- endif -%}
+              {%- if is_img -%}
+                {{ f | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- elsif f.preview_image -%}
+                {{ f.preview_image | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- else -%}
+                {%- assign fu = f | file_url -%}
+                {%- if fu != blank -%}
+                  <img class="ai-tab-img" src="{{ fu | escape }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+          {%- endif -%}
+        </div>
+
+        {%- comment -%} Variant Group 1 override {%- endcomment -%}
+        {% assign v1_ids_csv = '' %}
+        {% if specs_variant_1 and specs_variant_1.value %}
+          {% for vref in specs_variant_1.value %}
+            {% assign v1_ids_csv = v1_ids_csv | append: vref.id | append: ',' %}
+          {% endfor %}
+        {% endif %}
+        {% if DEBUG_TABS %}
+          <div style="font:12px/1.5 monospace;color:#b26a00;">Group 1 variant ids: <code>{{ v1_ids_csv }}</code></div>
+        {% endif %}
+        {% if specs_variant_1_images and specs_variant_1_images.value %}
+          <div class="ai-specs-variant-images" data-group="1" data-tab="{{ index }}" data-variant-ids="{{ v1_ids_csv | strip | strip_newlines }}">
+            {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">(debug) rendering specs variant group 1 images…</div>{% endif %}
+            {% for f in specs_variant_1_images.value %}
+              {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">• specs G1 file</div>{% endif %}
+              {%- assign g1_is_img = false -%}
+              {%- if f.media_type == 'image' or f.content_type contains 'image' or f.mime_type contains 'image' or f.image -%}
+                {%- assign g1_is_img = true -%}
+              {%- endif -%}
+              {%- if g1_is_img -%}
+                {{ f | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- elsif f.preview_image -%}
+                {{ f.preview_image | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- else -%}
+                {%- assign g1_fu = f | file_url -%}
+                {%- if g1_fu != blank -%}
+                  <img class="ai-tab-img" src="{{ g1_fu | escape }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+                {%- endif -%}
+              {%- endif -%}
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        {%- comment -%} Variant Group 2 override {%- endcomment -%}
+        {% assign v2_ids_csv = '' %}
+        {% if specs_variant_2 and specs_variant_2.value %}
+          {% for vref in specs_variant_2.value %}
+            {% assign v2_ids_csv = v2_ids_csv | append: vref.id | append: ',' %}
+          {% endfor %}
+        {% endif %}
+        {% if DEBUG_TABS %}
+          <div style="font:12px/1.5 monospace;color:#b26a00;">Group 2 variant ids: <code>{{ v2_ids_csv }}</code></div>
+        {% endif %}
+        {% if specs_variant_2_images and specs_variant_2_images.value %}
+          <div class="ai-specs-variant-images" data-group="2" data-tab="{{ index }}" data-variant-ids="{{ v2_ids_csv | strip | strip_newlines }}">
+            {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">(debug) rendering specs variant group 2 images…</div>{% endif %}
+            {% for f in specs_variant_2_images.value %}
+              {% if DEBUG_TABS %}<div style="font:12px/1.5 monospace;color:#888;">• specs G2 file</div>{% endif %}
+              {%- assign g2_is_img = false -%}
+              {%- if f.media_type == 'image' or f.content_type contains 'image' or f.mime_type contains 'image' or f.image -%}
+                {%- assign g2_is_img = true -%}
+              {%- endif -%}
+              {%- if g2_is_img -%}
+                {{ f | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- elsif f.preview_image -%}
+                {{ f.preview_image | image_url: width: 3000 | image_tag: loading: 'lazy', decoding: 'async', sizes: '100vw', widths: '480,768,1024,1280,1600,1920,2560,3000', class: 'ai-tab-img', alt: product.title | escape }}
+              {%- else -%}
+                {%- assign g2_fu = f | file_url -%}
+                {%- if g2_fu != blank -%}
+                  <img class="ai-tab-img" src="{{ g2_fu | escape }}" alt="{{ product.title | escape }}" loading="lazy" decoding="async">
+                {%- endif -%}
+              {%- endif -%}
+            {% endfor %}
+          </div>
+        {% endif %}
+        {%- assign no_specs_images = true -%}
+        {%- if specs_images and specs_images.value -%}
+          {%- assign no_specs_images = false -%}
+        {%- endif -%}
+
+        {%- assign no_specs_v1_images = true -%}
+        {%- if specs_variant_1_images and specs_variant_1_images.value -%}
+          {%- assign no_specs_v1_images = false -%}
+        {%- endif -%}
+
+        {%- assign no_specs_v2_images = true -%}
+        {%- if specs_variant_2_images and specs_variant_2_images.value -%}
+          {%- assign no_specs_v2_images = false -%}
+        {%- endif -%}
+
+        {%- if DEBUG_TABS and no_specs_images and no_specs_v1_images and no_specs_v2_images -%}
+          <div style="font:12px/1.5 monospace;color:#b00;">(debug) No specs images configured at product or override groups.</div>
+        {%- endif -%}
+      {% endif %}
+    </div>
+  {% endif %}
+{% endfor %}
+</div>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const tabs = document.querySelectorAll('.ai-product-tabs-button');
+    const panels = document.querySelectorAll('.ai-product-tabs-panel');
+    // Single source of truth for current variant; no polling
+
+    tabs.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const tab = btn.dataset.tab;
+        // Remove active class from all tabs and panels
+        tabs.forEach(b => b.classList.remove('active'));
+        panels.forEach(p => p.classList.remove('active'));
+        // Add active class to clicked tab and corresponding panel
+        btn.classList.add('active');
+        const targetPanel = document.querySelector(`.ai-product-tabs-panel[data-panel="${tab}"]`);
+        if (targetPanel) {
+          targetPanel.classList.add('active');
+        }
+      });
+    });
+    
+    // Ensure first tab is active by default
+    const firstTab = document.querySelector('.ai-product-tabs-button[data-tab="description"]');
+    const firstPanel = document.querySelector('.ai-product-tabs-panel[data-panel="description"]');
+    
+    if (firstTab && firstPanel) {
+      firstTab.classList.add('active');
+      firstPanel.classList.add('active');
+    }
+
+    // ===== Variant-specific images in tabs =====
+  function getSelectedVariantId() {
+    // 1) Hidden/select input in the add-to-cart form
+    const idInput = document.querySelector('form[action*="/cart/add"] [name="id"]');
+    if (idInput && idInput.value) return String(idInput.value);
+    // 2) URL query (?variant=...)
+    const urlVid = new URLSearchParams(window.location.search).get('variant');
+    if (urlVid) return String(urlVid);
+    // 3) Common theme data attributes
+    const selectedEl = document.querySelector('[data-selected-variant], [data-variant-id].is-selected, [data-variant-id].active');
+    if (selectedEl) {
+      const d = selectedEl.getAttribute('data-selected-variant') || selectedEl.getAttribute('data-variant-id');
+      if (d) return String(d);
+    }
+    // 4) Fallback to server-rendered default
+    return "{{ product.selected_or_first_available_variant.id }}";
+  }
+
+// Removed polling in favor of direct updates on load and tab click
+
+    function updateTabVariantImages() {
+      const currentVariantId = String(getSelectedVariantId());
+      document.querySelectorAll('.ai-product-tabs-panel').forEach(panel => {
+        const panelKey = panel.getAttribute('data-panel');
+        if (!panelKey || !panelKey.startsWith('tab')) return;
+        const tabIndex = panelKey.replace('tab', '');
+
+        // Hide all variant blocks in this panel
+        panel.querySelectorAll('.ai-tab-variant-images').forEach(el => { el.style.display = 'none'; });
+
+        // Show blocks for the selected variant (if any)
+        const matchingVariantBlocks = panel.querySelectorAll(`.ai-tab-variant-images[data-variant-id="${currentVariantId}"][data-tab="${tabIndex}"]`);
+        const productBlock = panel.querySelector(`.ai-tab-product-images[data-tab="${tabIndex}"]`);
+        if (matchingVariantBlocks.length > 0) {
+          matchingVariantBlocks.forEach(el => { el.style.display = 'block'; });
+          if (productBlock) productBlock.style.display = 'none';
+        } else {
+          if (productBlock) productBlock.style.display = 'block';
+        }
+      });
+
+      // ===== SPECS images toggle (by tab title keywords + variant groups) =====
+      document.querySelectorAll('.ai-product-tabs-panel[data-panel^="tab"]').forEach(panel => {
+        const panelKey = panel.getAttribute('data-panel');
+        const tabIndex = panelKey.replace('tab', '');
+        const isSpecs = panel.querySelector('.ai-specs-product-images[data-tab="' + tabIndex + '"]') !== null;
+        if (!isSpecs) {
+          return;
+        }
+
+        const currentId = String(currentVariantId);
+        const productSpecs = panel.querySelector('.ai-specs-product-images[data-tab="' + tabIndex + '"]');
+        const groupBlocks = panel.querySelectorAll('.ai-specs-variant-images[data-tab="' + tabIndex + '"]');
+
+        let shown = false;
+        groupBlocks.forEach(block => {
+          const list = (block.getAttribute('data-variant-ids') || '').split(',').map(s => s.trim()).filter(Boolean);
+          if (list.includes(currentId)) {
+            block.style.display = 'block';
+            shown = true;
+          } else {
+            block.style.display = 'none';
+          }
+        });
+
+        if (productSpecs) {
+          productSpecs.style.display = shown ? 'none' : 'block';
+        }
+      });
+    }
+
+    // Run after default tab activates
+    updateTabVariantImages();
+
+    // Preload all tab images (small files) so switching variants is instant
+    (function preloadTabImages() {
+      const imgs = document.querySelectorAll('.ai-product-tabs-panel .ai-tab-img');
+      imgs.forEach((img) => {
+        try { img.loading = 'eager'; } catch(_) {}
+        try { img.decoding = 'async'; } catch(_) {}
+        const src = img.currentSrc || img.src || (img.getAttribute('srcset') || '').split(' ')[0];
+        if (src) {
+          const pre = new Image();
+          pre.src = src;
+        }
+      });
+    })();
+
+    // Update images when the theme dispatches a variant update (aligns with product media behavior)
+    document.addEventListener('variant:update', (e) => {
+      try {
+        const vid = e && e.detail && e.detail.resource && e.detail.resource.id;
+        if (vid) {
+          const idInput = document.querySelector('form[action*="/cart/add"] [name="id"]');
+          if (idInput) idInput.value = String(vid);
+        }
+      } catch(_) {}
+      updateTabVariantImages();
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Product Info Tabs",
+  "settings": [
+    {
+      "type": "range",
+      "id": "tab_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab font size",
+      "default": 16
+    },
+    {
+      "type": "select",
+      "id": "tab_font_weight",
+      "label": "Tab font weight",
+      "options": [
+        {
+          "value": "400",
+          "label": "Normal"
+        },
+        {
+          "value": "500",
+          "label": "Medium"
+        },
+        {
+          "value": "600",
+          "label": "Semi-bold"
+        },
+        {
+          "value": "700",
+          "label": "Bold"
+        }
+      ],
+      "default": "500"
+    },
+    {
+      "type": "select",
+      "id": "tab_text_transform",
+      "label": "Tab text transform",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "uppercase",
+          "label": "Uppercase"
+        },
+        {
+          "value": "capitalize",
+          "label": "Capitalize"
+        }
+      ],
+      "default": "none"
+    },
+    {
+      "type": "range",
+      "id": "tab_spacing",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Tab spacing",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "tab_padding",
+      "min": 0,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Tab bottom padding",
+      "default": 6
+    },
+    {
+      "type": "header",
+      "content": "Tab Colors"
+    },
+    {
+      "type": "color",
+      "id": "active_tab_color",
+      "label": "Active tab color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "inactive_tab_color",
+      "label": "Inactive tab color",
+      "default": "#999999"
+    },
+    {
+      "type": "color",
+      "id": "hover_tab_color",
+      "label": "Hover tab color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "active_underline_color",
+      "label": "Active underline color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#e6e6e6"
+    },
+    {
+      "type": "header",
+      "content": "Content Style"
+    },
+    {
+  "type": "select",
+  "id": "content_font_class",
+  "label": "Content font style",
+  "options": [
+    { "value": "body", "label": "Body (theme)" },
+    { "value": "heading", "label": "Heading (theme)" },
+    { "value": "caption", "label": "Caption (theme)" }
+  ],
+  "default": "body"
+},
+    {
+      "type": "select",
+      "id": "content_line_height",
+      "label": "Content line height",
+      "options": [
+        {
+          "value": "1.3",
+          "label": "Tight"
+        },
+        {
+          "value": "1.5",
+          "label": "Normal"
+        },
+        {
+          "value": "1.7",
+          "label": "Loose"
+        }
+      ],
+      "default": "1.5"
+    },
+    {
+      "type": "color",
+      "id": "content_text_color",
+      "label": "Content text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "content_spacing",
+      "min": 4,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Content top spacing",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Info Tabs"
+    }
+  ]
+}
+{% endschema %}

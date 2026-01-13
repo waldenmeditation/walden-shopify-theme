@@ -1,0 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "content_direction": "column",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "custom_form_nkjAr7": {
+      "type": "custom-form",
+      "blocks": {
+        "title_NnEDcc": {
+          "type": "title",
+          "settings": {
+            "title_text": "Retail"
+          }
+        }
+      },
+      "block_order": [
+        "title_NnEDcc"
+      ],
+      "name": "Custom Form",
+      "settings": {
+        "submit_button_text": "Submit"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_form_nkjAr7"
+  ]
+}

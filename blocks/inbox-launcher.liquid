@@ -1,0 +1,26 @@
+
+
+{% stylesheet %}
+.inbox-launcher-block {
+  display: inline-flex;
+  align-items: center;
+}
+{% endstylesheet %}
+
+<div class="inbox-launcher-block" {{ block.shopify_attributes }}>
+  {% render 'inbox-launcher',
+    label:   block.settings.label,
+    radius:  block.settings.radius,
+    classes: block.settings.classes %}
+</div>
+
+{% schema %}
+{
+  "name": "Inbox Launcher",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Button label", "default": "Chat with us" },
+    { "type": "text", "id": "radius", "label": "Corner radius", "default": "14px" },
+    { "type": "text", "id": "classes", "label": "Additional CSS classes", "default": "button button--primary" }
+  ]
+}
+{% endschema %}

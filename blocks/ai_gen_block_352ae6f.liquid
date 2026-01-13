@@ -1,0 +1,271 @@
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+    .ai-featured-image-{{ ai_gen_id }} {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      padding-left: {{ block.settings.horizontal_padding }}px;
+      padding-right: {{ block.settings.horizontal_padding }}px;
+    }
+
+    .ai-featured-image__link-{{ ai_gen_id }} {
+      display: block;
+      text-decoration: none;color: inherit;
+    }
+
+    .ai-featured-image__image-container-{{ ai_gen_id }} {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      padding-bottom: {{ block.settings.image_aspect_ratio }}%;
+    }
+
+    .ai-featured-image__image-{{ ai_gen_id }} {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+
+    .ai-featured-image__text-container-{{ ai_gen_id }} {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      background-color: {{ block.settings.overlay_color }};
+      color: {{ block.settings.text_color }};
+      z-index: 2;
+    }
+
+    .ai-featured-image__heading-{{ ai_gen_id }} {
+      margin: 0 0 5px;
+    }
+
+    .ai-featured-image__subheading-{{ ai_gen_id }} {
+      margin: 0;
+    }
+
+    @media screen and (max-width: 749px) {
+
+        .ai-featured-image__text-container-{{ ai_gen_id }} {
+  padding:9px;
+        }
+      .ai-featured-image-{{ ai_gen_id }} {
+        padding-left: {{ block.settings.horizontal_padding_mobile }}px;
+        padding-right: {{ block.settings.horizontal_padding_mobile }}px;
+      }
+        .ai-featured-image__image-container-{{ ai_gen_id }} {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      padding-bottom: {{ block.settings.image_aspect_ratio_mobile }}%;
+    }
+
+      .ai-featured-image__heading-{{ ai_gen_id }} {
+      }
+
+      .ai-featured-image__subheading-{{ ai_gen_id }} {
+      }
+    }
+{% endstyle %}
+
+<div class="ai-featured-image-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.product != blank %}
+    <a href="{{ block.settings.product.url }}" class="ai-featured-image__link-{{ ai_gen_id }}">
+      <div class="ai-featured-image__image-container-{{ ai_gen_id }}">
+        {% if block.settings.image %}
+          <img
+            src="{{ block.settings.image | image_url: width: 2000 }}"
+            alt="{{ block.settings.image.alt | escape | default: block.settings.heading }}"
+            loading="lazy"
+            class="ai-featured-image__image-{{ ai_gen_id }}"
+          >
+        {% else %}
+          <div class="ai-featured-image__placeholder-{{ ai_gen_id }}">
+            {{ 'image' | placeholder_svg_tag }}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="ai-featured-image__text-container-{{ ai_gen_id }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="ai-featured-image__heading-{{ ai_gen_id }} {{ block.settings.heading_size_class }}">
+            {{ block.settings.heading }}
+          </h2>
+        {% endif %}
+
+        {% if block.settings.subheading != blank %}
+          <p class="ai-featured-image__subheading-{{ ai_gen_id }}  {{ block.settings.subheading_size_class }}">
+            {{ block.settings.subheading }}
+          </p>
+        {% endif %}
+      </div>
+    </a>
+  {% else %}
+    <div class="ai-featured-image__image-container-{{ ai_gen_id }}">
+      {% if block.settings.image %}
+        <img
+          src="{{ block.settings.image | image_url: width: 2000 }}"
+          alt="{{ block.settings.image.alt | escape | default: block.settings.heading }}"
+          loading="lazy"
+          class="ai-featured-image__image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="ai-featured-image__placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ai-featured-image__text-container-{{ ai_gen_id }}">
+      {% if block.settings.heading != blank %}
+        <h2 class="ai-featured-image__heading-{{ ai_gen_id }} {{ block.settings.heading_size_class }}">
+          {{ block.settings.heading }}
+        </h2>
+      {% endif %}
+
+      {% if block.settings.subheading != blank %}
+        <p class="ai-featured-image__subheading-{{ ai_gen_id }} {{ block.settings.subheading_size_class }}">
+          {{ block.settings.subheading }}
+        </p>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Featured Product Image",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Featured Product"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Click to view details"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "horizontal_padding_mobile",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Mobile horizontal padding",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "image_aspect_ratio",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Image aspect ratio",
+      "default": 60
+    },
+        {
+      "type": "range",
+      "id": "image_aspect_ratio_mobile",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Image aspect ratio_mobile",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "rgba(0, 0, 0, 0.5)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+{
+  "type": "select",
+  "id": "heading_size_class",
+  "label": "Heading size",
+  "options": [
+    { "value": "h1", "label": "H1 Style" },
+    { "value": "h2", "label": "H2 Style" },
+    { "value": "h3", "label": "H3 Style" },
+    { "value": "h4", "label": "H4 Style" },
+             { "value": "h5", "label": "H5 Style" },
+             { "value": "h6", "label": "H6 Style" },
+        { "value": "p", "label": "Paragraph Style" }
+  ],
+  "default": "h4"
+},
+{
+  "type": "select",
+  "id": "subheading_size_class",
+  "label": "Subheading size",
+   "options": [
+    { "value": "h1", "label": "H1 Style" },
+    { "value": "h2", "label": "H2 Style" },
+    { "value": "h3", "label": "H3 Style" },
+    { "value": "h4", "label": "H4 Style" },
+         { "value": "h5", "label": "H5 Style" },
+             { "value": "h6", "label": "H6 Style" },
+        { "value": "p", "label": "Paragraph Style" }
+  ],
+  "default": "h5"
+}
+  ],
+  "presets": [
+    {
+      "name": "Featured Product Image"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,266 @@
+{%- assign metafield_namespace = section.settings.metafield_namespace | default: "app--6007307--sanity-fields" -%}
+{%- assign modules_key = section.settings.modules_metafield_key | default: 'shopifyModules' -%}
+
+{%- assign variant = product.selected_or_first_available_variant -%}
+{%- assign variant_modules = variant.metafields[metafield_namespace][modules_key].value -%}
+{%- assign product_modules = product.metafields[metafield_namespace][modules_key].value -%}
+{%- assign effective_modules_key = modules_key -%}
+
+{%- assign variant_modules_count = variant_modules | size -%}
+{%- assign product_modules_count = product_modules | size -%}
+{%- if variant_modules_count == 0 and product_modules_count == 0 -%}
+  {%- assign alt_key = 'modules' -%}
+  {%- assign variant_modules_alt = variant.metafields[metafield_namespace][alt_key].value -%}
+  {%- assign product_modules_alt = product.metafields[metafield_namespace][alt_key].value -%}
+  {%- if variant_modules_alt != blank and variant_modules_alt.size > 0 or product_modules_alt != blank and product_modules_alt.size > 0 -%}
+    {%- assign variant_modules = variant_modules_alt -%}
+    {%- assign product_modules = product_modules_alt -%}
+    {%- assign effective_modules_key = alt_key -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if variant_modules != blank and variant_modules.size > 0 -%}
+  {%- assign modules = variant_modules -%}
+{%- else -%}
+  {%- assign modules = product_modules -%}
+{%- endif -%}
+
+{%- assign system_meta = product.metafields[metafield_namespace]['_system'].value -%}
+{%- assign sanity_project_id = system_meta.projectId | default: section.settings.sanity_project_id -%}
+{%- assign sanity_dataset = system_meta.dataset | default: section.settings.sanity_dataset -%}
+{%- if sanity_project_id == 'unset' -%}{%- assign sanity_project_id = '' -%}{%- endif -%}
+{%- if sanity_dataset == 'unset' -%}{%- assign sanity_dataset = '' -%}{%- endif -%}
+
+{% stylesheet %}
+  @media screen and (width >= 750px) {
+    .sanity-modules .sanity-module__text {
+      margin-inline-start: var(--sanity-text-margin-inline-start, 0px);
+      margin-inline-end: var(--sanity-text-margin-inline-end, 0px);
+    }
+  }
+
+  @media screen and (width < 750px) {
+    .sanity-modules .sanity-module__text {
+      margin-inline-start: max(var(--padding-xs), var(--sanity-text-margin-inline-start, 0px));
+      margin-inline-end: max(var(--padding-xs), var(--sanity-text-margin-inline-end, 0px));
+    }
+  }
+{% endstylesheet %}
+
+<!-- sanity_modules debug:
+  namespace: {{ metafield_namespace }}
+  modules_key: {{ modules_key }}
+  effective_modules_key: {{ effective_modules_key }}
+  sanity_project_id: {{ sanity_project_id }}
+  sanity_dataset: {{ sanity_dataset }}
+  variant_modules_count: {{ variant_modules.size | default: 0 }}
+  product_modules_count: {{ product_modules.size | default: 0 }}
+  modules_count: {{ modules.size | default: 0 }}
+  product.metafields[ns][key]: {{ product.metafields[metafield_namespace][modules_key] | json }}
+  variant.metafields[ns][key]: {{ variant.metafields[metafield_namespace][modules_key] | json }}
+-->
+
+{%- if modules != blank and modules.size > 0 -%}
+  <div class="sanity-modules">
+    <!-- sanity_modules samples:
+      mod0: {{ modules[0] | json }}
+      mod1: {{ modules[1] | json }}
+      mod2: {{ modules[2] | json }}
+    -->
+    {%- for mod in modules -%}
+      <div class="sanity-module">
+        {%- liquid
+          assign mod_type = mod.type | default: mod._type
+          assign has_image = false
+          assign has_text = false
+          if mod_type == 'image'
+            assign has_image = true
+          elsif mod.image and mod.image.url
+            assign has_image = true
+          elsif mod.image and mod.image.src
+            assign has_image = true
+          elsif mod.image and mod.image.asset and mod.image.asset.url
+            assign has_image = true
+          elsif mod.asset and mod.asset.url
+            assign has_image = true
+          elsif mod.file and mod.file.url
+            assign has_image = true
+          elsif mod.url or mod.src or mod.imageUrl
+            assign has_image = true
+          endif
+          if mod.html or mod.text or mod.body or mod.content
+            assign has_text = true
+          endif
+        -%}
+
+        {%- if has_image -%}
+          {%- liquid
+            assign img_url = ''
+            assign img_alt = ''
+            assign img_width = ''
+            assign img_height = ''
+            if mod.image and mod.image.url
+              assign img_url = mod.image.url
+              assign img_alt = mod.image.alt
+              assign img_width = mod.image.width
+              assign img_height = mod.image.height
+            elsif mod.image and mod.image.src
+              assign img_url = mod.image.src
+            elsif mod.image and mod.image.asset and mod.image.asset.url
+              assign img_url = mod.image.asset.url
+            elsif mod.image and mod.image.asset and mod.image.asset._ref and sanity_project_id and sanity_dataset
+              assign ref_str = mod.image.asset._ref
+              assign ref_parts = ref_str | split: '-'  
+              assign asset_id = ref_parts[1]
+              assign dims = ref_parts[2]
+              assign fmt = ref_parts[3]
+              assign img_url = 'https://cdn.sanity.io/images/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '-' | append: dims | append: '.' | append: fmt
+            elsif mod.asset and mod.asset.url
+              assign img_url = mod.asset.url
+            elsif mod.asset and mod.asset._ref and sanity_project_id and sanity_dataset
+              assign ref_str = mod.asset._ref
+              assign ref_parts = ref_str | split: '-'
+              assign asset_id = ref_parts[1]
+              assign dims = ref_parts[2]
+              assign fmt = ref_parts[3]
+              assign img_url = 'https://cdn.sanity.io/images/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '-' | append: dims | append: '.' | append: fmt
+            elsif mod.file and mod.file.url
+              assign img_url = mod.file.url
+            elsif mod.url
+              assign img_url = mod.url
+            elsif mod.src
+              assign img_url = mod.src
+            elsif mod.imageUrl
+              assign img_url = mod.imageUrl
+            endif
+          -%}
+          {%- if img_url != '' -%}
+            <div class="sanity-module__image">
+              <img
+                src="{{ img_url }}"
+                alt="{{ img_alt | default: product.title | escape }}"
+                width="{{ img_width }}"
+                height="{{ img_height }}"
+                loading="lazy"
+                style="width: 100%; height: auto; display: block;"
+              >
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+
+        {%- if has_text -%}
+          <div
+            class="sanity-module__text rte"
+            style="
+              margin-top: {{ section.settings.text_spacing }}px;
+              margin-bottom: {{ section.settings.text_spacing }}px;
+              max-width: {{ section.settings.text_max_width }}px;
+              --sanity-text-margin-inline-start: {{ section.settings.text_margin_inline_start }}px;
+              --sanity-text-margin-inline-end: {{ section.settings.text_margin_inline_end }}px;
+            "
+          >
+            {%- if mod.html -%}
+              {{ mod.html }}
+            {%- elsif mod.body -%}
+              {%- if mod.body.html -%}
+                {{ mod.body.html }}
+              {%- else -%}
+                <p>{{ mod.body }}</p>
+              {%- endif -%}
+            {%- elsif mod.content -%}
+              {%- if mod.content.html -%}
+                {{ mod.content.html }}
+              {%- else -%}
+                <p>{{ mod.content }}</p>
+              {%- endif -%}
+            {%- elsif mod.text -%}
+              <p>{{ mod.text }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sanity Modules",
+  "tag": "section",
+  "class": "product-sanity-modules",
+  "settings": [
+    {
+      "type": "text",
+      "id": "metafield_namespace",
+      "label": "Sanity metafield namespace",
+      "default": "app--6007307--sanity-fields"
+    },
+    {
+      "type": "text",
+      "id": "sanity_project_id",
+      "label": "Sanity project ID (fallback)",
+      "default": "unset"
+    },
+    {
+      "type": "text",
+      "id": "sanity_dataset",
+      "label": "Sanity dataset (fallback)",
+      "default": "unset"
+    },
+    {
+      "type": "text",
+      "id": "modules_metafield_key",
+      "label": "Sanity modules metafield key",
+      "default": "shopifyModules",
+      "info": "Metafield key in namespace app--6007307--sanity-fields that contains an array of modules. Variant-level value overrides product-level value if present."
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "label": "Text vertical spacing (px)",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "text_margin_inline_start",
+      "label": "Text left margin (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "text_margin_inline_end",
+      "label": "Text right margin (px)",
+      "min": 0,
+      "max": 80,
+      "step": 4,
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "text_max_width",
+      "label": "Text max width (px)",
+      "min": 500,
+      "max": 1000,
+      "step": 5,
+      "default": 700
+    },
+    {
+      "type": "paragraph",
+      "content": "This section renders Sanity modules (images or text) in the exact order provided by the metafield."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sanity Modules"
+    }
+  ]
+}
+{% endschema %}
+
+

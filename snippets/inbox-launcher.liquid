@@ -1,0 +1,151 @@
+{%- comment -%}
+------------------------------------------------------------------------------
+Inbox Launcher Button Snippet
+------------------------------------------------------------------------------
+Reusable button that opens the Shopify Inbox chat widget from anywhere in the
+theme. Works by proxy-clicking the widget’s internal toggle button inside its
+shadow root.
+
+Usage:
+  {% render 'inbox-launcher',
+      label: 'Need help?',
+      radius: '12px',
+      classes: 'button button--primary' %}
+
+Parameters:
+  label   – Text to display on the button (default: "Chat with us")
+  radius  – Corner radius (default: "14px")
+  classes – Additional classes to merge with "inbox-launcher"
+------------------------------------------------------------------------------
+{%- endcomment -%}
+
+{%- assign _label   = label   | default: 'Chat with us' -%}
+{%- assign _classes = classes | default: 'btn btn--primary' -%}
+
+<button
+  type="button"
+  class="inbox-launcher {{ _classes }}"
+  data-inbox-launcher
+  aria-controls="shopify-chat"
+  aria-expanded="false">
+  {{ _label }}
+</button>
+
+{%- comment -%}
+Inline fallback CSS in case the theme doesn’t load global button styles.
+You can safely remove this block if you prefer to keep styling in your main CSS.
+{%- endcomment -%}
+<style>
+.inbox-launcher {
+  width: 100%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: background 0.2s ease;
+}
+
+</style>
+
+{%- comment -%}
+Lightweight script: attaches a global listener to open Inbox on click.
+Only injects once per page.
+{%- endcomment -%}
+<script>
+if (!window.__inboxLauncherLoaded) {
+  window.__inboxLauncherLoaded = true;
+
+  (function () {
+    // --- DOM helpers ---
+    const q = (s, r=document) => r.querySelector(s);
+
+    function getHost() {
+      return q('inbox-online-store-chat');
+    }
+    function getToggle() {
+      const host = getHost();
+      return host?.shadowRoot?.querySelector('button[data-spec="toggle-button"]')
+          || host?.shadowRoot?.querySelector('button[aria-label]')
+          || null;
+    }
+    function waitForHost(timeoutMs, cb) {
+      if (getHost()?.shadowRoot) { cb?.(); return; }
+      const mo = new MutationObserver(() => {
+        if (getHost()?.shadowRoot) { mo.disconnect(); cb?.(); }
+      });
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+      setTimeout(() => mo.disconnect(), timeoutMs || 2000);
+    }
+
+    // --- Visibility: hide host only when closed ---
+    function applyHostVisibility(host) {
+      const open = host.getAttribute('is-open') === 'true';
+      host.style.display = open ? 'block' : 'none';
+    }
+    function watchHostVisibility() {
+      const host = getHost();
+      if (!host) return;
+      applyHostVisibility(host);
+      new MutationObserver(() => applyHostVisibility(host))
+        .observe(host, { attributes: true, attributeFilter: ['is-open'] });
+    }
+
+    // --- Aria sync for any [data-inbox-launcher] buttons ---
+    function syncExpanded() {
+      const t = getToggle();
+      if (!t) return;
+      const update = () => {
+        const expanded = t.getAttribute('aria-expanded') === 'true';
+        document.querySelectorAll('[data-inbox-launcher]')
+          .forEach(b => b.setAttribute('aria-expanded', String(expanded)));
+      };
+      t.addEventListener('click', () => setTimeout(update, 0));
+      update();
+    }
+
+    // --- Open action used by custom buttons + menu link ---
+    function openInbox() {
+      const t = getToggle();
+      if (t) { t.click(); return; }
+      waitForHost(1000, () => getToggle()?.click());
+    }
+
+    // --- Click delegation: custom launcher + navbar menu link ---
+    function isConciergeLink(a) {
+      if (!a) return false;
+      const href = (a.getAttribute('href') || '').replace(location.origin, '');
+      return href === '#open-concierge' || href.endsWith('/#open-concierge') || href.includes('openChat=1');
+    }
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-inbox-launcher]');
+      if (btn) { openInbox(); return; }
+
+      const a = e.target.closest('a, [role="link"]');
+      if (isConciergeLink(a)) {
+        e.preventDefault();
+        openInbox();
+
+        // Best-effort: close mobile nav/drawer after click
+        q('.menu-drawer__close-button, [data-drawer-close], [data-header-drawer]')?.click?.();
+      }
+    });
+
+    // --- Init on load + Theme Editor events ---
+    function init() {
+      waitForHost(2000, () => { watchHostVisibility(); syncExpanded(); });
+      // mark custom buttons "ready"
+      document.querySelectorAll('[data-inbox-launcher]').forEach(b => b.setAttribute('data-ready','true'));
+      // auto-open via query param (?openChat=1)
+      if (new URLSearchParams(location.search).has('openChat')) openInbox();
+    }
+
+    if (document.readyState !== 'loading') init();
+    else document.addEventListener('DOMContentLoaded', init);
+
+    document.addEventListener('shopify:section:load', init);
+    document.addEventListener('shopify:block:select', init);
+  })();
+}
+</script>
+

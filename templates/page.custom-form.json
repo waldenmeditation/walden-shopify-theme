@@ -1,0 +1,49 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "gap": 0,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "custom_form_FhMVhP": {
+      "type": "custom-form",
+      "blocks": {
+        "text_eYhVd4": {
+          "type": "text",
+          "settings": {
+            "label": "Name",
+            "placeholder": "",
+            "width": "full",
+            "is_required": false
+          }
+        }
+      },
+      "block_order": [
+        "text_eYhVd4"
+      ],
+      "name": "Custom Form",
+      "settings": {
+        "submit_button_text": "Submit"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_form_FhMVhP"
+  ]
+}

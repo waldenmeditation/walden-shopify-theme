@@ -1,0 +1,403 @@
+{% comment %}
+  Custom Form Section
+  - Use blocks to add Title, Description, and Form Fields.
+  - Submissions are sent to the store's contact email.
+{% endcomment %}
+
+{% style %}
+  .custom-form-wrapper-{{ section.id }} {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  .custom-form-header-{{ section.id }} {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .custom-form-header-{{ section.id }} h2 {
+    margin-bottom: 15px;
+  }
+
+  .custom-form-header-{{ section.id }} div {
+    margin-bottom: 15px;
+  }
+
+  .custom-form-{{ section.id }} .form-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    row-gap: 25px;
+  }
+
+  .custom-form-{{ section.id }} .form-field {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  .custom-form-{{ section.id }} .form-field--half {
+    width: calc(50% - 10px);
+  }
+
+  .custom-form-{{ section.id }} .form-field label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: normal;
+  }
+
+  .custom-form-{{ section.id }} .form-field input,
+  .custom-form-{{ section.id }} .form-field textarea {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .custom-form-{{ section.id }} .form-field textarea {
+    min-height: 150px;
+    resize: vertical;
+  }
+
+  .custom-form-{{ section.id }} .form-submit {
+    text-align: center;
+    margin-top: 40px;
+  }
+
+  .custom-form-{{ section.id }} .submit-button {
+    background-color: #000;
+    color: #fff;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    min-width:250px;
+  }
+
+  .custom-form-{{ section.id }} .form-success {
+    text-align: center;
+    padding: 20px;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+  }
+
+  .custom-form-{{ section.id }} .form-errors {
+    text-align: center;
+    padding: 20px;
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ffcdd2;
+    border-radius: 4px;
+    margin-bottom: 20px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .custom-form-{{ section.id }} .form-field--half {
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="custom-form-wrapper-{{ section.id }}">
+  <div class="custom-form-header-{{ section.id }}">
+    {% for block in section.blocks %}
+      {% if block.type == 'title' %}
+        <h2>{{ block.settings.title_text | escape }}</h2>
+      {% elsif block.type == 'description' %}
+        <div>{{ block.settings.description_text }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="custom-form-{{ section.id }}">
+    {% form 'contact', id: 'contact-form' %}
+      {% if form.posted_successfully? %}
+        <p class="form-success">{{ 'blocks.contact_form.post_success' | t }}</p>
+      {% endif %}
+
+      {% if form.errors %}
+        <div class="form-errors">
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      <div class="form-fields">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'text', 'email', 'tel', 'textarea' %}
+              {%- assign field_id = 'ContactForm-' | append: block.id -%}
+              {% assign field_name = block.settings.label | handleize %}
+
+              <div class="form-field form-field--{{ block.settings.width }}">
+                <label for="{{ field_id }}">{{ block.settings.label | escape }}</label>
+                {% if block.type == 'textarea' %}
+                  <textarea
+                    id="{{ field_id }}"
+                    name="contact[{{ field_name }}]"
+                    placeholder="{{ block.settings.placeholder | escape }}"
+                    {% if block.settings.is_required or block.type == 'email' %}
+                      required
+                    {% endif %}
+                  ></textarea>
+                {% else %}
+                  {% assign field_key = block.settings.shopify_field_key %}
+                  {% if field_key == 'custom' %}
+                    {% assign field_name = block.settings.label | handleize %}
+                  {% else %}
+                    {% assign field_name = field_key %}
+                  {% endif %}
+                  <input
+                    type="{{ block.type }}"
+                    id="{{ field_id }}"
+                    name="contact[{{ field_name }}]"
+                    placeholder="{{ block.settings.placeholder | escape }}"
+                    {% if block.settings.is_required or block.type == 'email' %}
+                      required
+                    {% endif %}
+                  >
+                {% endif %}
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+
+      <input type="hidden" name="contact[Form Source]" value="{{ template.name }}">
+
+      <div class="form-submit">
+        <button type="submit" class="submit-button">
+          {{ section.settings.submit_button_text | escape }}
+        </button>
+      </div>
+    {% endform %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Form",
+  "settings": [
+    {
+      "type": "text",
+      "id": "submit_button_text",
+      "label": "Submit Button Text",
+      "default": "Submit"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title_text",
+          "label": "Title",
+          "default": "Contact Us"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description Block",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description_text",
+          "label": "Description",
+          "default": "<p>Use this form to get in touch with us.</p>"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Name"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Field Width",
+          "options": [
+            { "value": "full", "label": "Full" },
+            { "value": "half", "label": "Half" }
+          ],
+          "default": "full"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is this field required?",
+          "default": false
+        },
+            {
+  "type": "select",
+  "id": "shopify_field_key",
+  "label": "Field Type (for data mapping)",
+  "options": [
+    { "value": "name", "label": "Full Name" },
+    { "value": "first_name", "label": "First Name" },
+    { "value": "last_name", "label": "Last Name" },
+    { "value": "email", "label": "Email" },
+    { "value": "phone", "label": "Phone Number" },
+    { "value": "company", "label": "Company" },
+    { "value": "body", "label": "Message" },
+    { "value": "custom", "label": "Custom" }
+  ],
+  "default": "custom"
+}
+      ]
+    },
+    {
+      "type": "email",
+      "name": "Email Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Email"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Field Width",
+          "options": [
+            { "value": "full", "label": "Full" },
+            { "value": "half", "label": "Half" }
+          ],
+          "default": "full"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is this field required?",
+          "default": true
+        },
+            {
+  "type": "select",
+  "id": "shopify_field_key",
+  "label": "Field Type (for data mapping)",
+  "options": [
+    { "value": "name", "label": "Full Name" },
+    { "value": "first_name", "label": "First Name" },
+    { "value": "last_name", "label": "Last Name" },
+    { "value": "email", "label": "Email" },
+    { "value": "phone", "label": "Phone Number" },
+    { "value": "company", "label": "Company" },
+    { "value": "body", "label": "Message" },
+    { "value": "custom", "label": "Custom" }
+  ],
+  "default": "custom"
+}
+      ]
+    },
+    {
+      "type": "tel",
+      "name": "Phone Field",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Phone"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Field Width",
+          "options": [
+            { "value": "full", "label": "Full" },
+            { "value": "half", "label": "Half" }
+          ],
+          "default": "full"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is this field required?",
+          "default": false
+        },
+            {
+  "type": "select",
+  "id": "shopify_field_key",
+  "label": "Field Type (for data mapping)",
+  "options": [
+    { "value": "name", "label": "Full Name" },
+    { "value": "first_name", "label": "First Name" },
+    { "value": "last_name", "label": "Last Name" },
+    { "value": "email", "label": "Email" },
+    { "value": "phone", "label": "Phone Number" },
+    { "value": "company", "label": "Company" },
+    { "value": "body", "label": "Message" },
+    { "value": "custom", "label": "Custom" }
+  ],
+  "default": "custom"
+}
+      ]
+    },
+    {
+      "type": "textarea",
+      "name": "Text Area",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Field Label",
+          "default": "Message"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder Text"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Field Width",
+          "options": [
+            { "value": "full", "label": "Full" }
+          ],
+          "default": "full"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_required",
+          "label": "Is this field required?",
+          "default": false
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Form"
+    }
+  ]
+}
+{% endschema %}

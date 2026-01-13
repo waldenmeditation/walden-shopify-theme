@@ -1,0 +1,47 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "custom-form",
+      "blocks": {
+        "title_xYBFNC": {
+          "type": "title",
+          "settings": {
+            "title_text": "Retail Partners"
+          }
+        },
+        "description_xny8Ye": {
+          "type": "description",
+          "settings": {
+            "description_text": "<p>Retail Description</p><p></p>"
+          }
+        },
+        "description_f9AzVq": {
+          "type": "description",
+          "settings": {
+            "description_text": "<p>hosp</p><p></p>"
+          }
+        }
+      },
+      "block_order": [
+        "title_xYBFNC",
+        "description_xny8Ye",
+        "description_f9AzVq"
+      ],
+      "settings": {
+        "submit_button_text": "Submit"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

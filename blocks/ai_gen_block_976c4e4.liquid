@@ -1,0 +1,373 @@
+{% comment %}
+  Final version of Image with Text block:
+  - Respects parent section's width
+  - Allows global or custom spacing
+  - Re-enables the "Use custom spacing?" toggle
+{% endcomment %}
+
+{%- liquid
+  assign ai_gen_id = block.id | replace: '_', '' | downcase
+
+  assign button_href = ''
+  if block.settings.link_type == 'email' and block.settings.button_email_link != blank
+    assign button_href = 'mailto:' | append: block.settings.button_email_link
+  elsif block.settings.button_link != blank
+    assign button_href = block.settings.button_link
+  endif
+-%}
+
+{% style %}
+  .image-text-block__image-container-{{ ai_gen_id }} {
+    grid-column: span 6;
+  }
+
+    .image-text-block__text-container-{{ ai_gen_id }} {
+    grid-column: span 6;
+    display: flex;
+    flex-direction: column;
+        margin-top: var(--image-text-top-offset);
+    /* Apply the override variable here */
+    padding-top: var(--image-text-top-offset-override, 0px);
+  }
+
+
+    .image-text-block-{{ ai_gen_id }} {
+   display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    align-items: start;
+    width: 100%;
+      gap:12px;
+    }
+
+    .image-text-block__text-container-{{ ai_gen_id }} {
+    grid-column: span 6;
+    margin-top: var(--image-text-top-offset);
+    padding-top: var(--image-text-top-offset-override, 0px);
+    display: flex;
+    flex-direction: column;
+    }
+
+    .image-position-left .image-text-block__text-container-{{ ai_gen_id }} {
+      padding-left: var(--image-text-side-offset);
+      padding-right: var(--image-text-side-offset)
+    }
+
+    .image-position-right .image-text-block__text-container-{{ ai_gen_id }} {
+      padding-right: var(--image-text-side-offset);
+        padding-left: var(--image-text-side-offset)
+    }
+
+    .image-text-block__subtitle-{{ ai_gen_id }} {
+          margin-block-end: 0px;
+      margin-bottom: var(--image-text-subtitle-spacing);
+    }
+
+    .image-text-block__title-{{ ai_gen_id }} {
+          margin-block-start: 0px;
+      margin-block-end: 0px;
+      margin-bottom: var(--image-text-title-spacing);
+    }
+
+    .image-text-block__description-{{ ai_gen_id }} {
+      margin-bottom: var(--image-text-description-spacing);
+    }
+
+    .image-text-block__button-{{ ai_gen_id }} {
+    min-width: 200px;
+  }
+
+    @media screen and (max-width: 990px) {
+        .image-text-block__subtitle-{{ ai_gen_id }},
+    .image-text-block__title-{{ ai_gen_id }},
+    .image-text-block__description-{{ ai_gen_id }}{
+      margin-block: 0;
+      margin-top: 15px;
+    }
+        .image-text-block__button-{{ ai_gen_id }} {
+      margin-top: 30px;
+    }
+        .image-text-block__text-container-{{ ai_gen_id }} {
+        padding: 0;
+      }
+
+
+     .image-position-left .image-text-block__text-container-{{ ai_gen_id }} {
+        padding-left: 30px;
+        padding-right: 0px;
+      }
+      .image-position-right .image-text-block__text-container-{{ ai_gen_id }} {
+      padding-right: 30px;
+        padding-left: 0px;
+    }
+
+    }
+  
+  
+    @media screen and (max-width: 749px) {
+      .image-text-block-{{ ai_gen_id }} {
+        display: flex;
+        flex-direction: column;
+        gap: var(--image-text-mobile-vertical-offset);
+      }
+
+        .image-text-block__image-container-{{ ai_gen_id }} {
+      order: 1;
+    }
+
+   .image-text-block__text-container-{{ ai_gen_id }} {
+        order: 2;
+
+        /* Reset all desktop spacing */
+        margin: 0;
+        padding: 0;
+
+        /* Apply only the necessary side padding for mobile */
+        padding-inline: var(--image-text-mobile-side-padding);
+      }
+
+  .image-text-block__subtitle-{{ ai_gen_id }},
+    .image-text-block__title-{{ ai_gen_id }},
+    .image-text-block__description-{{ ai_gen_id }}{
+      margin-block: 0;
+      margin-top: 15px;
+    }
+        .image-text-block__button-{{ ai_gen_id }} {
+      margin-top: 30px;
+    }
+
+    }
+{% endstyle %}
+
+<div
+  class="image-text-block-{{ ai_gen_id }} image-position-{{ block.settings.image_position }}"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.image_position == 'left' %}
+    <div class="image-text-block__image-container-{{ ai_gen_id }}">
+      {% if block.settings.image %}
+        <img
+          src="{{ block.settings.image | image_url: width: 1500 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.image.width }}"
+          height="{{ block.settings.image.height }}"
+          class="image-text-block__image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="image-text-block__image-placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+    <div
+      class="image-text-block__text-container-{{ ai_gen_id }}"
+      style="--image-text-top-offset-override: {{ block.settings.top_offset_override }}%;"
+    >
+      {% if block.settings.subtitle != blank %}
+        <{{ block.settings.subtitle_tag }} class="image-text-block__subtitle-{{ ai_gen_id }}">
+          {{ block.settings.subtitle }}
+        </{{ block.settings.subtitle_tag }}>
+      {% endif %}
+
+      <{{ block.settings.title_tag }} class="image-text-block__title-{{ ai_gen_id }}">
+        {{ block.settings.title }}
+      </{{ block.settings.title_tag }}>
+
+      {% if block.settings.description != blank %}
+        <div class="image-text-block__description-{{ ai_gen_id }}">
+          {{ block.settings.description }}
+        </div>
+      {% endif %}
+
+    {%- if block.settings.button_text != blank and button_href != blank -%}
+  <a
+    href="{{ button_href }}"
+    class="{{ block.settings.button_style }} image-text-block__button-{{ ai_gen_id }}"
+  >
+    {{ block.settings.button_text }}
+  </a>
+{%- endif -%}
+    </div>
+  {% else %}
+    <div
+      class="image-text-block__text-container-{{ ai_gen_id }}"
+      style="--image-text-top-offset-override: {{ block.settings.top_offset_override }}%;"
+    >
+      {% if block.settings.subtitle != blank %}
+        <{{ block.settings.subtitle_tag }} class="image-text-block__subtitle-{{ ai_gen_id }}">
+          {{ block.settings.subtitle }}
+        </{{ block.settings.subtitle_tag }}>
+      {% endif %}
+
+      <{{ block.settings.title_tag }} class="image-text-block__title-{{ ai_gen_id }}">
+        {{ block.settings.title }}
+      </{{ block.settings.title_tag }}>
+
+      {% if block.settings.description != blank %}
+        <div class="image-text-block__description-{{ ai_gen_id }}">
+          {{ block.settings.description }}
+        </div>
+      {% endif %}
+
+      {%- if block.settings.button_text != blank and button_href != blank -%}
+  <a
+    href="{{ button_href }}"
+    class="{{ block.settings.button_style }} image-text-block__button-{{ ai_gen_id }}"
+  >
+    {{ block.settings.button_text }}
+  </a>
+{%- endif -%}
+    </div>
+
+    <div class="image-text-block__image-container-{{ ai_gen_id }}">
+      {% if block.settings.image %}
+        <img
+          src="{{ block.settings.image | image_url: width: 1500 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.image.width }}"
+          height="{{ block.settings.image.height }}"
+          class="image-text-block__image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="image-text-block__image-placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Image with Text",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "header",
+      "content": "Margin override"
+    },
+  {
+  "type": "range",
+  "id": "top_offset_override",
+  "label": "Additional top padding (%)",
+  "min": 0,
+  "max": 25,
+  "step": 1,
+  "unit": "%",
+  "default": 0
+},
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Introducing"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Collection"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+ {
+  "type": "radio",
+  "id": "link_type",
+  "label": "Button link type",
+  "options": [
+    { "value": "url", "label": "URL" },
+    { "value": "email", "label": "Email" }
+  ],
+  "default": "url"
+},
+{
+  "type": "url",
+  "id": "button_link",
+  "label": "Button URL"
+},
+{
+  "type": "text",
+  "id": "button_email_link",
+  "label": "Button email address",
+  "info": "Creates a 'mailto:' link."
+},
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "button", "label": "Primary" },
+        { "value": "button button-secondary", "label": "Secondary" }
+      ],
+      "default": "button"
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "select",
+      "id": "subtitle_tag",
+      "label": "Subtitle tag",
+      "options": [
+        { "value": "h3", "label": "H3" },
+        { "value": "h4", "label": "H4" },
+        { "value": "h5", "label": "H5" },
+        { "value": "h6", "label": "H6" },
+        { "value": "p", "label": "Paragraph" }
+      ],
+      "default": "h4"
+    },
+    {
+      "type": "select",
+      "id": "title_tag",
+      "label": "Title tag",
+      "options": [
+        { "value": "h1", "label": "H1" },
+        { "value": "h2", "label": "H2" },
+        { "value": "h3", "label": "H3" }
+      ],
+      "default": "h2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image with Text"
+    }
+  ]
+}
+{% endschema %}

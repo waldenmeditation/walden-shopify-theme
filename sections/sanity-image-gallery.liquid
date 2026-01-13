@@ -1,0 +1,219 @@
+{%- assign metafield_namespace = section.settings.metafield_namespace | default: "app--6007307--sanity-fields" -%}
+{%- assign metafield_key = section.settings.images_metafield_key | default: "shopifyImageData" -%}
+{%- assign modules_key = section.settings.modules_metafield_key | default: "shopifyModules" -%}
+
+{%- assign variant = product.selected_or_first_available_variant -%}
+
+{%- assign variant_images = variant.metafields[metafield_namespace][metafield_key].value -%}
+{%- assign product_images = product.metafields[metafield_namespace][metafield_key].value -%}
+
+{%- assign variant_modules = variant.metafields[metafield_namespace][modules_key].value -%}
+{%- assign product_modules = product.metafields[metafield_namespace][modules_key].value -%}
+{%- assign effective_modules_key = modules_key -%}
+
+{%- assign variant_modules_count = variant_modules | size -%}
+{%- assign product_modules_count = product_modules | size -%}
+{%- if variant_modules_count == 0 and product_modules_count == 0 -%}
+  {%- assign alt_key = 'modules' -%}
+  {%- assign variant_modules_alt = variant.metafields[metafield_namespace][alt_key].value -%}
+  {%- assign product_modules_alt = product.metafields[metafield_namespace][alt_key].value -%}
+  {%- if variant_modules_alt != blank and variant_modules_alt.size > 0 or product_modules_alt != blank and product_modules_alt.size > 0 -%}
+    {%- assign variant_modules = variant_modules_alt -%}
+    {%- assign product_modules = product_modules_alt -%}
+    {%- assign effective_modules_key = alt_key -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- if variant_modules != blank and variant_modules.size > 0 -%}
+  {%- assign modules = variant_modules -%}
+{%- else -%}
+  {%- assign modules = product_modules -%}
+{%- endif -%}
+
+{%- assign has_module_images = false -%}
+{%- if modules != blank and modules.size > 0 -%}
+  {%- for mod in modules -%}
+    {%- liquid
+      assign probe_url = ''
+      assign mod_type = mod.type | default: mod._type
+      if mod_type == 'image'
+        assign probe_url = 'true'
+      elsif mod.image and mod.image.url
+        assign probe_url = mod.image.url
+      elsif mod.image and mod.image.asset and mod.image.asset.url
+        assign probe_url = mod.image.asset.url
+      elsif mod.asset and mod.asset.url
+        assign probe_url = mod.asset.url
+      elsif mod.url
+        assign probe_url = mod.url
+      elsif mod.src
+        assign probe_url = mod.src
+      elsif mod.imageUrl
+        assign probe_url = mod.imageUrl
+      endif
+      if probe_url != ''
+        assign has_module_images = true
+        break
+      endif
+    -%}
+  {%- endfor -%}
+{%- endif -%}
+
+<!-- sanity_image_gallery debug:
+  namespace: {{ metafield_namespace }}
+  modules_key: {{ modules_key }}
+  effective_modules_key: {{ effective_modules_key }}
+  images_fallback_key: {{ metafield_key }}
+  modules_count: {{ modules.size | default: 0 }}
+  has_module_images: {{ has_module_images }}
+  variant_images_count: {{ variant_images.size | default: 0 }}
+  product_images_count: {{ product_images.size | default: 0 }}
+-->
+
+{%- if has_module_images -%}
+  <div class="sanity-image-gallery">
+    {%- for mod in modules -%}
+      {%- liquid
+        assign img_url = ''
+        assign img_alt = ''
+        assign img_width = ''
+        assign img_height = ''
+        assign mod_type = mod.type | default: mod._type
+        if mod_type == 'image'
+          if mod.image and mod.image.url
+            assign img_url = mod.image.url
+            assign img_alt = mod.image.alt
+            assign img_width = mod.image.width
+            assign img_height = mod.image.height
+          elsif mod.image and mod.image.asset and mod.image.asset.url
+            assign img_url = mod.image.asset.url
+          elsif mod.asset and mod.asset.url
+            assign img_url = mod.asset.url
+          elsif mod.url
+            assign img_url = mod.url
+          elsif mod.src
+            assign img_url = mod.src
+          elsif mod.imageUrl
+            assign img_url = mod.imageUrl
+          endif
+        else
+          if mod.image and mod.image.url
+            assign img_url = mod.image.url
+            assign img_alt = mod.image.alt
+            assign img_width = mod.image.width
+            assign img_height = mod.image.height
+          elsif mod.image and mod.image.asset and mod.image.asset.url
+            assign img_url = mod.image.asset.url
+          elsif mod.asset and mod.asset.url
+            assign img_url = mod.asset.url
+          elsif mod.url
+            assign img_url = mod.url
+          elsif mod.src
+            assign img_url = mod.src
+          elsif mod.imageUrl
+            assign img_url = mod.imageUrl
+          endif
+        endif
+      -%}
+      {%- if img_url != '' -%}
+        <div class="sanity-image-container">
+          <img
+            src="{{ img_url }}"
+            alt="{{ img_alt | default: product.title | escape }}"
+            width="{{ img_width }}"
+            height="{{ img_height }}"
+            style="width: 100%; height: auto; display: block; margin-bottom: 10px;"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- elsif variant_images != blank and variant_images.size > 0 or product_images != blank and product_images.size > 0 -%}
+  {%- if variant_images != blank and variant_images.size > 0 -%}
+    {%- assign gallery_images = variant_images -%}
+  {%- else -%}
+    {%- assign gallery_images = product_images -%}
+  {%- endif -%}
+  <!-- sanity_image_gallery fallback sample:
+    first_image_object: {{ gallery_images[0] | json }}
+  -->
+  <div class="sanity-image-gallery">
+    {%- for image_data in gallery_images -%}
+      {%- liquid
+        assign f_img_url = ''
+        assign f_img_alt = ''
+        assign f_img_width = ''
+        assign f_img_height = ''
+        if image_data.url
+          assign f_img_url = image_data.url
+          assign f_img_alt = image_data.alt
+          assign f_img_width = image_data.width
+          assign f_img_height = image_data.height
+        elsif image_data.image and image_data.image.url
+          assign f_img_url = image_data.image.url
+          assign f_img_alt = image_data.image.alt
+          assign f_img_width = image_data.image.width
+          assign f_img_height = image_data.image.height
+        elsif image_data.image and image_data.image.asset and image_data.image.asset.url
+          assign f_img_url = image_data.image.asset.url
+        elsif image_data.asset and image_data.asset.url
+          assign f_img_url = image_data.asset.url
+        elsif image_data.src
+          assign f_img_url = image_data.src
+        elsif image_data.imageUrl
+          assign f_img_url = image_data.imageUrl
+        endif
+      -%}
+      {%- if f_img_url != '' -%}
+        <div class="sanity-image-container">
+          <img
+            src="{{ f_img_url }}"
+            alt="{{ f_img_alt | default: product.title | escape }}"
+            width="{{ f_img_width }}"
+            height="{{ f_img_height }}"
+            style="width: 100%; height: auto; display: block; margin-bottom: 10px;"
+            loading="lazy"
+          >
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sanity Image Gallery",
+  "tag": "section",
+  "class": "product-sanity-gallery",
+  "settings": [
+    {
+      "type": "text",
+      "id": "metafield_namespace",
+      "label": "Sanity metafield namespace",
+      "default": "app--6007307--sanity-fields"
+    },
+    {
+      "type": "text",
+      "id": "modules_metafield_key",
+      "label": "Sanity modules metafield key",
+      "default": "shopifyModules"
+    },
+    {
+      "type": "text",
+      "id": "images_metafield_key",
+      "label": "Images fallback metafield key",
+      "default": "shopifyImageData"
+    },
+    {
+      "type": "paragraph",
+      "content": "This section displays images from Sanity metafields. It has no settings. To manage images, edit the product in your Sanity Studio."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sanity Image Gallery"
+    }
+  ]
+}
+{% endschema %}

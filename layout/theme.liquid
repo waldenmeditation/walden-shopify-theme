@@ -1,0 +1,150 @@
+<!doctype html>
+<html
+  class="no-js{% if request.design_mode %} shopify-design-mode{% endif %}"
+  lang="{{ request.locale.iso_code }}"
+>
+  <head>
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'custom-code.css' | asset_url | stylesheet_tag }}
+
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 }}"
+      >
+    {%- endif -%}
+
+    {% comment %} This a way to wait for main content to load when navigating to a new page so that the view transitions can work consistently {% endcomment %}
+    <link
+      rel="expect"
+      href="#MainContent"
+      blocking="render"
+      id="view-transition-render-blocker"
+    >
+
+    {%- render 'meta-tags' -%}
+    {%- render 'fonts' -%}
+    {%- render 'scripts' -%}
+    {%- render 'theme-styles-variables' -%}
+    {%- render 'color-schemes' -%}
+
+    {% if request.design_mode %}
+      {%- render 'theme-editor' -%}
+    {% endif %}
+
+    {{ content_for_header }}
+
+    <style>
+      :root {
+        --image-text-subtitle-spacing: {{ settings.spacing_subtitle }}px;
+        --image-text-title-spacing: {{ settings.spacing_title }}px;
+        --image-text-description-spacing: {{ settings.spacing_description }}px;
+        --image-text-vertical-spacing: {{ settings.spacing_vertical }}px;
+
+        --image-text-side-offset: {{ settings.image_text_side_offset}}px;
+        --image-text-top-offset: {{ settings.image_text_top_offset}}px;
+        --image-text-mobile-text-margin: {{ settings.image_text_mobile_margin}}px;
+        --image-text-mobile-vertical-offset: {{ settings.image_text_mobile_vertical_offset}}px;
+        --image-text-mobile-vertical-spacing: {{ settings.spacing_vertical }}px;
+      }
+    </style>
+  </head>
+
+  <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
+    {% render 'skip-to-content-link', href: '#MainContent', text: 'accessibility.skip_to_text' %}
+    <div id="header-group">
+      {% sections 'header-group' %}
+    </div>
+
+    <main
+      id="MainContent"
+      class="content-for-layout"
+      role="main"
+      data-page-transition-enabled="{{ settings.page_transition_enabled }}"
+      data-product-transition="{{ settings.transition_to_main_product }}"
+      data-template="{{ template }}"
+    >
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    {% render 'search-modal' %}
+
+    <script>
+      if (document.startViewTransition) {
+        const orig = document.startViewTransition.bind(document);
+        document.startViewTransition = (fn) => {
+          console.trace("ViewTransition started");
+          return orig(fn);
+        };
+      }
+    </script>
+
+    {% # theme-check-disable ParserBlockingScript %}
+    <script src="{{ 'critical.js' | asset_url }}"></script>
+    {% # theme-check-enable ParserBlockingScript %}
+
+    {% if settings.quick_add or settings.mobile_quick_add %}
+      {% render 'quick-add-modal' %}
+    {% endif %}
+
+  <script>
+if (!window.__inboxLauncherLoaded) {
+  window.__inboxLauncherLoaded = true;
+  (function () {
+    const $ = (s, r=document) => r.querySelector(s);
+
+    function host() { return $('inbox-online-store-chat'); }
+    function toggle() {
+      const h = host();
+      return h?.shadowRoot?.querySelector('button[data-spec="toggle-button"]')
+          || h?.shadowRoot?.querySelector('button[aria-label]')
+          || null;
+    }
+    function onHostReady(cb) {
+      if (host()?.shadowRoot) return cb();
+      const mo = new MutationObserver(() => {
+        if (host()?.shadowRoot) { mo.disconnect(); cb(); }
+      });
+      mo.observe(document.documentElement, { childList: true, subtree: true });
+    }
+    function openInbox() {
+      const t = toggle();
+      if (t) { t.click(); return; }
+      onHostReady(() => toggle()?.click());
+    }
+
+    // Click only, let the drawer close first for stability
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest('a, [role="link"]');
+      if (!a) return;
+
+      const href = (a.getAttribute('href') || '').toLowerCase();
+      const isNavTrigger =
+        a.classList?.contains('js-open-concierge') ||
+        href === '#open-concierge' ||
+        a.textContent.trim().toLowerCase() === 'live concierge';
+
+      if (!isNavTrigger) return;
+
+      e.preventDefault();
+      // Give mobile menu a tick to close, then open chat
+      setTimeout(openInbox, 120);
+      // Best-effort drawer close
+      $('.menu-drawer__close-button, [data-drawer-close], [data-header-drawer]')?.click?.();
+    }, { capture: true });
+
+    // Optional: open on ?openChat=1 deep links
+    if (new URLSearchParams(location.search).has('openChat')) {
+      if (document.readyState !== 'loading') openInbox();
+      else document.addEventListener('DOMContentLoaded', openInbox);
+    }
+  })();
+}
+</script>
+
+
+  </body>
+</html>

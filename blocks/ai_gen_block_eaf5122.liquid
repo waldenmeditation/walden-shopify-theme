@@ -1,0 +1,500 @@
+{% doc %}
+  @prompt
+    full-width section
+    
+    two columns. image column and other column. image column should take priority and be adjustable width.
+    
+    other column is a stack of:
+    header
+    a toggle-able callout with a small blue circle next to text that reads "Gift Packaging Available"
+    
+    a product description field
+    
+    and a black button with customizable text
+    
+    ---
+    
+    on mobile, the section should stack vertically, with the image on top. equal padding on all sides for the content of the section. center align everything. and set a background color
+    
+    ---
+    
+    for customization, add alternate spacing and text sizes for mobile in a separate schema section. and lastly, add the option to swap the columns, which would make the content column right aligned., the content padding should also affect the image. also, the button text should always be center aligned, add an adjustment for the dividing space between the two columns
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-product-section-{{ ai_gen_id }} {
+    margin: auto; 
+    width: 100%;
+    max-width: {{ block.settings.max_width }}px;
+    padding-top: {{ block.settings.content_padding }}px;
+    padding-bottom: {{ block.settings.content_padding }}px;
+  }
+
+  .ai-product-section-container-{{ ai_gen_id }} {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    gap: {{ block.settings.column_gap }}px;
+    flex-direction: {% if block.settings.swap_columns %}row-reverse{% else %}row{% endif %};
+  }
+
+  .ai-product-section-image-column-{{ ai_gen_id }} {
+    flex: 0 0 calc({{ block.settings.image_width }}% - {{ block.settings.column_gap | divided_by: 2.0 }}px);
+    max-width: calc({{ block.settings.image_width }}% - {{ block.settings.column_gap | divided_by: 2.0 }}px);
+  }
+
+  .ai-product-section-image-{{ ai_gen_id }} {
+    width: 100%;
+    margin-left: auto;
+    height: auto;
+    object-fit: fill;
+    display: block;
+    
+  }
+
+  .ai-product-section-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+  }
+
+  .ai-product-section-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 300px;
+    max-height: 300px;
+  }
+
+  .ai-product-section-content-column-{{ ai_gen_id }} {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    text-align: {% if block.settings.swap_columns %}right{% else %}left{% endif %};
+  }
+
+  .ai-product-section-header-{{ ai_gen_id }} {
+    font-size: {{ block.settings.header_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 {{ block.settings.spacing }}px 0;
+  }
+
+  .ai-product-section-callout-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: {{ block.settings.spacing }}px;
+    justify-content: {% if block.settings.swap_columns %}flex-end{% else %}flex-start{% endif %};
+  }
+
+  .ai-product-section-callout-circle-{{ ai_gen_id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: {{ block.settings.callout_circle_color }};
+    flex-shrink: 0;
+  }
+
+  .ai-product-section-callout-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.callout_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0;
+  }
+
+  .ai-product-section-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.text_color }};
+    margin: 0 0 {{ block.settings.spacing }}px 0;
+    line-height: 1.6;
+  }
+
+  .ai-product-section-button-{{ ai_gen_id }} {
+    width: fit-content;
+    margin-left: {% if block.settings.swap_columns %}auto{% else %}none{% endif %};
+    padding: 12px 32px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: {{ block.settings.button_size }}px;
+    transition: opacity 0.3s ease;
+    text-align: center;
+  }
+
+  .ai-product-section-button-{{ ai_gen_id }}:hover {
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-product-section-{{ ai_gen_id }} {
+      background-color: {{ block.settings.background_color }};
+      padding: {{ block.settings.mobile_padding }}px;
+    }
+
+    .ai-product-section-container-{{ ai_gen_id }} {
+      flex-direction: column;
+      gap: {{ block.settings.mobile_spacing }}px;
+    }
+
+    .ai-product-section-image-column-{{ ai_gen_id }} {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+
+    .ai-product-section-content-column-{{ ai_gen_id }} {
+      text-align: center;
+    }
+
+    .ai-product-section-header-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_header_size }}px;
+      margin-bottom: {{ block.settings.mobile_spacing }}px;
+    }
+
+    .ai-product-section-callout-{{ ai_gen_id }} {
+      justify-content: center;
+      margin-bottom: {{ block.settings.mobile_spacing }}px;
+    }
+
+    .ai-product-section-callout-text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_callout_size }}px;
+    }
+
+    .ai-product-section-description-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_description_size }}px;
+      margin-bottom: {{ block.settings.mobile_spacing }}px;
+    }
+
+    .ai-product-section-button-{{ ai_gen_id }} {
+      font-size: {{ block.settings.mobile_button_size }}px;
+      margin: auto;
+    }
+  }
+{% endstyle %}
+
+<product-section-{{ ai_gen_id }} class="ai-product-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-product-section-container-{{ ai_gen_id }}">
+    <div class="ai-product-section-image-column-{{ ai_gen_id }}">
+      {% if block.settings.image %}
+        <img
+          src="{{ block.settings.image | image_url: width: 2000 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.image.width }}"
+          height="{{ block.settings.image.height }}"
+          class="ai-product-section-image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="ai-product-section-image-placeholder-{{ ai_gen_id }}">
+          {{ 'product-1' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ai-product-section-content-column-{{ ai_gen_id }}">
+      {% if block.settings.header != blank %}
+        <h2 class="ai-product-section-header-{{ ai_gen_id }}">{{ block.settings.header }}</h2>
+      {% endif %}
+
+      {% if block.settings.show_callout %}
+        <div class="ai-product-section-callout-{{ ai_gen_id }}">
+          <span class="ai-product-section-callout-circle-{{ ai_gen_id }}"></span>
+          <p class="ai-product-section-callout-text-{{ ai_gen_id }}">{{ block.settings.callout_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.description != blank %}
+        <div class="ai-product-section-description-{{ ai_gen_id }}">
+          {{ block.settings.description }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.button_text != blank %}
+        <a href="{{ block.settings.button_link }}" class="ai-product-section-button-{{ ai_gen_id }}">
+          {{ block.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</product-section-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class ProductSection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('product-section-{{ ai_gen_id }}', ProductSection{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product section",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+    "type": "range",
+    "id": "max_width",
+    "min": 500,
+    "max": 1400,
+    "step": 50,
+    "unit": "px",
+    "label": "Max width",
+    "default": 1400
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "label": "Image width",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Column gap",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "swap_columns",
+      "label": "Swap columns",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Header",
+      "default": "Product Name"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_callout",
+      "label": "Show callout",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "callout_text",
+      "label": "Callout text",
+      "default": "Gift Packaging Available"
+    },
+    {
+      "type": "color",
+      "id": "callout_circle_color",
+      "label": "Callout circle color",
+      "default": "#0000ff"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Add your product description here. Highlight key features and benefits.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "min": 20,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Element spacing",
+      "default": 20
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "header_size",
+      "min": 20,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Header size",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "callout_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Callout size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button size",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Mobile"
+    },
+    {
+      "type": "range",
+      "id": "mobile_padding",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "mobile_spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "unit": "px",
+      "label": "Element spacing",
+      "default": 15
+    },
+    {
+      "type": "range",
+      "id": "mobile_header_size",
+      "min": 18,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Header size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "mobile_callout_size",
+      "min": 10,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Callout size",
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "mobile_description_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 14
+    },
+    {
+      "type": "range",
+      "id": "mobile_button_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Button size",
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product section"
+    }
+  ]
+}
+{% endschema %}

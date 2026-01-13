@@ -1,0 +1,202 @@
+{% stylesheet %}
+  .cart__ctas {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .cart-actions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-2xs);
+    border-block: 1px solid var(--color-border);
+    padding-block: var(--padding-sm);
+    margin-block-start: var(--margin-3xs);
+  }
+
+  .cart__summary-totals:not(:has(.cart-actions)) {
+    margin-block-start: var(--margin-3xs);
+    border-block-start: 1px solid var(--color-border);
+    padding-block-start: var(--margin-xl);
+  }
+
+  .cart__installments {
+    color: var(--color-foreground);
+  }
+
+  .disclosure {
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .disclosure summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    cursor: pointer;
+    color: #666;
+    font-size: 0.9rem;
+    list-style: none; /* Hide the default marker */
+    order: 2;
+  }
+
+  .disclosure[open] {
+    border-top: 1px solid var(--color-border);
+    margin-top: var(--padding-sm);
+  }
+
+  .disclosure summary::-webkit-details-marker {
+    display: none; /* Hide the default marker in Chrome */
+  }
+
+  .disclosure .summary-text {
+    display: inline-block;
+  }
+
+  .disclosure .summary-text--close {
+    display: none;
+  }
+
+  .disclosure[open] .summary-text--more {
+    display: none;
+  }
+
+  .disclosure[open] .summary-text--close {
+    display: inline-block;
+  }
+
+  .disclosure .icon-caret {
+    transition: transform 0.2s;
+    margin-left: 0.5rem;
+  }
+
+  .disclosure[open] .icon-caret {
+    transform: rotate(180deg);
+  }
+
+  .disclosure .additional-checkout-buttons {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out;
+    padding-top: 0;
+    order: 1;
+  }
+
+  .disclosure[open] .additional-checkout-buttons {
+    max-height: 500px; /* A large enough value to accommodate the content */
+    padding-top: var(--padding-sm);
+  }
+{% endstylesheet %}
+
+<div class="cart__summary-totals">
+  {% # We need to keep this node in place to allow morphing to work properly # %}
+  <div class="cart__original-total-container cart-primary-typography">
+    {%- if cart.cart_level_discount_applications.size > 0 -%}
+      <span class="cart__summary-item cart__original-total">
+        <span class="cart__original-total-label">{{ 'content.cart_subtotal' | t }}</span>
+        <span class="cart__original-total-value cart-secondary-typography">
+          {{- cart.original_total_price | money -}}
+        </span>
+      </span>
+      <div class="cart__summary-discounts">
+        <ul
+          class="discounts list-unstyled"
+          role="list"
+          aria-label="{{ 'content.discounts' | t }}"
+        >
+          {%- for discount in cart.cart_level_discount_applications -%}
+            <li class="cart__summary-item cart__discount">
+              <span class="cart__discount-label">
+                {{- 'icon-discount.svg' | inline_asset_content -}}
+                {{ discount.title | escape }}
+              </span>
+              <span class="cart__discount-value cart-secondary-typography"
+                >-{{ discount.total_allocated_amount | money -}}
+              </span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {% if settings.show_cart_note or settings.show_add_discount_code %}
+    <div class="cart-actions">
+      {% if settings.show_cart_note %}
+        {% render 'cart-note' %}
+      {% endif %}
+
+      {% if settings.show_add_discount_code %}
+        {% render 'cart-discount' %}
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {%- liquid
+    if settings.currency_code_enabled_cart_total
+      assign total_price = cart.total_price | money_with_currency
+    else
+      assign total_price = cart.total_price | money
+    endif
+  -%}
+
+  <div class="cart__total-container">
+    <span
+      class="cart__summary-item cart__total"
+      role="status"
+    >
+      <span class="cart__total-label cart-primary-typography">{{ 'content.cart_estimated_total' | t }}</span>
+      <text-component
+        ref="cartTotal"
+        value="{{ total_price }}"
+        class="cart__total-value cart-secondary-typography"
+        {% comment %} Used by payment_terms web component {% endcomment %}
+        data-cart-subtotal
+      >
+        {{ total_price }}
+      </text-component>
+    </span>
+    {% if settings.show_installments %}
+      <span class="cart__summary-item cart__installments">
+        {% form 'cart', cart %}
+          {{ form | payment_terms }}
+        {% endform %}
+      </span>
+    {% endif %}
+    <div class="cart__summary-item tax-note cart-primary-typography">
+      {% render 'tax-info', has_discounts_enabled: settings.show_add_discount_code %}
+    </div>
+  </div>
+</div>
+
+<div class="cart__ctas">
+  <button
+    type="submit"
+    id="checkout"
+    class="cart__checkout-button button"
+    name="checkout"
+    {% if cart == empty %}
+      disabled
+    {% endif %}
+    form="cart-form"
+  >
+    {{ 'content.checkout' | t }}
+  </button>
+
+  {% if additional_checkout_buttons and settings.show_accelerated_checkout_buttons %}
+    <details class="disclosure">
+      <summary>
+        <span class="summary-text summary-text--more">More options</span>
+        <span class="summary-text summary-text--close">Close</span>
+        <span class="icon-caret">
+          {{ 'icon-arrow.svg' | inline_asset_content }}
+        </span>
+      </summary>
+      <div class="additional-checkout-buttons additional-checkout-buttons--vertical">
+        {{ content_for_additional_checkout_buttons }}
+      </div>
+    </details>
+  {% endif %}
+</div>

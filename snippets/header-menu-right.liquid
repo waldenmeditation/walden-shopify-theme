@@ -1,0 +1,46 @@
+{% liquid
+  assign color_scheme_classes = ''
+  assign color_scheme_setting_id = 'color_scheme_' | append: section.settings.menu_row
+  assign parent_color_scheme = section.settings[color_scheme_setting_id]
+%}
+
+
+{% capture children %}
+  {% for link in section.settings.menu_right.links %}
+    <li
+      role="presentation"
+      class="menu-list__list-item"
+      {% unless forloop.first %}
+        style="margin-left: 20px;"
+      {% endunless %}
+    >
+      <a
+        role="menuitem"
+        href="{{ link.url }}"
+        class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
+      >
+        <span class="menu-list__link-title">{{- link.title -}}</span>
+      </a>
+    </li>
+  {% endfor %}
+
+  <li
+    class="menu-list__list-item"
+    role="presentation"
+    slot="more"
+  >
+    <button role="menuitem" class="button menu-list__link button-unstyled">
+      <span class="menu-list__link-title">More</span>
+    </button>
+  </li>
+{% endcapture %}
+
+<nav header-menu class="mobile:hidden">
+  <div
+    class="menu-list"
+    style="--font-size: {{ section.settings.menu_right_font_size }}px;"
+  >
+    {% assign class = 'overflow-menu' | append: color_scheme_classes %}
+    {% render 'overflow-list', class: class, children: children, minimum-items: 99 %}
+  </div>
+</nav>

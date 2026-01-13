@@ -1,0 +1,73 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "blocks": {
+        "ai_gen_block_976c4e4_8zpDVW": {
+          "type": "ai_gen_block_976c4e4",
+          "name": "Image with Text",
+          "settings": {
+            "image_position": "right",
+            "top_offset_override": 10,
+            "image": "shopify://shop_images/Block-on-nighstand_5a01891c-7343-4f70-8798-4b99a49f40ea.jpg",
+            "subtitle": "",
+            "title": "Corporate Gifting",
+            "description": "<p>Share Walden products with your team, clients, or event attendees. Access trade pricing, customization, and direct-to-recipient shipping coordination.</p>",
+            "button_text": "Contact Us",
+            "link_type": "email",
+            "button_link": "",
+            "button_email_link": "hello@walden.us",
+            "button_style": "button",
+            "subtitle_tag": "h4",
+            "title_tag": "h2"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_976c4e4_Tpagia": {
+          "type": "ai_gen_block_976c4e4",
+          "name": "Image with Text",
+          "settings": {
+            "image_position": "left",
+            "top_offset_override": 0,
+            "image": "shopify://shop_images/Etching.jpg",
+            "subtitle": "",
+            "title": "Make it Personal",
+            "description": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
+            "button_text": "Shop Now",
+            "link_type": "url",
+            "button_link": "",
+            "button_email_link": "",
+            "button_style": "button",
+            "subtitle_tag": "h4",
+            "title_tag": "h2"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_976c4e4_8zpDVW",
+        "ai_gen_block_976c4e4_Tpagia"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "section_width": "full-width",
+        "gap": 60,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

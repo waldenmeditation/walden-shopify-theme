@@ -1,0 +1,25 @@
+{%- comment -%}
+  This snippet is optimized for the collection page. It renders a single visible image
+  and all other variant images hidden, with loading attributes to prioritize the first image.
+{%- endcomment -%}
+{%- if product.variants.size > 1 -%}
+  {%- for variant in product.variants -%}
+    {%- assign image_to_render = variant.featured_media | default: product.featured_media -%}
+    {%- if image_to_render and image_to_render.media_type == 'image' -%}
+      <div class="variant-image-container {% if forloop.first %}is-active{% endif %}" data-variant-id="{{ variant.id }}">
+        {%- assign loading = 'lazy' -%}
+        {%- if forloop.first -%}
+          {%- assign loading = 'eager' -%}
+        {%- endif -%}
+        {%- render 'product-media', media: image_to_render, sizes: image_sizes, widths: '300, 450, 600, 750, 900, 1050, 1200', loading: loading, preview_image_only: true -%}
+      </div>
+    {%- endif -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- assign featured_media = product.featured_media -%}
+  {%- if featured_media != blank -%}
+    <div class="variant-image-container is-active">
+      {%- render 'product-media', media: featured_media, sizes: image_sizes, widths: '300, 450, 600, 750, 900, 1050, 1200', loading: 'eager', preview_image_only: true -%}
+    </div>
+  {%- endif -%}
+{%- endif -%}

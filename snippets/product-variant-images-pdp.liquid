@@ -1,0 +1,67 @@
+<script>
+  console.log('Building variant media map with waterfall logic...');
+  const variantMediaMap = {};
+  const productMedia = [
+    {%- for media in product.media -%}
+      {%- unless media.alt contains "skip" -%}
+        {{ media | json }}{% unless forloop.last %},{% endunless %}
+      {%- endunless -%}
+    {%- endfor -%}
+  ];
+  const productVariants = {{ product.variants | json }};
+
+  console.log('Product Media:', productMedia);
+  console.log('Product Variants:', productVariants);
+
+  const mediaIdToIndex = new Map(productMedia.map((media, index) => [media.id, index]));
+  
+  const variantFeaturedMediaIndices = productVariants.map(variant => {
+    if (variant.featured_media) {
+      return mediaIdToIndex.get(variant.featured_media.id);
+    }
+    return -1;
+  }).filter(index => index !== -1);
+
+  console.log('Variant Featured Media Indices:', variantFeaturedMediaIndices);
+
+  if (productVariants.length === 1) {
+    const variant = productVariants[0];
+    variantMediaMap[variant.id] = productMedia;
+  } else {
+    productVariants.forEach((variant, i) => {
+      if (!variant.featured_media) {
+        variantMediaMap[variant.id] = [];
+        return;
+      }
+
+      const startIndex = mediaIdToIndex.get(variant.featured_media.id);
+      let endIndex;
+
+      // Find the next variant's featured media index
+      let nextVariantIndex = -1;
+      for (let j = i + 1; j < productVariants.length; j++) {
+        if (productVariants[j].featured_media) {
+          nextVariantIndex = mediaIdToIndex.get(productVariants[j].featured_media.id);
+          break;
+        }
+      }
+
+      if (nextVariantIndex !== -1) {
+        endIndex = nextVariantIndex;
+      } else {
+        endIndex = productMedia.length;
+      }
+      
+      console.log(`Slicing for variant ${variant.id}: from ${startIndex} to ${endIndex}`);
+      variantMediaMap[variant.id] = productMedia.slice(startIndex, endIndex);
+    });
+  }
+
+  console.log('Final Variant Media Map:', variantMediaMap);
+
+  const scriptTag = document.createElement('script');
+  scriptTag.type = 'application/json';
+  scriptTag.setAttribute('data-variant-images', '');
+  scriptTag.textContent = JSON.stringify(variantMediaMap);
+  document.head.appendChild(scriptTag);
+</script>

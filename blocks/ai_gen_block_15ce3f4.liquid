@@ -1,0 +1,345 @@
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-lifestyle-grid-{{ ai_gen_id }} {
+    margin: {{ block.settings.margin }}px 0;
+  }
+
+  .ai-lifestyle-grid__container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, 1fr);
+    gap: {{ block.settings.gap }}px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-lifestyle-grid__container-{{ ai_gen_id }} {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, 1fr);
+    }
+  }
+
+  .ai-lifestyle-grid__item-{{ ai_gen_id }} {
+    position: relative;
+    overflow: hidden;
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-lifestyle-grid__image-wrapper-{{ ai_gen_id }} {
+    width: 100%;
+    position: relative;
+    padding-bottom: {{ block.settings.aspect_ratio }}%;
+  }
+
+  .ai-lifestyle-grid__image-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-lifestyle-grid__placeholder-{{ ai_gen_id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ai-lifestyle-grid__placeholder-{{ ai_gen_id }} svg {
+    width: 50%;
+    height: 50%;
+    opacity: 0.5;
+  }
+
+  .ai-lifestyle-grid__empty-{{ ai_gen_id }} {
+    padding: 20px;
+    text-align: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+{% endstyle %}
+
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% assign lifestyle_content = product.metafields.custom.lifestyle_content %}
+
+<div class="ai-lifestyle-grid-{{ ai_gen_id }}">
+  <h1>Lifestyle Images</h1>
+  <div class="ai-lifestyle-grid__container-{{ ai_gen_id }}">
+    <!-- JS will insert images here -->
+  </div>
+</div>
+
+<p><strong>Liquid Debug: lifestyle_content raw output:</strong> {{ lifestyle_content }}</p>
+<p><strong>Liquid Debug: lifestyle_content type:</strong> {{ lifestyle_content | type_of }}</p>
+{% if lifestyle_content == blank %}
+  <p><strong>Liquid Debug: lifestyle_content is blank</strong></p>
+{% else %}
+  <p><strong>Liquid Debug: lifestyle_content is not blank</strong></p>
+{% endif %}
+
+<script>
+  (function() {
+    const STOREFRONT_ACCESS_TOKEN = '147be343f3217eba3be263c14fb7947c';
+    const SHOP_DOMAIN = '{{ shop.domain }}';
+
+    // Output the raw Liquid value as a string
+    const LIFESTYLE_GIDS_RAW = `{{ lifestyle_content }}`; // raw string, not JSON
+    console.log("DEBUG: Raw lifestyle GIDs string from Liquid:", LIFESTYLE_GIDS_RAW);
+
+    let LIFESTYLE_GIDS = [];
+    try {
+      LIFESTYLE_GIDS = JSON.parse(LIFESTYLE_GIDS_RAW);
+      console.log("DEBUG: Parsed lifestyle GIDs array:", LIFESTYLE_GIDS);
+    } catch (e) {
+      console.error("ERROR parsing lifestyle GIDs:", e);
+    }
+
+    const container = document.querySelector('.ai-lifestyle-grid__container-{{ ai_gen_id }}');
+
+    if (Array.isArray(LIFESTYLE_GIDS) && LIFESTYLE_GIDS.length > 0) {
+      fetch(`https://${SHOP_DOMAIN}/api/2023-10/graphql.json`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Storefront-Access-Token': STOREFRONT_ACCESS_TOKEN
+        },
+        body: JSON.stringify({
+          query: `
+            query GetMediaImages($ids: [ID!]!) {
+              nodes(ids: $ids) {
+                __typename
+                ... on MediaImage {
+                  id
+                  previewImage {
+                    url
+                    altText
+                  }
+                }
+                ... on File {
+                  id
+                  url
+                  alt
+                }
+                ... on Node {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            ids: LIFESTYLE_GIDS
+          }
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log("DEBUG: Storefront API response data:", data);
+        if (data && data.data && data.data.nodes) {
+          data.data.nodes.forEach((node, index) => {
+            console.log(`DEBUG: Node ${index}:`, node);
+            if (node && node.previewImage) {
+              const imgWrapper = document.createElement('div');
+              imgWrapper.className = 'ai-lifestyle-grid__item-{{ ai_gen_id }}';
+
+              const img = document.createElement('img');
+              img.className = 'ai-lifestyle-grid__image-{{ ai_gen_id }}';
+              img.src = node.previewImage.url;
+              img.alt = node.previewImage.altText || '';
+              img.width = 600;
+              img.height = 400;
+
+              imgWrapper.appendChild(img);
+              container.appendChild(imgWrapper);
+            } else if (node && node.url) {
+              const imgWrapper = document.createElement('div');
+              imgWrapper.className = 'ai-lifestyle-grid__item-{{ ai_gen_id }}';
+
+              const img = document.createElement('img');
+              img.className = 'ai-lifestyle-grid__image-{{ ai_gen_id }}';
+              img.src = node.url;
+              img.alt = node.alt || '';
+              img.width = 600;
+              img.height = 400;
+
+              imgWrapper.appendChild(img);
+              container.appendChild(imgWrapper);
+            } else {
+              console.warn(`DEBUG: Node ${index} has no previewImage or url`, node);
+            }
+          });
+        } else {
+          console.warn("DEBUG: No data or nodes returned from Storefront API");
+          container.innerHTML = '<p>No lifestyle images found.</p>';
+        }
+      })
+      .catch(error => {
+        console.error("ERROR fetching lifestyle images:", error);
+        container.innerHTML = '<p>Error fetching lifestyle images. Check console for details.</p>';
+      });
+    } else {
+      console.warn("DEBUG: No valid lifestyle GIDs found for this product.");
+      container.innerHTML = '<p>No lifestyle GIDs set for this product.</p>';
+    }
+  })();
+</script>
+
+
+
+ 
+
+{% schema %}
+{
+  "name": "Product Lifestyle Images",
+  "tag": null,
+  "class": "product-section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "This block displays lifestyle images stored in product metafields. To add images, go to each product's metafields and add a 'lifestyle_images' field (file list type) under the 'custom' namespace. For captions, add a 'lifestyle_captions' field (text list type) in the same namespace."
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between images",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "margin",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin top/bottom",
+      "default": 32
+    },
+    {
+      "type": "range",
+      "id": "aspect_ratio",
+      "min": 50,
+      "max": 150,
+      "step": 5,
+      "unit": "%",
+      "label": "Image aspect ratio",
+      "default": 100,
+      "info": "100% is square, 75% is 4:3, 56.25% is 16:9"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Border radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "Captions"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_captions",
+      "label": "Show captions",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "caption_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Caption font size",
+      "default": 14
+    },
+    {
+      "type": "color",
+      "id": "caption_color",
+      "label": "Caption color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "caption_alignment",
+      "label": "Caption alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Empty State"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_empty_message",
+      "label": "Show message when no images",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "empty_message",
+      "label": "Empty state message",
+      "default": "<p>No lifestyle images have been added to this product. Add images through product metafields.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Lifestyle Images"
+    }
+  ]
+}
+{% endschema %}

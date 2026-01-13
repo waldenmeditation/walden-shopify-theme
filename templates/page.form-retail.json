@@ -1,0 +1,131 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "section_width": "page-width-content",
+        "gap": 32,
+        "color_scheme": "",
+        "padding-block-start": 40,
+        "padding-block-end": 80
+      }
+    },
+    "custom_form_nkjAr7": {
+      "type": "custom-form",
+      "blocks": {
+        "title_NnEDcc": {
+          "type": "title",
+          "settings": {
+            "title_text": "Retail Partners"
+          }
+        },
+        "description_WyzaPh": {
+          "type": "description",
+          "settings": {
+            "description_text": "<p>Our exclusive service for hotels and retreats. Access trade pricing, partnership options or support designing bespoke experiences.</p>"
+          }
+        },
+        "text_iJMBat": {
+          "type": "text",
+          "settings": {
+            "label": "First Name",
+            "placeholder": "",
+            "width": "half",
+            "is_required": true,
+            "shopify_field_key": "first_name"
+          }
+        },
+        "text_4XtNfE": {
+          "type": "text",
+          "settings": {
+            "label": "Last Name",
+            "placeholder": "",
+            "width": "half",
+            "is_required": true,
+            "shopify_field_key": "last_name"
+          }
+        },
+        "email_RNPPL7": {
+          "type": "email",
+          "settings": {
+            "label": "Email",
+            "placeholder": "",
+            "width": "full",
+            "is_required": true,
+            "shopify_field_key": "email"
+          }
+        },
+        "tel_H8zqy9": {
+          "type": "tel",
+          "settings": {
+            "label": "Phone",
+            "placeholder": "",
+            "width": "full",
+            "is_required": false,
+            "shopify_field_key": "phone"
+          }
+        },
+        "text_dimeHc": {
+          "type": "text",
+          "settings": {
+            "label": "Company",
+            "placeholder": "",
+            "width": "half",
+            "is_required": true,
+            "shopify_field_key": "company"
+          }
+        },
+        "text_BWeHNP": {
+          "type": "text",
+          "settings": {
+            "label": "Location",
+            "placeholder": "",
+            "width": "half",
+            "is_required": false,
+            "shopify_field_key": "custom"
+          }
+        },
+        "text_LxyaTd": {
+          "type": "text",
+          "settings": {
+            "label": "Message",
+            "placeholder": "",
+            "width": "full",
+            "is_required": false,
+            "shopify_field_key": "custom"
+          }
+        }
+      },
+      "block_order": [
+        "title_NnEDcc",
+        "description_WyzaPh",
+        "text_iJMBat",
+        "text_4XtNfE",
+        "email_RNPPL7",
+        "tel_H8zqy9",
+        "text_dimeHc",
+        "text_BWeHNP",
+        "text_LxyaTd"
+      ],
+      "name": "Custom Form",
+      "settings": {
+        "submit_button_text": "Submit"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_form_nkjAr7"
+  ]
+}

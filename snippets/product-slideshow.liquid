@@ -1,0 +1,308 @@
+{%- comment -%}
+  Renders a product slideshow.
+
+  Accepts:
+  - media_list: {Array} A list of media objects to display.
+{%- endcomment -%}
+
+<style>
+  product-slideshow {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+  }
+  product-slideshow.loaded {
+    opacity: 1;
+  }
+  .product-slideshow__pagination {
+    display: none;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    padding: 0;
+  }
+  .product-slideshow__pagination-dot {
+    flex: 1;
+    height: 3px;
+    background-color: rgb(225, 225, 225);
+    transition: background-color 150ms;
+  }
+  .product-slideshow__pagination-dot.is-active {
+    background-color: #aeaeae;
+  }
+  @media (max-width: 749px) {
+    .product-slideshow__container {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      /* Firefox */
+    }
+    .product-slideshow__container::-webkit-scrollbar {
+      display: none;
+      /* Safari and Chrome */
+    }
+    .product-slideshow__slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+    }
+    .product-slideshow__pagination {
+      display: flex;
+    }
+  }
+</style>
+
+<product-slideshow class="product-slideshow" ref="slideshow">
+  <div class="product-slideshow__container" ref="slides">
+    {%- liquid
+      assign initial_variant = product.selected_or_first_available_variant
+      assign first_initial_media_id = initial_variant.featured_media.id
+
+      if product.variants.size > 1
+        assign sorted_variants = product.variants | where: "featured_media" | sort: "featured_media.position"
+        assign initial_pos = initial_variant.featured_media.position
+        assign next_pos = 100000
+
+        for v in sorted_variants
+          if v.featured_media.position > initial_pos
+            assign next_pos = v.featured_media.position
+            break
+          endif
+        endfor
+      else
+        assign initial_pos = 0
+        assign next_pos = 100000
+      endif
+    -%}
+    {%- for media in media_list -%}
+      {%- if media.alt contains "skip" -%}
+        {%- continue -%}
+      {%- endif -%}
+      {%- assign is_initial_variant_media = false -%}
+      {%- if media.position >= initial_pos and media.position < next_pos -%}
+        {%- assign is_initial_variant_media = true -%}
+      {%- endif -%}
+      <div
+        class="product-slideshow__slide{% if media.id == first_initial_media_id %} is-active{% endif %}"
+        data-media-id="{{ media.id }}"
+        {% unless is_initial_variant_media %}
+        style="display: none;"
+        {% endunless %}>
+        {%- liquid
+          assign loading_strategy = 'lazy'
+          if media.id == first_initial_media_id
+            assign loading_strategy = 'eager'
+          endif
+        -%}
+        {%- render 'product-media'
+          , media: media
+          , loading: loading_strategy
+          , is_main_product: true -%}
+      </div>
+    {%- endfor -%}
+  </div>
+  <div class="product-slideshow__pagination" ref="pagination"></div>
+</product-slideshow>
+
+<script>
+  class ProductSlideshow extends HTMLElement {
+    #controller = new AbortController();
+    #originalSlides = [];
+    #preloadedImages = new Set();
+    #intersectionObserver = null;
+
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      const { signal } = this.#controller;
+      document.body.addEventListener('variant:update', this.#handleVariantUpdate.bind(this), { signal });
+      this.#initialize();
+      this.#setupIntersectionObserver();
+    }
+
+    disconnectedCallback() {
+      this.#controller.abort();
+    }
+
+    async #initialize() {
+      this.#originalSlides = Array.from(this.querySelectorAll('.product-slideshow__slide'));
+      const mediaGallery = this.closest('media-gallery');
+      const initialVariantId = mediaGallery?.dataset.currentVariantId;
+      if (initialVariantId) {
+        await this.#showMediaForVariant(initialVariantId);
+      }
+      this.classList.add('loaded');
+    }
+
+    async #getVariantMediaMap() {
+      const getMap = () => {
+        const variantImagesElement = document.head.querySelector('[data-variant-images]');
+        if (variantImagesElement) {
+          const variantImagesData = variantImagesElement.textContent;
+          if (variantImagesData) {
+            try {
+              return JSON.parse(variantImagesData);
+            } catch (e) {
+              console.error('[ProductSlideshow] Failed to parse JSON from [data-variant-images]:', e);
+              return null;
+            }
+          }
+        }
+        return null;
+      };
+
+      let map = getMap();
+      if (map) return map;
+
+      return new Promise((resolve) => {
+        let retries = 5;
+        const interval = setInterval(() => {
+          map = getMap();
+          if (map || retries === 0) {
+            clearInterval(interval);
+            if (!map) {
+              console.error('[ProductSlideshow] Could not find the [data-variant-images] script tag after multiple retries.');
+            }
+            resolve(map);
+          }
+          retries--;
+        }, 200);
+      });
+    }
+
+    async #preloadOtherVariantImages(currentVariantId) {
+      const variantImages = await this.#getVariantMediaMap();
+      if (!variantImages) return;
+
+      for (const variantId in variantImages) {
+        if (variantId !== currentVariantId) {
+          const mediaList = variantImages[variantId];
+          if (mediaList && mediaList.length > 0) {
+            const firstImage = mediaList[0];
+            if (firstImage && firstImage.src && !this.#preloadedImages.has(firstImage.src)) {
+              const link = document.createElement('link');
+              link.rel = 'preload';
+              link.as = 'image';
+              link.href = firstImage.src;
+              document.head.appendChild(link);
+              this.#preloadedImages.add(firstImage.src);
+            }
+          }
+        }
+      }
+    }
+
+    async #handleVariantUpdate(event) {
+      const variant = event.detail.resource;
+      if (!variant) return;
+      await this.#showMediaForVariant(variant.id.toString());
+    }
+
+    async #showMediaForVariant(variantId) {
+      const variantImages = await this.#getVariantMediaMap();
+      if (!variantImages) {
+        console.error('[ProductSlideshow] Variant images map is not available. Aborting.');
+        return;
+      }
+
+      const mediaToShow = variantImages[variantId];
+      if (!mediaToShow) {
+        console.warn(`[ProductSlideshow] No media found for variant ID "${variantId}".`);
+        return;
+      }
+
+      const mediaIdsToShow = mediaToShow.map((media) => media.id.toString());
+
+      this.classList.remove('loaded');
+      await this.#preloadMedia(mediaIdsToShow);
+      this.updateSlides(mediaIdsToShow);
+      this.classList.add('loaded');
+
+      this.#preloadOtherVariantImages(variantId);
+    }
+
+    #preloadMedia(mediaIds) {
+      const promises = [];
+      this.#originalSlides.forEach(slide => {
+        const mediaId = slide.dataset.mediaId;
+        if (mediaIds.includes(mediaId)) {
+          const image = slide.querySelector('img');
+          // Preload only if it's lazy and not already loaded
+          if (image && image.loading === 'lazy' && !image.complete) {
+            image.loading = 'eager'; // Switch to eager to prioritize
+            promises.push(new Promise((resolve) => {
+              image.onload = resolve;
+              image.onerror = resolve; // Don't block on failed images
+            }));
+          }
+        }
+      });
+      return Promise.all(promises);
+    }
+
+    #setupIntersectionObserver() {
+      const options = {
+        root: this.querySelector('.product-slideshow__container'),
+        rootMargin: '0px',
+        threshold: 0.5
+      };
+
+      this.#intersectionObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const mediaId = entry.target.dataset.mediaId;
+            this.#updatePagination(mediaId);
+          }
+        });
+      }, options);
+
+      this.#originalSlides.forEach(slide => this.#intersectionObserver.observe(slide));
+    }
+
+    #updatePagination(activeMediaId) {
+      const pagination = this.querySelector('[ref="pagination"]');
+      const dots = pagination.querySelectorAll('.product-slideshow__pagination-dot');
+      dots.forEach(dot => {
+        dot.classList.toggle('is-active', dot.dataset.mediaId === activeMediaId);
+      });
+    }
+
+    updateSlides(mediaIdsToShow) {
+      const pagination = this.querySelector('[ref="pagination"]');
+      pagination.innerHTML = '';
+
+      let firstVisibleSlide = null;
+      this.#originalSlides.forEach(slide => {
+        const mediaId = slide.dataset.mediaId;
+        const shouldShow = mediaId && mediaIdsToShow.includes(mediaId);
+        slide.style.display = shouldShow ? '' : 'none';
+        slide.classList.remove('is-active');
+
+        if (shouldShow) {
+          const dot = document.createElement('div');
+          dot.classList.add('product-slideshow__pagination-dot');
+          dot.dataset.mediaId = mediaId;
+          pagination.appendChild(dot);
+
+          if (!firstVisibleSlide) {
+            firstVisibleSlide = slide;
+          }
+        }
+      });
+
+      if (firstVisibleSlide) {
+        firstVisibleSlide.classList.add('is-active');
+        this.#updatePagination(firstVisibleSlide.dataset.mediaId);
+      }
+    }
+  }
+
+  if (!customElements.get('product-slideshow')) {
+    customElements.define('product-slideshow', ProductSlideshow);
+  }
+</script>

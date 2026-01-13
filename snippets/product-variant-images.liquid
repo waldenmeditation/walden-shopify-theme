@@ -1,0 +1,65 @@
+{%- comment -%}
+  This snippet generates a JSON object mapping product variants to their associated images.
+  It infers which images belong to which variant based on their order in the Shopify admin.
+  This is used by the product card and media gallery to dynamically update images when a variant is selected.
+{%- endcomment -%}
+{%- capture variant_images_json -%}
+  {
+    {%- assign color_option_key = '' -%}
+    {%- for option in product.options_with_values -%}
+      {%- if option.name == 'Color' or option.name == 'color' -%}
+        {%- assign color_option_key = 'option' | append: option.position -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if color_option_key != '' -%}
+      {%- for color_value in product.options_by_name['Color'].values -%}
+        "{{ color_value | escape }}": [
+          {%- assign images_found = false -%}
+          {%- assign image_written = false -%}
+          {%- for variant in product.variants -%}
+            {%- if variant[color_option_key] == color_value and variant.featured_image -%}
+              {%- assign start_image_id = variant.featured_image.id -%}
+              {%- assign images_started = false -%}
+              {%- for media in product.media -%}
+                {%- if media.id == start_image_id -%}
+                  {%- assign images_started = true -%}
+                {%- endif -%}
+                {%- if images_started -%}
+                  {%- assign is_next_variant_image = false -%}
+                  {%- for next_variant in product.variants -%}
+                    {%- if next_variant.featured_image.id == media.id and next_variant[color_option_key] != color_value -%}
+                      {%- assign is_next_variant_image = true -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {%- if is_next_variant_image -%}
+                    {%- break -%}
+                  {%- endif -%}
+                  {%- if image_written -%},{%- endif -%}
+                  {
+                    "id": {{ media.id | json }},
+                    "src_200x": {{ media | image_url: width: 200 | json }},
+                    "src_400x": {{ media | image_url: width: 400 | json }},
+                    "src_800x": {{ media | image_url: width: 800 | json }},
+                    "src_1200x": {{ media | image_url: width: 1200 | json }},
+                    "src_1600x": {{ media | image_url: width: 1600 | json }},
+                    "src_2000x": {{ media | image_url: width: 2000 | json }},
+                    "alt": {{ media.alt | json }}
+                  }
+                  {%- assign image_written = true -%}
+                  {%- assign images_found = true -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- if images_found -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+        {%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    {%- endif -%}
+  }
+{%- endcapture -%}
+{{- variant_images_json | strip_newlines | replace: '  ', '' -}}

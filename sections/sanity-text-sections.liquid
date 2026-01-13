@@ -1,0 +1,70 @@
+{%- assign metafield_namespace = "app--6007307--sanity-fields" -%}
+{%- assign text_key = section.settings.text_metafield_key | default: 'shopifyTextSections' -%}
+
+{%- assign variant_text_sections = current_variant.metafields[metafield_namespace][text_key].value -%}
+{%- assign product_text_sections = product.metafields[metafield_namespace][text_key].value -%}
+
+{%- if variant_text_sections != blank and variant_text_sections.size > 0 -%}
+  {%- assign text_sections = variant_text_sections -%}
+  {%- assign source_for_text = "Variant" -%}
+{%- else -%}
+  {%- assign text_sections = product_text_sections -%}
+  {%- assign source_for_text = "Product" -%}
+{%- endif -%}
+
+{%- if text_sections != blank and text_sections.size > 0 -%}
+  <div class="sanity-text-sections rte">
+    {%- for section_item in text_sections -%}
+      <div class="sanity-text-section">
+        {%- comment -%}
+          Attempt to render common shapes:
+          - If item.html exists (pre-rendered HTML), output it
+          - Else if item.text exists, wrap in <p>
+          - Else if item.children (Portable Text-like), render concatenated child text
+        {%- endcomment -%}
+        {%- if section_item.html != blank -%}
+          {{ section_item.html }}
+        {%- elsif section_item.text != blank -%}
+          <p>{{ section_item.text }}</p>
+        {%- elsif section_item.children != blank and section_item.children.size > 0 -%}
+          {%- for child in section_item.children -%}
+            {%- if child.text != blank -%}
+              <p>{{ child.text }}</p>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- else -%}
+          {%- comment -%} Fallback: dump value if it is a string {%- endcomment -%}
+          {{ section_item }}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sanity Text Sections",
+  "tag": "section",
+  "class": "product-sanity-text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text_metafield_key",
+      "label": "Sanity text metafield key",
+      "default": "shopifyTextSections",
+      "info": "Metafield key in namespace app--6007307--sanity-fields that contains an array of text sections. Variant-level value overrides product-level value if present."
+    },
+    {
+      "type": "paragraph",
+      "content": "This section displays text content from Sanity metafields. Configure the key if your integration differs."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sanity Text Sections"
+    }
+  ]
+}
+{% endschema %}
+
+

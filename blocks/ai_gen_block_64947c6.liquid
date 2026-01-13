@@ -1,0 +1,396 @@
+{% doc %}
+  @prompt
+    full-width section
+    
+    two columns. image column and other column. image column should take priority and be adjustable width.
+    
+    other column is a stack of:
+    header
+    a toggle-able callout with a small blue circle next to text that reads "Gift Packaging Available"
+    
+    a product description field
+    
+    and a black button with customizable text
+    
+    ---
+    
+    on mobile, the section should stack vertically, with the image on top. equal padding on all sides for the content of the section. center align everything. and set a background color
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-two-column-section-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: {{ block.settings.background_color }};
+    padding: {{ block.settings.padding }}px;
+  }
+
+  .ai-two-column-container-{{ ai_gen_id }} {
+    display: grid;
+    grid-template-columns: {{ block.settings.image_width }}% 1fr;
+    gap: {{ block.settings.column_gap }}px;
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .ai-two-column-image-column-{{ ai_gen_id }} {
+    width: 100%;
+  }
+
+  .ai-two-column-image-{{ ai_gen_id }} {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .ai-two-column-image-placeholder-{{ ai_gen_id }} {
+    width: 100%;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+  }
+
+  .ai-two-column-image-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 400px;
+    max-height: 400px;
+  }
+
+  .ai-two-column-content-column-{{ ai_gen_id }} {
+    display: flex;
+    flex-direction: column;
+    gap: {{ block.settings.content_gap }}px;
+  }
+
+  .ai-two-column-header-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.header_size }}px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-two-column-callout-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .ai-two-column-callout-indicator-{{ ai_gen_id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: {{ block.settings.indicator_color }};
+    flex-shrink: 0;
+  }
+
+  .ai-two-column-callout-text-{{ ai_gen_id }} {
+    margin: 0;
+    font-size: {{ block.settings.callout_size }}px;
+    color: {{ block.settings.text_color }};
+  }
+
+  .ai-two-column-description-{{ ai_gen_id }} {
+    font-size: {{ block.settings.description_size }}px;
+    color: {{ block.settings.text_color }};
+    line-height: 1.6;
+  }
+
+  .ai-two-column-button-{{ ai_gen_id }} {
+    display: inline-block;
+    padding: 12px 32px;
+    background-color: {{ block.settings.button_bg_color }};
+    color: {{ block.settings.button_text_color }};
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: {{ block.settings.button_size }}px;
+    transition: background-color 0.3s ease;
+    text-align: center;
+  }
+
+  .ai-two-column-button-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.button_hover_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-two-column-container-{{ ai_gen_id }} {
+      grid-template-columns: 1fr;
+      gap: {{ block.settings.mobile_gap }}px;
+    }
+
+    .ai-two-column-content-column-{{ ai_gen_id }} {
+      text-align: center;
+      align-items: center;
+    }
+
+    .ai-two-column-callout-{{ ai_gen_id }} {
+      justify-content: center;
+    }
+  }
+{% endstyle %}
+
+<two-column-section-{{ ai_gen_id }} class="ai-two-column-section-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-two-column-container-{{ ai_gen_id }}">
+    <div class="ai-two-column-image-column-{{ ai_gen_id }}">
+      {% if block.settings.image %}
+        <img
+          src="{{ block.settings.image | image_url: width: 2000 }}"
+          alt="{{ block.settings.image.alt | escape }}"
+          loading="lazy"
+          width="{{ block.settings.image.width }}"
+          height="{{ block.settings.image.height }}"
+          class="ai-two-column-image-{{ ai_gen_id }}"
+        >
+      {% else %}
+        <div class="ai-two-column-image-placeholder-{{ ai_gen_id }}">
+          {{ 'image' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="ai-two-column-content-column-{{ ai_gen_id }}">
+      {% if block.settings.header != blank %}
+        <h2 class="ai-two-column-header-{{ ai_gen_id }}">{{ block.settings.header }}</h2>
+      {% endif %}
+
+      {% if block.settings.show_callout %}
+        <div class="ai-two-column-callout-{{ ai_gen_id }}">
+          <span class="ai-two-column-callout-indicator-{{ ai_gen_id }}"></span>
+          <p class="ai-two-column-callout-text-{{ ai_gen_id }}">{{ block.settings.callout_text }}</p>
+        </div>
+      {% endif %}
+
+      {% if block.settings.description != blank %}
+        <div class="ai-two-column-description-{{ ai_gen_id }}">
+          {{ block.settings.description }}
+        </div>
+      {% endif %}
+
+      {% if block.settings.button_text != blank %}
+        <a
+          href="{{ block.settings.button_link }}"
+          class="ai-two-column-button-{{ ai_gen_id }}"
+        >
+          {{ block.settings.button_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</two-column-section-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class TwoColumnSection{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+      }
+    }
+
+    customElements.define('two-column-section-{{ ai_gen_id }}', TwoColumnSection{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Two column section",
+  "tag": null,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "min": 30,
+      "max": 70,
+      "step": 5,
+      "unit": "%",
+      "label": "Image column width",
+      "default": 50
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Column gap",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "content_gap",
+      "min": 8,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Content spacing",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Section padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "mobile_gap",
+      "min": 16,
+      "max": 60,
+      "step": 4,
+      "unit": "px",
+      "label": "Mobile gap",
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "header",
+      "label": "Header",
+      "default": "Product Title"
+    },
+    {
+      "type": "range",
+      "id": "header_size",
+      "min": 16,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Header size",
+      "default": 32
+    },
+    {
+      "type": "checkbox",
+      "id": "show_callout",
+      "label": "Show callout",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "callout_text",
+      "label": "Callout text",
+      "default": "Gift Packaging Available"
+    },
+    {
+      "type": "range",
+      "id": "callout_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Callout text size",
+      "default": 14
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Add your product description here. Highlight key features and benefits.</p>"
+    },
+    {
+      "type": "range",
+      "id": "description_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Description size",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button text size",
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "indicator_color",
+      "label": "Callout indicator",
+      "default": "#0000ff"
+    },
+    {
+      "type": "color",
+      "id": "button_bg_color",
+      "label": "Button background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover",
+      "default": "#333333"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Two column section"
+    }
+  ]
+}
+{% endschema %}
