@@ -1,0 +1,28 @@
+<div
+  class="sanity-module__text rte"
+  style="
+    margin-top: {{ text_spacing }}px;
+    margin-bottom: {{ text_spacing }}px;
+    max-width: {{ text_max_width }}px;
+    --sanity-text-margin-inline-start: {{ text_margin_inline_start }}px;
+    --sanity-text-margin-inline-end: {{ text_margin_inline_end }}px;
+  "
+>
+  {%- if mod.html -%}
+    {{ mod.html }}
+  {%- elsif mod.body -%}
+    {%- if mod.body.html -%}
+      {{ mod.body.html }}
+    {%- else -%}
+      <p>{{ mod.body }}</p>
+    {%- endif -%}
+  {%- elsif mod.content -%}
+    {%- if mod.content.html -%}
+      {{ mod.content.html }}
+    {%- else -%}
+      <p>{{ mod.content }}</p>
+    {%- endif -%}
+  {%- elsif mod.text -%}
+    <p>{{ mod.text }}</p>
+  {%- endif -%}
+</div>

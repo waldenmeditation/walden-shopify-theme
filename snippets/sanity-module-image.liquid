@@ -1,0 +1,60 @@
+{%- liquid
+  assign img_url = ''
+  assign img_alt = ''
+  assign img_width = ''
+  assign img_height = ''
+
+  if mod.image and mod.image.url
+    assign img_url = mod.image.url
+    assign img_alt = mod.image.alt
+    assign img_width = mod.image.width
+    assign img_height = mod.image.height
+  elsif mod.image and mod.image.src
+    assign img_url = mod.image.src
+  elsif mod.image and mod.image.asset and mod.image.asset.url
+    assign img_url = mod.image.asset.url
+  elsif mod.image and mod.image.asset and mod.image.asset._ref and sanity_project_id and sanity_dataset
+    assign ref_str = mod.image.asset._ref
+    assign ref_parts = ref_str | split: '-'
+    assign asset_id = ref_parts[1]
+    assign dims = ref_parts[2]
+    assign fmt = ref_parts[3]
+    assign dims_parts = dims | split: 'x'
+    assign img_width = dims_parts[0]
+    assign img_height = dims_parts[1]
+    assign img_url = 'https://cdn.sanity.io/images/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '-' | append: dims | append: '.' | append: fmt
+  elsif mod.asset and mod.asset.url
+    assign img_url = mod.asset.url
+  elsif mod.asset and mod.asset._ref and sanity_project_id and sanity_dataset
+    assign ref_str = mod.asset._ref
+    assign ref_parts = ref_str | split: '-'
+    assign asset_id = ref_parts[1]
+    assign dims = ref_parts[2]
+    assign fmt = ref_parts[3]
+    assign dims_parts = dims | split: 'x'
+    assign img_width = dims_parts[0]
+    assign img_height = dims_parts[1]
+    assign img_url = 'https://cdn.sanity.io/images/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '-' | append: dims | append: '.' | append: fmt
+  elsif mod.file and mod.file.url
+    assign img_url = mod.file.url
+  elsif mod.url
+    assign img_url = mod.url
+  elsif mod.src
+    assign img_url = mod.src
+  elsif mod.imageUrl
+    assign img_url = mod.imageUrl
+  endif
+-%}
+
+{%- if img_url != '' -%}
+  <div class="sanity-module__image">
+    <img
+      src="{{ img_url }}"
+      alt="{{ img_alt | default: fallback_alt | escape }}"
+      width="{{ img_width }}"
+      height="{{ img_height }}"
+      loading="lazy"
+      style="width: 100%; height: auto; display: block;"
+    >
+  </div>
+{%- endif -%}

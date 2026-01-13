@@ -1,0 +1,10 @@
+{%- liquid
+  assign heading_level = mod.level | default: 'h2'
+  assign heading_alignment = mod.alignment | default: 'left'
+-%}
+
+<div class="sanity-module__heading sanity-module__heading--{{ heading_alignment }}">
+  <{{ heading_level }} class="{{ heading_level }}">
+    {{- mod.text | escape -}}
+  </{{ heading_level }}>
+</div>

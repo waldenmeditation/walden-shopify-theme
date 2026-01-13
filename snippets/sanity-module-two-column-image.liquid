@@ -1,0 +1,86 @@
+{%- liquid
+  case mod.spacing
+    when 'none'
+      assign two_col_gap = '0'
+    when 'small'
+      assign two_col_gap = '8px'
+    when 'medium'
+      assign two_col_gap = '16px'
+    when 'large'
+      assign two_col_gap = '32px'
+    else
+      assign two_col_gap = '16px'
+  endcase
+
+  assign left_img_url = ''
+  assign left_img_width = ''
+  assign left_img_height = ''
+  assign right_img_url = ''
+  assign right_img_width = ''
+  assign right_img_height = ''
+
+  if mod.leftImage.asset._ref and sanity_project_id and sanity_dataset
+    assign ref_str = mod.leftImage.asset._ref
+    assign ref_parts = ref_str | split: '-'
+    assign asset_id = ref_parts[1]
+    assign dims = ref_parts[2]
+    assign fmt = ref_parts[3]
+    assign dims_parts = dims | split: 'x'
+    assign left_img_width = dims_parts[0]
+    assign left_img_height = dims_parts[1]
+    assign left_img_url = 'https://cdn.sanity.io/images/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '-' | append: dims | append: '.' | append: fmt
+  elsif mod.leftImage.url
+    assign left_img_url = mod.leftImage.url
+    assign left_img_width = mod.leftImage.width
+    assign left_img_height = mod.leftImage.height
+  elsif mod.leftImage.asset.url
+    assign left_img_url = mod.leftImage.asset.url
+    assign left_img_width = mod.leftImage.asset.width
+    assign left_img_height = mod.leftImage.asset.height
+  endif
+
+  if mod.rightImage.asset._ref and sanity_project_id and sanity_dataset
+    assign ref_str = mod.rightImage.asset._ref
+    assign ref_parts = ref_str | split: '-'
+    assign asset_id = ref_parts[1]
+    assign dims = ref_parts[2]
+    assign fmt = ref_parts[3]
+    assign dims_parts = dims | split: 'x'
+    assign right_img_width = dims_parts[0]
+    assign right_img_height = dims_parts[1]
+    assign right_img_url = 'https://cdn.sanity.io/images/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '-' | append: dims | append: '.' | append: fmt
+  elsif mod.rightImage.url
+    assign right_img_url = mod.rightImage.url
+    assign right_img_width = mod.rightImage.width
+    assign right_img_height = mod.rightImage.height
+  elsif mod.rightImage.asset.url
+    assign right_img_url = mod.rightImage.asset.url
+    assign right_img_width = mod.rightImage.asset.width
+    assign right_img_height = mod.rightImage.asset.height
+  endif
+-%}
+
+<div class="sanity-module__two-column-image" style="--two-column-gap: {{ two_col_gap }};">
+  {%- if left_img_url != '' -%}
+    <div class="sanity-module__two-column-image-item">
+      <img
+        src="{{ left_img_url }}"
+        alt="{{ mod.leftImage.alt | default: fallback_alt | escape }}"
+        width="{{ left_img_width }}"
+        height="{{ left_img_height }}"
+        loading="lazy"
+      >
+    </div>
+  {%- endif -%}
+  {%- if right_img_url != '' -%}
+    <div class="sanity-module__two-column-image-item">
+      <img
+        src="{{ right_img_url }}"
+        alt="{{ mod.rightImage.alt | default: fallback_alt | escape }}"
+        width="{{ right_img_width }}"
+        height="{{ right_img_height }}"
+        loading="lazy"
+      >
+    </div>
+  {%- endif -%}
+</div>

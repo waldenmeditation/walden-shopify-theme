@@ -1,0 +1,64 @@
+{%- liquid
+  assign heading_level = mod.headingLevel | default: 'h5'
+  assign max_width = mod.maxWidth | default: '1200px'
+
+  case mod.spacing
+    when 'none'
+      assign gap = '0'
+    when 'small'
+      assign gap = '16px'
+    when 'medium'
+      assign gap = '32px'
+    when 'large'
+      assign gap = '48px'
+    else
+      assign gap = '32px'
+  endcase
+-%}
+
+<div class="sanity-module__three-column-image" style="--three-col-max-width: {{ max_width }}; --three-col-gap: {{ gap }};">
+  {%- for column in mod.columns -%}
+    {%- liquid
+      assign col_img_url = ''
+      assign col_img_width = ''
+      assign col_img_height = ''
+
+      if column.image.asset._ref and sanity_project_id and sanity_dataset
+        assign ref_str = column.image.asset._ref
+        assign ref_parts = ref_str | split: '-'
+        assign asset_id = ref_parts[1]
+        assign dims = ref_parts[2]
+        assign fmt = ref_parts[3]
+        assign dims_parts = dims | split: 'x'
+        assign col_img_width = dims_parts[0]
+        assign col_img_height = dims_parts[1]
+        assign col_img_url = 'https://cdn.sanity.io/images/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '-' | append: dims | append: '.' | append: fmt
+      elsif column.image.url
+        assign col_img_url = column.image.url
+        assign col_img_width = column.image.width
+        assign col_img_height = column.image.height
+      elsif column.image.asset.url
+        assign col_img_url = column.image.asset.url
+        assign col_img_width = column.image.asset.width
+        assign col_img_height = column.image.asset.height
+      endif
+    -%}
+
+    <div class="sanity-module__three-column-image-item">
+      {%- if col_img_url != '' -%}
+        <img
+          src="{{ col_img_url }}"
+          alt="{{ column.image.alt | default: column.heading | default: fallback_alt | escape }}"
+          width="{{ col_img_width }}"
+          height="{{ col_img_height }}"
+          loading="lazy"
+        >
+      {%- endif -%}
+      {%- if column.heading != blank -%}
+        <{{ heading_level }} class="sanity-module__three-column-image-heading">
+          {{- column.heading | escape -}}
+        </{{ heading_level }}>
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</div>
