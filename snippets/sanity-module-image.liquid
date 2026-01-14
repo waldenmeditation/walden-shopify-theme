@@ -47,14 +47,35 @@
 -%}
 
 {%- if img_url != '' -%}
-  <div class="sanity-module__image">
-    <img
-      src="{{ img_url }}"
-      alt="{{ img_alt | default: fallback_alt | escape }}"
-      width="{{ img_width }}"
-      height="{{ img_height }}"
-      loading="lazy"
-      style="width: 100%; height: auto; display: block;"
+  {%- liquid
+    assign max_width = mod.maxWidth | default: 800
+    assign alignment = mod.alignment | default: 'center'
+    assign alt_text = mod.alt | default: img_alt | default: fallback_alt
+  -%}
+
+  {%- if constrained -%}
+    <div
+      class="sanity-module__image--constrained sanity-module__image--{{ alignment }}"
+      style="--image-max-width: {{ max_width }}px;"
     >
-  </div>
+      <img
+        src="{{ img_url }}"
+        alt="{{ alt_text | escape }}"
+        width="{{ img_width }}"
+        height="{{ img_height }}"
+        loading="lazy"
+      >
+    </div>
+  {%- else -%}
+    <div class="sanity-module__image">
+      <img
+        src="{{ img_url }}"
+        alt="{{ alt_text | escape }}"
+        width="{{ img_width }}"
+        height="{{ img_height }}"
+        loading="lazy"
+        style="width: 100%; height: auto; display: block;"
+      >
+    </div>
+  {%- endif -%}
 {%- endif -%}

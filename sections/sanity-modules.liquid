@@ -57,12 +57,6 @@
     display: block;
   }
 
-  @media screen and (width < 750px) {
-    .sanity-module__two-column-image {
-      grid-template-columns: 1fr;
-    }
-  }
-
   .sanity-module__heading {
     width: 100%;
     margin-top: 24px;
@@ -107,6 +101,76 @@
   @media screen and (width < 750px) {
     .sanity-module__three-column-image {
       grid-template-columns: 1fr;
+    }
+  }
+
+  .sanity-module__image--constrained {
+    width: 80%;
+    max-width: var(--image-max-width, 800px);
+    margin: 24px auto;
+  }
+
+  .sanity-module__image--constrained.sanity-module__image--left {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .sanity-module__image--constrained.sanity-module__image--center {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .sanity-module__image--constrained.sanity-module__image--right {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .sanity-module__image--constrained img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media screen and (width < 750px) {
+    .sanity-module__image--constrained {
+      width: 100%;
+    }
+  }
+
+  .sanity-module__four-image {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--four-image-gap, 20px);
+    width: 90%;
+    max-width: var(--four-image-max-width, 1000px);
+    margin: 24px auto;
+  }
+
+  .sanity-module__four-image-left,
+  .sanity-module__four-image-right {
+    display: flex;
+    flex-direction: column;
+    gap: var(--four-image-gap, 20px);
+  }
+
+  .sanity-module__four-image-right {
+    margin-top: var(--four-image-offset, 80px);
+  }
+
+  .sanity-module__four-image-item img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  @media screen and (width < 750px) {
+    .sanity-module__four-image {
+      grid-template-columns: 1fr 1fr;
+      width: 95%;
+    }
+
+    .sanity-module__four-image-right {
+      margin-top: calc(var(--four-image-offset, 80px) * 0.5);
     }
   }
 {% endstylesheet %}
@@ -155,6 +219,23 @@
 
           {%- when 'spacerModule' -%}
             {%- render 'sanity-module-spacer', mod: mod -%}
+
+          {%- when 'imageModule' -%}
+            {%- render 'sanity-module-image',
+              mod: mod,
+              sanity_project_id: sanity_project_id,
+              sanity_dataset: sanity_dataset,
+              fallback_alt: fallback_alt,
+              constrained: true
+            -%}
+
+          {%- when 'fourImageModule' -%}
+            {%- render 'sanity-module-four-image',
+              mod: mod,
+              sanity_project_id: sanity_project_id,
+              sanity_dataset: sanity_dataset,
+              fallback_alt: fallback_alt
+            -%}
 
           {%- else -%}
             {%- if has_image -%}

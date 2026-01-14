@@ -1,0 +1,126 @@
+{%- liquid
+  assign spacing = mod.spacing | default: 'medium'
+  assign offset = mod.offset | default: 'medium'
+  assign max_width = mod.maxWidth | default: 1000
+
+  case spacing
+    when 'small'
+      assign gap = '12px'
+    when 'large'
+      assign gap = '32px'
+    else
+      assign gap = '20px'
+  endcase
+
+  case offset
+    when 'small'
+      assign offset_amount = '40px'
+    when 'large'
+      assign offset_amount = '120px'
+    else
+      assign offset_amount = '80px'
+  endcase
+-%}
+
+{%- capture top_left_url -%}
+  {%- if mod.topLeftImage.asset._ref and sanity_project_id and sanity_dataset -%}
+    {%- assign ref_str = mod.topLeftImage.asset._ref -%}
+    {%- assign ref_parts = ref_str | split: '-' -%}
+    {%- assign asset_id = ref_parts[1] -%}
+    {%- assign dims = ref_parts[2] -%}
+    {%- assign fmt = ref_parts[3] -%}
+    https://cdn.sanity.io/images/{{ sanity_project_id }}/{{ sanity_dataset }}/{{ asset_id }}-{{ dims }}.{{ fmt }}
+  {%- elsif mod.topLeftImage.url -%}
+    {{ mod.topLeftImage.url }}
+  {%- elsif mod.topLeftImage.asset.url -%}
+    {{ mod.topLeftImage.asset.url }}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture top_right_url -%}
+  {%- if mod.topRightImage.asset._ref and sanity_project_id and sanity_dataset -%}
+    {%- assign ref_str = mod.topRightImage.asset._ref -%}
+    {%- assign ref_parts = ref_str | split: '-' -%}
+    {%- assign asset_id = ref_parts[1] -%}
+    {%- assign dims = ref_parts[2] -%}
+    {%- assign fmt = ref_parts[3] -%}
+    https://cdn.sanity.io/images/{{ sanity_project_id }}/{{ sanity_dataset }}/{{ asset_id }}-{{ dims }}.{{ fmt }}
+  {%- elsif mod.topRightImage.url -%}
+    {{ mod.topRightImage.url }}
+  {%- elsif mod.topRightImage.asset.url -%}
+    {{ mod.topRightImage.asset.url }}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture bottom_left_url -%}
+  {%- if mod.bottomLeftImage.asset._ref and sanity_project_id and sanity_dataset -%}
+    {%- assign ref_str = mod.bottomLeftImage.asset._ref -%}
+    {%- assign ref_parts = ref_str | split: '-' -%}
+    {%- assign asset_id = ref_parts[1] -%}
+    {%- assign dims = ref_parts[2] -%}
+    {%- assign fmt = ref_parts[3] -%}
+    https://cdn.sanity.io/images/{{ sanity_project_id }}/{{ sanity_dataset }}/{{ asset_id }}-{{ dims }}.{{ fmt }}
+  {%- elsif mod.bottomLeftImage.url -%}
+    {{ mod.bottomLeftImage.url }}
+  {%- elsif mod.bottomLeftImage.asset.url -%}
+    {{ mod.bottomLeftImage.asset.url }}
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture bottom_right_url -%}
+  {%- if mod.bottomRightImage.asset._ref and sanity_project_id and sanity_dataset -%}
+    {%- assign ref_str = mod.bottomRightImage.asset._ref -%}
+    {%- assign ref_parts = ref_str | split: '-' -%}
+    {%- assign asset_id = ref_parts[1] -%}
+    {%- assign dims = ref_parts[2] -%}
+    {%- assign fmt = ref_parts[3] -%}
+    https://cdn.sanity.io/images/{{ sanity_project_id }}/{{ sanity_dataset }}/{{ asset_id }}-{{ dims }}.{{ fmt }}
+  {%- elsif mod.bottomRightImage.url -%}
+    {{ mod.bottomRightImage.url }}
+  {%- elsif mod.bottomRightImage.asset.url -%}
+    {{ mod.bottomRightImage.asset.url }}
+  {%- endif -%}
+{%- endcapture -%}
+
+<div class="sanity-module__four-image" style="--four-image-gap: {{ gap }}; --four-image-offset: {{ offset_amount }}; --four-image-max-width: {{ max_width }}px;">
+  <div class="sanity-module__four-image-left">
+    {%- if top_left_url != blank -%}
+      <div class="sanity-module__four-image-item">
+        <img
+          src="{{ top_left_url | strip }}"
+          alt="{{ fallback_alt | escape }}"
+          loading="lazy"
+        >
+      </div>
+    {%- endif -%}
+    {%- if bottom_left_url != blank -%}
+      <div class="sanity-module__four-image-item">
+        <img
+          src="{{ bottom_left_url | strip }}"
+          alt="{{ fallback_alt | escape }}"
+          loading="lazy"
+        >
+      </div>
+    {%- endif -%}
+  </div>
+  <div class="sanity-module__four-image-right">
+    {%- if top_right_url != blank -%}
+      <div class="sanity-module__four-image-item">
+        <img
+          src="{{ top_right_url | strip }}"
+          alt="{{ fallback_alt | escape }}"
+          loading="lazy"
+        >
+      </div>
+    {%- endif -%}
+    {%- if bottom_right_url != blank -%}
+      <div class="sanity-module__four-image-item">
+        <img
+          src="{{ bottom_right_url | strip }}"
+          alt="{{ fallback_alt | escape }}"
+          loading="lazy"
+        >
+      </div>
+    {%- endif -%}
+  </div>
+</div>
