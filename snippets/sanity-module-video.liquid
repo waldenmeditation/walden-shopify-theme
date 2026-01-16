@@ -1,0 +1,35 @@
+{%- liquid
+  assign max_width = mod.maxWidth | default: '1000px'
+  assign aspect_ratio = mod.aspectRatio | default: '16/9'
+
+  assign video_url = ''
+
+  if mod.video.asset._ref and sanity_project_id and sanity_dataset
+    assign ref_str = mod.video.asset._ref
+    assign ref_parts = ref_str | split: '-'
+    assign asset_id = ref_parts[1]
+    assign extension = ref_parts[2]
+    assign video_url = 'https://cdn.sanity.io/files/' | append: sanity_project_id | append: '/' | append: sanity_dataset | append: '/' | append: asset_id | append: '.' | append: extension
+  elsif mod.video.url
+    assign video_url = mod.video.url
+  elsif mod.video.asset.url
+    assign video_url = mod.video.asset.url
+  endif
+-%}
+
+{%- if video_url != '' -%}
+  <div
+    class="sanity-module__video"
+    style="--video-max-width: {{ max_width }}; --video-aspect-ratio: {{ aspect_ratio }};"
+  >
+    <video
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="metadata"
+    >
+      <source src="{{ video_url }}" type="video/mp4">
+    </video>
+  </div>
+{%- endif -%}
