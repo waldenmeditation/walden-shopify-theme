@@ -106,14 +106,27 @@
         "text_Y6LMrn",
         "textarea_LGLKcp"
       ],
+      "disabled": true,
       "name": "Custom Form",
       "settings": {
         "submit_button_text": "Submit"
+      }
+    },
+    "custom_liquid_wwPkyA": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "<iframe class=\"airtable-embed\" src=\"https://airtable.com/embed/appoGnqHCo2cg752n/pag2ToFTOywg8kPmE/form\" frameborder=\"0\" onmousewheel=\"\" width=\"100%\" height=\"1000px\" style=\"background: transparent; border: 1px solid #ccc;\"></iframe>",
+        "color_scheme": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
       }
     }
   },
   "order": [
     "main",
-    "custom_form_nkjAr7"
+    "custom_form_nkjAr7",
+    "custom_liquid_wwPkyA"
   ]
 }
