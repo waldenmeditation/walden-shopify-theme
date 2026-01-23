@@ -1,9 +1,20 @@
 <script>
   console.log('Building variant media map with waterfall logic...');
   const variantMediaMap = {};
+
+  // Separate "all" images from variant-specific images
+  const allMedia = [
+    {%- for media in product.media -%}
+      {%- if media.alt == "all" -%}
+        {{ media | json }},
+      {%- endif -%}
+    {%- endfor -%}
+  ].filter(Boolean);
+
+  // Product media excluding "skip" and "all" images
   const productMedia = [
     {%- for media in product.media -%}
-      {%- unless media.alt contains "skip" -%}
+      {%- unless media.alt contains "skip" or media.alt == "all" -%}
         {{ media | json }}{% unless forloop.last %},{% endunless %}
       {%- endunless -%}
     {%- endfor -%}
@@ -11,10 +22,11 @@
   const productVariants = {{ product.variants | json }};
 
   console.log('Product Media:', productMedia);
+  console.log('All-variant Media:', allMedia);
   console.log('Product Variants:', productVariants);
 
   const mediaIdToIndex = new Map(productMedia.map((media, index) => [media.id, index]));
-  
+
   const variantFeaturedMediaIndices = productVariants.map(variant => {
     if (variant.featured_media) {
       return mediaIdToIndex.get(variant.featured_media.id);
@@ -26,11 +38,11 @@
 
   if (productVariants.length === 1) {
     const variant = productVariants[0];
-    variantMediaMap[variant.id] = productMedia;
+    variantMediaMap[variant.id] = [...productMedia, ...allMedia];
   } else {
     productVariants.forEach((variant, i) => {
       if (!variant.featured_media) {
-        variantMediaMap[variant.id] = [];
+        variantMediaMap[variant.id] = [...allMedia];
         return;
       }
 
@@ -51,9 +63,10 @@
       } else {
         endIndex = productMedia.length;
       }
-      
+
       console.log(`Slicing for variant ${variant.id}: from ${startIndex} to ${endIndex}`);
-      variantMediaMap[variant.id] = productMedia.slice(startIndex, endIndex);
+      // Combine variant-specific images with "all" images
+      variantMediaMap[variant.id] = [...productMedia.slice(startIndex, endIndex), ...allMedia];
     });
   }
 

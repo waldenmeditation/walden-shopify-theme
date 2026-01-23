@@ -82,7 +82,8 @@
         {%- continue -%}
       {%- endif -%}
       {%- assign is_initial_variant_media = false -%}
-      {%- if media.position >= initial_pos and media.position < next_pos -%}
+      {%- comment -%} Show media if it's in the variant's position range OR has alt tag "all" {%- endcomment -%}
+      {%- if media.alt == "all" or media.position >= initial_pos and media.position < next_pos -%}
         {%- assign is_initial_variant_media = true -%}
       {%- endif -%}
       <div

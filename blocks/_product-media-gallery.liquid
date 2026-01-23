@@ -129,6 +129,13 @@
       endfor
     endif
 
+    # Add images with alt tag "all" to appear for all variants
+    for media in media_source
+      if media.alt == "all"
+        assign temp_media_list = temp_media_list | concat: [media]
+      endif
+    endfor
+
     assign sorted_media = temp_media_list
   else
     assign sorted_media = media_source
