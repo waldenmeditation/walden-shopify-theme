@@ -1,1 +1,1127 @@
-{"sections":{"hero_rhMed7":{"type":"hero","blocks":{"spacer_iqNMWF":{"type":"spacer","name":"t:names.spacer","settings":{"size":"percent","percent_size":0,"pixel_size":36,"custom_mobile_size":false,"size_mobile":"percent","percent_size_mobile":100,"pixel_size_mobile":120},"blocks":{}},"group_rBayqJ":{"type":"group","name":"t:names.group","settings":{"link":"","open_in_new_tab":false,"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"center","vertical_alignment_flex_direction_column":"center","gap":12,"width":"fill","custom_width":100,"width_mobile":"fill","custom_width_mobile":100,"height":"fit","custom_height":100,"inherit_color_scheme":true,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{"text_xeGEYT":{"type":"text","name":"t:names.heading","settings":{"text":"<h4>Space for the Self.<\/h4>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"rte","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"button_yGkCzA":{"type":"button","name":"t:names.button","settings":{"label":"Shop Best Sellers","link":"shopify:\/\/collections\/best-sellers","open_in_new_tab":true,"style_class":"link","width":"fit-content","custom_width":15,"width_mobile":"fit-content","custom_width_mobile":100},"blocks":{}}},"block_order":["text_xeGEYT","button_yGkCzA"]}},"block_order":["spacer_iqNMWF","group_rBayqJ"],"custom_css":[],"name":"t:names.hero","settings":{"link":"shopify:\/\/collections\/best-sellers","open_in_new_tab":false,"media_type_1":"image","image_1":"shopify:\/\/shop_images\/all-products-wide-Edit-2_1.png","media_type_2":"image","image_2":"shopify:\/\/shop_images\/all-products-wide-Edit-2_1.png","content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"center","vertical_alignment_flex_direction_column":"space-between","gap":30,"section_width":"page-width","section_height":"custom","section_height_custom":80,"color_scheme":"scheme-6","toggle_overlay":false,"overlay_color":"rgba(0,0,0,0)","overlay_style":"solid","gradient_direction":"to top","blurred_reflection":false,"reflection_opacity":75,"padding-block-start":0,"padding-block-end":20}},"collection_list_mcURmi":{"type":"collection-list","blocks":{"static-collection-card":{"type":"collection-card","name":"t:names.collection_card","static":true,"settings":{"collection":"{{ closest.collection }}","placement":"on_image","horizontal_alignment":"flex-start","vertical_alignment":"flex-end","collection_card_gap":8,"inherit_color_scheme":true,"color_scheme":"","border":"none","border_width":1,"border_opacity":100,"border_radius":0},"blocks":{"group_Hz39L8":{"type":"group","name":"t:names.group","settings":{"link":"","open_in_new_tab":false,"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"width":"fit-content","custom_width":100,"width_mobile":"fit-content","custom_width_mobile":100,"height":"fit","custom_height":100,"inherit_color_scheme":true,"color_scheme":"scheme-6","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{"collection_title_KA9e9t":{"type":"collection-title","name":"t:names.collection_title","settings":{"collection":"{{ closest.collection }}","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"h4","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":true,"background_color":"#ffffff","corner_radius":0,"padding-block-start":4,"padding-block-end":4,"padding-inline-start":8,"padding-inline-end":8},"blocks":{}}},"block_order":["collection_title_KA9e9t"]},"collection-card-image":{"type":"_collection-card-image","static":true,"settings":{"collection":"{{ closest.collection }}","image_ratio":"portrait","toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","border":"none","border_width":1,"border_opacity":100,"border_radius":0},"blocks":{}}},"block_order":["group_Hz39L8"]}},"disabled":true,"name":"Collection list","settings":{"collection_list":[],"layout_type":"grid","carousel_on_mobile":true,"columns":3,"mobile_columns":"2","columns_gap":0,"bento_gap":16,"rows_gap":0,"max_collections":4,"icons_style":"arrow","icons_shape":"none","section_width":"full-width","gap":0,"color_scheme":"","padding-block-start":0,"padding-block-end":0}},"product_list_4jqyPz":{"type":"product-list","blocks":{"static-header":{"type":"_product-list-content","static":true,"settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"width":"fill","custom_width":100,"width_mobile":"fill","custom_width_mobile":100,"height":"fit","custom_height":100,"inherit_color_scheme":true,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"padding-block-start":40,"padding-block-end":40,"padding-inline-start":40,"padding-inline-end":40},"blocks":{"text_xbjUkh":{"type":"text","name":"t:names.heading","settings":{"text":"<h3>New Arrivals<\/h3>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"rte","font":"var(--font-primary--family)","font_size":"","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}}},"block_order":["text_xbjUkh"]},"static-product-card":{"type":"product-card","name":"t:names.product_card","static":true,"settings":{"product":"{{ closest.product }}","product_card_gap":0,"inherit_color_scheme":true,"color_scheme":"","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{"product_card_gallery_F9zmTy":{"type":"_product-card-gallery","name":"t:names.product_image","settings":{"product":"{{ closest.product }}","slide_background_color":"rgba(0,0,0,0)","image_ratio":"portrait","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"group_Lq4rBB":{"type":"group","name":"t:names.group","settings":{"link":"","open_in_new_tab":false,"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"space-between","vertical_alignment":"flex-end","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":4,"width":"fill","custom_width":100,"width_mobile":"fill","custom_width_mobile":100,"height":"fit","custom_height":100,"inherit_color_scheme":true,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":12,"padding-block-end":16,"padding-inline-start":24,"padding-inline-end":24},"blocks":{"product_title_X9YnYh":{"type":"product-title","name":"t:names.product_title","settings":{"product":"{{ closest.product }}","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"paragraph","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"price_VMXYYz":{"type":"price","name":"t:names.product_price","settings":{"product":"{{ closest.product }}","show_sale_price_first":true,"show_installments":false,"show_tax_info":false,"type_preset":"h6","width":"100%","alignment":"left","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","color":"var(--color-foreground)","padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"swatches_PrmVMC":{"type":"swatches","name":"t:names.swatches","settings":{"product":"{{ closest.product }}","product_swatches_alignment":"flex-start","product_swatches_alignment_mobile":"flex-start","hide_padding":false,"product_swatches_padding_top":4,"product_swatches_padding_bottom":0,"product_swatches_padding_left":0,"product_swatches_padding_right":0},"blocks":{}}},"block_order":["product_title_X9YnYh","price_VMXYYz","swatches_PrmVMC"]}},"block_order":["product_card_gallery_F9zmTy","group_Lq4rBB"]}},"disabled":true,"name":"t:names.products_carousel","settings":{"collection":"all","layout_type":"carousel","carousel_on_mobile":false,"max_products":16,"columns":4,"mobile_columns":"2","columns_gap":0,"rows_gap":36,"icons_style":"none","icons_shape":"none","section_width":"full-width","horizontal_alignment":"flex-start","gap":0,"color_scheme":"scheme-1","padding-block-start":0,"padding-block-end":24}},"media_with_content_aF6TTD":{"type":"media-with-content","blocks":{"media":{"type":"_media-without-appearance","static":true,"settings":{"media_type":"image","link":"","video_loop":true,"video_autoplay":false,"image_position":"cover","video_position":"cover"},"blocks":{}},"content":{"type":"_content-without-appearance","static":true,"settings":{"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":24},"blocks":{"text_CgU6Gr":{"type":"text","name":"t:names.text","settings":{"text":"<h6>Instant classics <\/h6>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"h6","font":"var(--font-primary--family)","font_size":"","line_height":"normal","letter_spacing":"normal","case":"uppercase","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"text_zCLead":{"type":"text","name":"t:names.heading","settings":{"text":"<h2>Meet the essentials of a better wardrobe <\/h2>","width":"fit-content","max_width":"narrow","alignment":"left","type_preset":"rte","font":"var(--font-primary--family)","font_size":"","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":8,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"text_Upz3Mm":{"type":"text","name":"t:names.text","settings":{"text":"<p>Designed in styles and tones that endure the passing of time and the passing of fickle trends. <\/p><p>Built for longevity and rooted in practicality, these pieces accompany you through every journey - whether close to home or around the world.<\/p>","width":"fit-content","max_width":"narrow","alignment":"left","type_preset":"rte","font":"var(--font-primary--family)","font_size":"","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"button_7X8VPi":{"type":"button","name":"t:names.button","settings":{"label":"Shop the collection","link":"shopify:\/\/collections\/all","open_in_new_tab":false,"style_class":"link","width":"fit-content","custom_width":100,"width_mobile":"fit-content","custom_width_mobile":100},"blocks":{}}},"block_order":["text_CgU6Gr","text_zCLead","text_Upz3Mm","button_7X8VPi"]}},"disabled":true,"name":"Editorial","settings":{"media_position":"right","media_width":"wide","media_height":"80svh","section_width":"full-width","extend_media":false,"color_scheme":"scheme-2","padding-block-start":0,"padding-block-end":0}},"174835961081bb61a5":{"type":"_blocks","blocks":{"text_47zbRb":{"type":"text","name":"t:names.heading","settings":{"text":"","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"rte","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":0,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"ai_gen_block_352ae6f_8iKx6R":{"type":"ai_gen_block_352ae6f","settings":{"product":"salt-lamp","image":"shopify:\/\/shop_images\/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg","heading":"The Salt Lamp","subheading":"","horizontal_padding":0,"horizontal_padding_mobile":0,"image_aspect_ratio":60,"image_aspect_ratio_mobile":100,"overlay_color":"rgba(0,0,0,0)","text_color":"#ffffff","heading_size_class":"h4","subheading_size_class":"h4"},"blocks":{}}},"block_order":["text_47zbRb","ai_gen_block_352ae6f_8iKx6R"],"disabled":true,"settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":12,"section_width":"page-width","section_height":"","section_height_custom":50,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":30,"padding-block-end":0}},"blocks_7jpnyQ":{"type":"_blocks","blocks":{"text_YTRyeG":{"type":"text","name":"t:names.heading","settings":{"text":"<h4>Meditation Seating<\/h4>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"rte","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":6,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"ai_gen_block_352ae6f_WXCBtq":{"type":"ai_gen_block_352ae6f","settings":{"product":"walden-meditation-cushion-mat-set","image":"shopify:\/\/shop_images\/mecca-sienna-set-outdoor-pichi_229e9205-50c0-421a-8476-10b4536c230f.jpg","heading":"The Original Cushion","subheading":"","horizontal_padding":0,"horizontal_padding_mobile":0,"image_aspect_ratio":60,"image_aspect_ratio_mobile":75,"overlay_color":"rgba(0,0,0,0)","text_color":"#ffffff","heading_size_class":"h5","subheading_size_class":"h5"},"blocks":{}},"ai_gen_block_041c896_J9UW4W":{"type":"ai_gen_block_041c896","settings":{"product_count":3,"mobile_columns":"2","grid_gap":6,"section_padding":40,"image_aspect_ratio":"3\/4","mobile_image_aspect_ratio":"3\/4","border_radius":0,"content_padding":12,"overlay_color":"#0000004d","vertical_alignment":"center","text_alignment":"center","heading_size":14,"heading_color":"#ffffff","heading_weight":"400","text_shadow_blur":2,"text_shadow_opacity":0.5,"product_1":"walden-meditation-cushion","image_1":"shopify:\/\/shop_images\/TestCushion.jpg","heading_1":"The Orginal Cushion","color_1":"#ffffff","product_2":"meditation-bench","image_2":"shopify:\/\/shop_images\/TestBench.jpg","heading_2":"","color_2":"#ffffff","product_3":"breathwork","image_3":"shopify:\/\/shop_images\/walden-mc-home-06.jpg","heading_3":"The Journey Set","color_3":"#ffffff","product_4":"","heading_4":"","product_5":"","heading_5":"","product_6":"","heading_6":""},"blocks":{}}},"block_order":["text_YTRyeG","ai_gen_block_352ae6f_WXCBtq","ai_gen_block_041c896_J9UW4W"],"settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":5,"section_width":"page-width","section_height":"","section_height_custom":50,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":60,"padding-block-end":0}},"blocks_8YLkEN":{"type":"_blocks","blocks":{"text_8DM6kA":{"type":"text","name":"t:names.heading","settings":{"text":"<h4>Aroma Products<\/h4>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"rte","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":6,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"ai_gen_block_352ae6f_PNBiXn":{"type":"ai_gen_block_352ae6f","settings":{"product":"australian-sandalwood-incense-sticks","image":"shopify:\/\/shop_images\/TestHinoki.jpg","heading":"Pure Hinoki Incense","subheading":"","horizontal_padding":0,"horizontal_padding_mobile":0,"image_aspect_ratio":60,"image_aspect_ratio_mobile":75,"overlay_color":"rgba(0,0,0,0)","text_color":"#030302","heading_size_class":"h5","subheading_size_class":"h5"},"blocks":{}},"ai_gen_block_041c896_hLatVB":{"type":"ai_gen_block_041c896","settings":{"product_count":3,"mobile_columns":"2","grid_gap":6,"section_padding":20,"image_aspect_ratio":"3\/4","mobile_image_aspect_ratio":"3\/4","border_radius":0,"content_padding":12,"overlay_color":"#0000004d","vertical_alignment":"center","text_alignment":"center","heading_size":14,"heading_color":"#ffffff","heading_weight":"400","text_shadow_blur":2,"text_shadow_opacity":0.5,"product_1":"australian-sandalwood-incense-sticks","image_1":"shopify:\/\/shop_images\/PURE-SANDALWOOD-INCENSE-PDP-HERO-min.jpg","heading_1":"Pure Sandalwood Incense","color_1":"#ffffff","product_2":"block-incense-holder-1","image_2":"shopify:\/\/shop_images\/BLOCK-TOP-DOWN-SOLO-NEUTRAL-min.jpg","heading_2":"Block Incense Holder","color_2":"#ffffff","product_3":"palo-santo-sticks","image_3":"shopify:\/\/shop_images\/IM_PARTS0141-Edit-min.jpg","heading_3":"Peruvian Palo Santo","color_3":"#ffffff","product_4":"","heading_4":"","product_5":"","heading_5":"","product_6":"","heading_6":""},"blocks":{}}},"block_order":["text_8DM6kA","ai_gen_block_352ae6f_PNBiXn","ai_gen_block_041c896_hLatVB"],"settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":5,"section_width":"page-width","section_height":"","section_height_custom":50,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":60,"padding-block-end":0}},"blocks_LyAW4X":{"type":"_blocks","blocks":{"text_3RkHdq":{"type":"text","name":"t:names.heading","settings":{"text":"<h4>Sound and Time<\/h4>","width":"fit-content","max_width":"normal","alignment":"left","type_preset":"rte","font":"var(--font-body--family)","font_size":"1rem","line_height":"normal","letter_spacing":"normal","case":"none","wrap":"pretty","color":"var(--color-foreground)","background":false,"background_color":"#00000026","corner_radius":0,"padding-block-start":0,"padding-block-end":6,"padding-inline-start":0,"padding-inline-end":0},"blocks":{}},"ai_gen_block_352ae6f_CU8aME":{"type":"ai_gen_block_352ae6f","settings":{"product":"gong","image":"shopify:\/\/shop_images\/Walden_Gong12i_InteriorShot_Front_Cropped_003_post_jpeg_1.png","heading":"The Home Gong","subheading":"","horizontal_padding":0,"horizontal_padding_mobile":0,"image_aspect_ratio":60,"image_aspect_ratio_mobile":75,"overlay_color":"rgba(0,0,0,0)","text_color":"#ffffff","heading_size_class":"h5","subheading_size_class":"h5"},"blocks":{}},"ai_gen_block_041c896_ehhXnw":{"type":"ai_gen_block_041c896","settings":{"product_count":3,"mobile_columns":"2","grid_gap":6,"section_padding":20,"image_aspect_ratio":"3\/4","mobile_image_aspect_ratio":"3\/4","border_radius":0,"content_padding":12,"overlay_color":"#0000004d","vertical_alignment":"center","text_alignment":"center","heading_size":14,"heading_color":"#000000","heading_weight":"400","text_shadow_blur":2,"text_shadow_opacity":0.5,"product_1":"planar-studio-gong-stand","image_1":"shopify:\/\/shop_images\/2022.04.26_-_Large_Gong_Stand_-_Equinox_Event-pichi_eed5c873-219b-4f7d-8bc2-def251000907.jpg","heading_1":"The Studio Gong","color_1":"#ffffff","product_2":"walden-moment","image_2":"shopify:\/\/shop_images\/Moment_in_hand_1.png","heading_2":"The Moment Timer","color_2":"#000000","product_3":"20-minute-candle-clock-set","image_3":"shopify:\/\/shop_images\/Brass_Holder_SideTiltedView_Candle_V004-min.jpg","heading_3":"20 Minute Candle Timer","color_3":"#000000","product_4":"","heading_4":"","product_5":"","heading_5":"","product_6":"","heading_6":""},"blocks":{}}},"block_order":["text_3RkHdq","ai_gen_block_352ae6f_CU8aME","ai_gen_block_041c896_ehhXnw"],"settings":{"content_direction":"column","vertical_on_mobile":true,"horizontal_alignment":"flex-start","vertical_alignment":"center","align_baseline":false,"horizontal_alignment_flex_direction_column":"flex-start","vertical_alignment_flex_direction_column":"center","gap":5,"section_width":"page-width","section_height":"","section_height_custom":50,"color_scheme":"","background_media":"none","video_position":"cover","background_image_position":"cover","border":"none","border_width":1,"border_opacity":100,"border_radius":0,"toggle_overlay":false,"overlay_color":"#00000026","overlay_style":"solid","gradient_direction":"to top","padding-block-start":60,"padding-block-end":0}}},"order":["hero_rhMed7","collection_list_mcURmi","product_list_4jqyPz","media_with_content_aF6TTD","174835961081bb61a5","blocks_7jpnyQ","blocks_8YLkEN","blocks_LyAW4X"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero_rhMed7": {
+      "type": "hero",
+      "blocks": {
+        "spacer_iqNMWF": {
+          "type": "spacer",
+          "name": "t:names.spacer",
+          "settings": {
+            "size": "percent",
+            "percent_size": 0,
+            "pixel_size": 36,
+            "custom_mobile_size": false,
+            "size_mobile": "percent",
+            "percent_size_mobile": 100,
+            "pixel_size_mobile": 120
+          },
+          "blocks": {}
+        },
+        "group_rBayqJ": {
+          "type": "group",
+          "name": "t:names.group",
+          "settings": {
+            "link": "",
+            "open_in_new_tab": false,
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "center",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "text_xeGEYT": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h4>Space for the Self.</h4>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-body--family)",
+                "font_size": "1rem",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_yGkCzA": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Shop Best Sellers",
+                "link": "shopify://collections/best-sellers",
+                "open_in_new_tab": true,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 15,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_xeGEYT",
+            "button_yGkCzA"
+          ]
+        }
+      },
+      "block_order": [
+        "spacer_iqNMWF",
+        "group_rBayqJ"
+      ],
+      "custom_css": [],
+      "name": "t:names.hero",
+      "settings": {
+        "link": "https://walden.us/collections/best-selling-gifts",
+        "open_in_new_tab": false,
+        "media_type_1": "image",
+        "image_1": "shopify://shop_images/all-products-wide-Edit-2_1.png",
+        "media_type_2": "image",
+        "image_2": "shopify://shop_images/all-products-wide-Edit-2_1.png",
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "space-between",
+        "gap": 30,
+        "section_width": "page-width",
+        "section_height": "custom",
+        "section_height_custom": 80,
+        "color_scheme": "scheme-6",
+        "toggle_overlay": false,
+        "overlay_color": "rgba(0,0,0,0)",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 0,
+        "padding-block-end": 20
+      }
+    },
+    "collection_list_mcURmi": {
+      "type": "collection-list",
+      "blocks": {
+        "static-collection-card": {
+          "type": "collection-card",
+          "name": "t:names.collection_card",
+          "static": true,
+          "settings": {
+            "collection": "{{ closest.collection }}",
+            "placement": "on_image",
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "flex-end",
+            "collection_card_gap": 8,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0
+          },
+          "blocks": {
+            "group_Hz39L8": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "flex-start",
+                "vertical_alignment": "center",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 12,
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "scheme-6",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {
+                "collection_title_KA9e9t": {
+                  "type": "collection-title",
+                  "name": "t:names.collection_title",
+                  "settings": {
+                    "collection": "{{ closest.collection }}",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "h4",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": true,
+                    "background_color": "#ffffff",
+                    "corner_radius": 0,
+                    "padding-block-start": 4,
+                    "padding-block-end": 4,
+                    "padding-inline-start": 8,
+                    "padding-inline-end": 8
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "collection_title_KA9e9t"
+              ]
+            },
+            "collection-card-image": {
+              "type": "_collection-card-image",
+              "static": true,
+              "settings": {
+                "collection": "{{ closest.collection }}",
+                "image_ratio": "portrait",
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "group_Hz39L8"
+          ]
+        }
+      },
+      "disabled": true,
+      "name": "Collection list",
+      "settings": {
+        "collection_list": [],
+        "layout_type": "grid",
+        "carousel_on_mobile": true,
+        "columns": 3,
+        "mobile_columns": "2",
+        "columns_gap": 0,
+        "bento_gap": 16,
+        "rows_gap": 0,
+        "max_collections": 4,
+        "icons_style": "arrow",
+        "icons_shape": "none",
+        "section_width": "full-width",
+        "gap": 0,
+        "color_scheme": "",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "product_list_4jqyPz": {
+      "type": "product-list",
+      "blocks": {
+        "static-header": {
+          "type": "_product-list-content",
+          "static": true,
+          "settings": {
+            "content_direction": "column",
+            "vertical_on_mobile": true,
+            "horizontal_alignment": "flex-start",
+            "vertical_alignment": "center",
+            "align_baseline": false,
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 12,
+            "width": "fill",
+            "custom_width": 100,
+            "width_mobile": "fill",
+            "custom_width_mobile": 100,
+            "height": "fit",
+            "custom_height": 100,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "background_media": "none",
+            "video_position": "cover",
+            "background_image_position": "cover",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 40,
+            "padding-block-end": 40,
+            "padding-inline-start": 40,
+            "padding-inline-end": 40
+          },
+          "blocks": {
+            "text_xbjUkh": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h3>New Arrivals</h3>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_xbjUkh"
+          ]
+        },
+        "static-product-card": {
+          "type": "product-card",
+          "name": "t:names.product_card",
+          "static": true,
+          "settings": {
+            "product": "{{ closest.product }}",
+            "product_card_gap": 0,
+            "inherit_color_scheme": true,
+            "color_scheme": "",
+            "border": "none",
+            "border_width": 1,
+            "border_opacity": 100,
+            "border_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {
+            "product_card_gallery_F9zmTy": {
+              "type": "_product-card-gallery",
+              "name": "t:names.product_image",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "slide_background_color": "rgba(0,0,0,0)",
+                "image_ratio": "portrait",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "group_Lq4rBB": {
+              "type": "group",
+              "name": "t:names.group",
+              "settings": {
+                "link": "",
+                "open_in_new_tab": false,
+                "content_direction": "column",
+                "vertical_on_mobile": true,
+                "horizontal_alignment": "space-between",
+                "vertical_alignment": "flex-end",
+                "align_baseline": false,
+                "horizontal_alignment_flex_direction_column": "flex-start",
+                "vertical_alignment_flex_direction_column": "center",
+                "gap": 4,
+                "width": "fill",
+                "custom_width": 100,
+                "width_mobile": "fill",
+                "custom_width_mobile": 100,
+                "height": "fit",
+                "custom_height": 100,
+                "inherit_color_scheme": true,
+                "color_scheme": "",
+                "background_media": "none",
+                "video_position": "cover",
+                "background_image_position": "cover",
+                "border": "none",
+                "border_width": 1,
+                "border_opacity": 100,
+                "border_radius": 0,
+                "toggle_overlay": false,
+                "overlay_color": "#00000026",
+                "overlay_style": "solid",
+                "gradient_direction": "to top",
+                "padding-block-start": 12,
+                "padding-block-end": 16,
+                "padding-inline-start": 24,
+                "padding-inline-end": 24
+              },
+              "blocks": {
+                "product_title_X9YnYh": {
+                  "type": "product-title",
+                  "name": "t:names.product_title",
+                  "settings": {
+                    "product": "{{ closest.product }}",
+                    "width": "fit-content",
+                    "max_width": "normal",
+                    "alignment": "left",
+                    "type_preset": "paragraph",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "wrap": "pretty",
+                    "color": "var(--color-foreground)",
+                    "background": false,
+                    "background_color": "#00000026",
+                    "corner_radius": 0,
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "price_VMXYYz": {
+                  "type": "price",
+                  "name": "t:names.product_price",
+                  "settings": {
+                    "product": "{{ closest.product }}",
+                    "show_sale_price_first": true,
+                    "show_installments": false,
+                    "show_tax_info": false,
+                    "type_preset": "h6",
+                    "width": "100%",
+                    "alignment": "left",
+                    "font": "var(--font-body--family)",
+                    "font_size": "1rem",
+                    "line_height": "normal",
+                    "letter_spacing": "normal",
+                    "case": "none",
+                    "color": "var(--color-foreground)",
+                    "padding-block-start": 0,
+                    "padding-block-end": 0,
+                    "padding-inline-start": 0,
+                    "padding-inline-end": 0
+                  },
+                  "blocks": {}
+                },
+                "swatches_PrmVMC": {
+                  "type": "swatches",
+                  "name": "t:names.swatches",
+                  "settings": {
+                    "product": "{{ closest.product }}",
+                    "product_swatches_alignment": "flex-start",
+                    "product_swatches_alignment_mobile": "flex-start",
+                    "hide_padding": false,
+                    "product_swatches_padding_top": 4,
+                    "product_swatches_padding_bottom": 0,
+                    "product_swatches_padding_left": 0,
+                    "product_swatches_padding_right": 0
+                  },
+                  "blocks": {}
+                }
+              },
+              "block_order": [
+                "product_title_X9YnYh",
+                "price_VMXYYz",
+                "swatches_PrmVMC"
+              ]
+            }
+          },
+          "block_order": [
+            "product_card_gallery_F9zmTy",
+            "group_Lq4rBB"
+          ]
+        }
+      },
+      "disabled": true,
+      "name": "t:names.products_carousel",
+      "settings": {
+        "collection": "all",
+        "layout_type": "carousel",
+        "carousel_on_mobile": false,
+        "max_products": 16,
+        "columns": 4,
+        "mobile_columns": "2",
+        "columns_gap": 0,
+        "rows_gap": 36,
+        "icons_style": "none",
+        "icons_shape": "none",
+        "section_width": "full-width",
+        "horizontal_alignment": "flex-start",
+        "gap": 0,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 0,
+        "padding-block-end": 24
+      }
+    },
+    "media_with_content_aF6TTD": {
+      "type": "media-with-content",
+      "blocks": {
+        "media": {
+          "type": "_media-without-appearance",
+          "static": true,
+          "settings": {
+            "media_type": "image",
+            "link": "",
+            "video_loop": true,
+            "video_autoplay": false,
+            "image_position": "cover",
+            "video_position": "cover"
+          },
+          "blocks": {}
+        },
+        "content": {
+          "type": "_content-without-appearance",
+          "static": true,
+          "settings": {
+            "horizontal_alignment_flex_direction_column": "flex-start",
+            "vertical_alignment_flex_direction_column": "center",
+            "gap": 24
+          },
+          "blocks": {
+            "text_CgU6Gr": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<h6>Instant classics </h6>",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "h6",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "uppercase",
+                "wrap": "pretty",
+                "color": "var(--color-foreground)",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_zCLead": {
+              "type": "text",
+              "name": "t:names.heading",
+              "settings": {
+                "text": "<h2>Meet the essentials of a better wardrobe </h2>",
+                "width": "fit-content",
+                "max_width": "narrow",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 8,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "text_Upz3Mm": {
+              "type": "text",
+              "name": "t:names.text",
+              "settings": {
+                "text": "<p>Designed in styles and tones that endure the passing of time and the passing of fickle trends. </p><p>Built for longevity and rooted in practicality, these pieces accompany you through every journey - whether close to home or around the world.</p>",
+                "width": "fit-content",
+                "max_width": "narrow",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
+            },
+            "button_7X8VPi": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Shop the collection",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "link",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            }
+          },
+          "block_order": [
+            "text_CgU6Gr",
+            "text_zCLead",
+            "text_Upz3Mm",
+            "button_7X8VPi"
+          ]
+        }
+      },
+      "disabled": true,
+      "name": "Editorial",
+      "settings": {
+        "media_position": "right",
+        "media_width": "wide",
+        "media_height": "80svh",
+        "section_width": "full-width",
+        "extend_media": false,
+        "color_scheme": "scheme-2",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "174835961081bb61a5": {
+      "type": "_blocks",
+      "blocks": {
+        "text_47zbRb": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_352ae6f_8iKx6R": {
+          "type": "ai_gen_block_352ae6f",
+          "settings": {
+            "product": "salt-lamp",
+            "image": "shopify://shop_images/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg",
+            "heading": "The Salt Lamp",
+            "subheading": "",
+            "horizontal_padding": 0,
+            "horizontal_padding_mobile": 0,
+            "image_aspect_ratio": 60,
+            "image_aspect_ratio_mobile": 100,
+            "overlay_color": "rgba(0,0,0,0)",
+            "text_color": "#ffffff",
+            "heading_size_class": "h4",
+            "subheading_size_class": "h4"
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_47zbRb",
+        "ai_gen_block_352ae6f_8iKx6R"
+      ],
+      "disabled": true,
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 30,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_7jpnyQ": {
+      "type": "_blocks",
+      "blocks": {
+        "text_YTRyeG": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h4>Meditation Seating</h4>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 6,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_352ae6f_WXCBtq": {
+          "type": "ai_gen_block_352ae6f",
+          "settings": {
+            "product": "walden-meditation-cushion-mat-set",
+            "image": "shopify://shop_images/mecca-sienna-set-outdoor-pichi_229e9205-50c0-421a-8476-10b4536c230f.jpg",
+            "heading": "The Original Cushion",
+            "subheading": "",
+            "horizontal_padding": 0,
+            "horizontal_padding_mobile": 0,
+            "image_aspect_ratio": 60,
+            "image_aspect_ratio_mobile": 75,
+            "overlay_color": "rgba(0,0,0,0)",
+            "text_color": "#ffffff",
+            "heading_size_class": "h5",
+            "subheading_size_class": "h5"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_041c896_J9UW4W": {
+          "type": "ai_gen_block_041c896",
+          "settings": {
+            "max_width": 4000,
+            "product_count": 3,
+            "mobile_columns": "2",
+            "grid_gap": 6,
+            "section_padding": 40,
+            "image_aspect_ratio": "3/4",
+            "mobile_image_aspect_ratio": "3/4",
+            "border_radius": 0,
+            "content_padding": 12,
+            "overlay_color": "#0000004d",
+            "vertical_alignment": "center",
+            "text_alignment": "center",
+            "heading_size": 14,
+            "heading_color": "#ffffff",
+            "heading_weight": "400",
+            "text_shadow_blur": 2,
+            "text_shadow_opacity": 0.5,
+            "product_1": "walden-meditation-cushion",
+            "image_1": "shopify://shop_images/TestCushion.jpg",
+            "heading_1": "The Orginal Cushion",
+            "color_1": "#ffffff",
+            "product_2": "meditation-bench",
+            "image_2": "shopify://shop_images/TestBench.jpg",
+            "heading_2": "",
+            "color_2": "#ffffff",
+            "product_3": "breathwork",
+            "image_3": "shopify://shop_images/walden-mc-home-06.jpg",
+            "heading_3": "The Journey Set",
+            "color_3": "#ffffff",
+            "product_4": "",
+            "heading_4": "",
+            "product_5": "",
+            "heading_5": "",
+            "product_6": "",
+            "heading_6": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_YTRyeG",
+        "ai_gen_block_352ae6f_WXCBtq",
+        "ai_gen_block_041c896_J9UW4W"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 5,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 60,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_8YLkEN": {
+      "type": "_blocks",
+      "blocks": {
+        "text_8DM6kA": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h4>Aroma Products</h4>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 6,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_352ae6f_PNBiXn": {
+          "type": "ai_gen_block_352ae6f",
+          "settings": {
+            "product": "australian-sandalwood-incense-sticks",
+            "image": "shopify://shop_images/TestHinoki.jpg",
+            "heading": "Pure Hinoki Incense",
+            "subheading": "",
+            "horizontal_padding": 0,
+            "horizontal_padding_mobile": 0,
+            "image_aspect_ratio": 60,
+            "image_aspect_ratio_mobile": 75,
+            "overlay_color": "rgba(0,0,0,0)",
+            "text_color": "#030302",
+            "heading_size_class": "h5",
+            "subheading_size_class": "h5"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_041c896_hLatVB": {
+          "type": "ai_gen_block_041c896",
+          "settings": {
+            "max_width": 4000,
+            "product_count": 3,
+            "mobile_columns": "2",
+            "grid_gap": 6,
+            "section_padding": 20,
+            "image_aspect_ratio": "3/4",
+            "mobile_image_aspect_ratio": "3/4",
+            "border_radius": 0,
+            "content_padding": 12,
+            "overlay_color": "#0000004d",
+            "vertical_alignment": "center",
+            "text_alignment": "center",
+            "heading_size": 14,
+            "heading_color": "#ffffff",
+            "heading_weight": "400",
+            "text_shadow_blur": 2,
+            "text_shadow_opacity": 0.5,
+            "product_1": "australian-sandalwood-incense-sticks",
+            "image_1": "shopify://shop_images/PURE-SANDALWOOD-INCENSE-PDP-HERO-min.jpg",
+            "heading_1": "Pure Sandalwood Incense",
+            "color_1": "#ffffff",
+            "product_2": "block-incense-holder-1",
+            "image_2": "shopify://shop_images/BLOCK-TOP-DOWN-SOLO-NEUTRAL-min.jpg",
+            "heading_2": "Block Incense Holder",
+            "color_2": "#ffffff",
+            "product_3": "palo-santo-sticks",
+            "image_3": "shopify://shop_images/IM_PARTS0141-Edit-min.jpg",
+            "heading_3": "Peruvian Palo Santo",
+            "color_3": "#ffffff",
+            "product_4": "",
+            "heading_4": "",
+            "product_5": "",
+            "heading_5": "",
+            "product_6": "",
+            "heading_6": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_8DM6kA",
+        "ai_gen_block_352ae6f_PNBiXn",
+        "ai_gen_block_041c896_hLatVB"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 5,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 60,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_LyAW4X": {
+      "type": "_blocks",
+      "blocks": {
+        "text_3RkHdq": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h4>Sound and Time</h4>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 6,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_352ae6f_CU8aME": {
+          "type": "ai_gen_block_352ae6f",
+          "settings": {
+            "product": "gong",
+            "image": "shopify://shop_images/Walden_Gong12i_InteriorShot_Front_Cropped_003_post_jpeg_1.png",
+            "heading": "The Home Gong",
+            "subheading": "",
+            "horizontal_padding": 0,
+            "horizontal_padding_mobile": 0,
+            "image_aspect_ratio": 60,
+            "image_aspect_ratio_mobile": 75,
+            "overlay_color": "rgba(0,0,0,0)",
+            "text_color": "#ffffff",
+            "heading_size_class": "h5",
+            "subheading_size_class": "h5"
+          },
+          "blocks": {}
+        },
+        "ai_gen_block_041c896_ehhXnw": {
+          "type": "ai_gen_block_041c896",
+          "settings": {
+            "max_width": 4000,
+            "product_count": 3,
+            "mobile_columns": "2",
+            "grid_gap": 6,
+            "section_padding": 20,
+            "image_aspect_ratio": "3/4",
+            "mobile_image_aspect_ratio": "3/4",
+            "border_radius": 0,
+            "content_padding": 12,
+            "overlay_color": "#0000004d",
+            "vertical_alignment": "center",
+            "text_alignment": "center",
+            "heading_size": 14,
+            "heading_color": "#000000",
+            "heading_weight": "400",
+            "text_shadow_blur": 2,
+            "text_shadow_opacity": 0.5,
+            "product_1": "planar-studio-gong-stand",
+            "image_1": "shopify://shop_images/2022.04.26_-_Large_Gong_Stand_-_Equinox_Event-pichi_eed5c873-219b-4f7d-8bc2-def251000907.jpg",
+            "heading_1": "The Studio Gong",
+            "color_1": "#ffffff",
+            "product_2": "walden-moment",
+            "image_2": "shopify://shop_images/Moment_in_hand_1.png",
+            "heading_2": "The Moment Timer",
+            "color_2": "#000000",
+            "product_3": "20-minute-candle-clock-set",
+            "image_3": "shopify://shop_images/Brass_Holder_SideTiltedView_Candle_V004-min.jpg",
+            "heading_3": "20 Minute Candle Timer",
+            "color_3": "#000000",
+            "product_4": "",
+            "heading_4": "",
+            "product_5": "",
+            "heading_5": "",
+            "product_6": "",
+            "heading_6": ""
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_3RkHdq",
+        "ai_gen_block_352ae6f_CU8aME",
+        "ai_gen_block_041c896_ehhXnw"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 5,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 60,
+        "padding-block-end": 0
+      }
+    }
+  },
+  "order": [
+    "hero_rhMed7",
+    "collection_list_mcURmi",
+    "product_list_4jqyPz",
+    "media_with_content_aF6TTD",
+    "174835961081bb61a5",
+    "blocks_7jpnyQ",
+    "blocks_8YLkEN",
+    "blocks_LyAW4X"
+  ]
+}
