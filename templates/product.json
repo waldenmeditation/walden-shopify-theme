@@ -436,6 +436,15 @@
                 "accordion_row_kmdwc8"
               ]
             },
+            "okendo_reviews_carousel_jcWdAH": {
+              "type": "shopify://apps/okendo/blocks/reviews-carousel/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
+              "settings": {
+                "show_heading": false,
+                "heading": "",
+                "badge_link": "",
+                "product": "{{closest.product}}"
+              }
+            },
             "text_j7hieF": {
               "type": "text",
               "name": "t:names.text",
@@ -469,15 +478,6 @@
                 "custom_liquid": "{% render 'inbox-launcher',\n  label: 'Chat with Live Concierge',\n  radius: '2px',\n  classes: 'button button-secondary' %}"
               },
               "blocks": {}
-            },
-            "okendo_reviews_carousel_jcWdAH": {
-              "type": "shopify://apps/okendo/blocks/reviews-carousel/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
-              "settings": {
-                "show_heading": false,
-                "heading": "",
-                "badge_link": "",
-                "product": "{{closest.product}}"
-              }
             }
           },
           "block_order": [
@@ -488,9 +488,9 @@
             "product_info_tabs_trjDRY",
             "product_rich_content_GxP3sK",
             "accordion_iWQwkW",
+            "okendo_reviews_carousel_jcWdAH",
             "text_j7hieF",
-            "custom_liquid_bxrAGy",
-            "okendo_reviews_carousel_jcWdAH"
+            "custom_liquid_bxrAGy"
           ]
         }
       },
