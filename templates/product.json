@@ -582,18 +582,6 @@
     },
     "17595186258b53795e": {
       "type": "_blocks",
-      "blocks": {
-        "okendo_reviews_widget_4bmhi3": {
-          "type": "shopify://apps/okendo/blocks/reviews-widget/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
-          "settings": {
-            "product": "{{product}}",
-            "widget_type": "reviews_widget"
-          }
-        }
-      },
-      "block_order": [
-        "okendo_reviews_widget_4bmhi3"
-      ],
       "custom_css": [],
       "name": "Reviews",
       "settings": {
