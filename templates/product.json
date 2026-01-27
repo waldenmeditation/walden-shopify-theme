@@ -12,13 +12,6 @@
     "product-information": {
       "type": "product-information",
       "blocks": {
-        "okendo_reviews_widget_eJR3xd": {
-          "type": "shopify://apps/okendo/blocks/reviews-widget/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
-          "settings": {
-            "product": "{{closest.product}}",
-            "widget_type": "reviews_widget"
-          }
-        },
         "media-gallery": {
           "type": "_product-media-gallery",
           "static": true,
@@ -476,6 +469,15 @@
                 "custom_liquid": "{% render 'inbox-launcher',\n  label: 'Chat with Live Concierge',\n  radius: '2px',\n  classes: 'button button-secondary' %}"
               },
               "blocks": {}
+            },
+            "okendo_reviews_carousel_jcWdAH": {
+              "type": "shopify://apps/okendo/blocks/reviews-carousel/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
+              "settings": {
+                "show_heading": false,
+                "heading": "",
+                "badge_link": "",
+                "product": "{{closest.product}}"
+              }
             }
           },
           "block_order": [
@@ -487,13 +489,11 @@
             "product_rich_content_GxP3sK",
             "accordion_iWQwkW",
             "text_j7hieF",
-            "custom_liquid_bxrAGy"
+            "custom_liquid_bxrAGy",
+            "okendo_reviews_carousel_jcWdAH"
           ]
         }
       },
-      "block_order": [
-        "okendo_reviews_widget_eJR3xd"
-      ],
       "settings": {
         "product": "{{ closest.product }}",
         "content_width": "content-full-width",
