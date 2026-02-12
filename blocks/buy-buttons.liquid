@@ -55,6 +55,13 @@
     assign availability_msg = product.metafields.custom.product_availability
   endif
 
+  # Backorder notice when out of stock but still sellable
+  # Pre-order availability message takes priority over backorder notice
+  assign is_backordered = false
+  if inventory_managed and inventory_quantity <= 0 and inventory_policy == 'continue' and is_preorder == false and availability_msg == ''
+    assign is_backordered = true
+  endif
+
 %}
 
 {% stylesheet %}
@@ -230,11 +237,12 @@
   }
 
   .preorder-note {
-  flex-basis: 100%;       
+  flex-basis: 100%;
   margin-top: var(--gap-xs);
   font-size: var(--font-size--sm);
   color: var(--color-foreground, #333);
   opacity: 0.85;
+  text-align: center;
 }
 {% endstylesheet %}
 
@@ -285,6 +293,12 @@
 
           {% if is_preorder %}
   <input type="hidden" name="properties[Pre-order]" value="Note: Pre-order">
+{% endif %}
+
+          {% if is_backordered %}
+  <div class="preorder-note" role="status" aria-live="polite">
+    This item is currently backordered. Shipping may be delayed.
+  </div>
 {% endif %}
 
 
