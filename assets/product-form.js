@@ -298,6 +298,13 @@ class ProductFormComponent extends Component {
       morph(currentAddToCartButton, newAddToCartButton);
     }
 
+    // Update the shipping note
+    const currentShippingNote = this.querySelector('[ref="shippingNote"]');
+    const newShippingNote = event.detail.data.html.querySelector('[ref="shippingNote"]');
+    if (currentShippingNote && newShippingNote) {
+      morph(currentShippingNote, newShippingNote);
+    }
+
     // Update the variant ID
     variantId.value = event.detail.resource.id ?? '';
 

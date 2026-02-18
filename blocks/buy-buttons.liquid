@@ -49,17 +49,15 @@
     assign add_to_cart_text = 'Pre-order'
   endif
 
-  # Availability copy shown under the button
-  assign availability_msg = ''
+  # Shipping / availability note shown under the button
+  # Priority: pre-order availability msg > backorder > in-stock shipping
+  assign shipping_note = ''
   if is_preorder and product.metafields.custom.product_availability != blank
-    assign availability_msg = product.metafields.custom.product_availability
-  endif
-
-  # Backorder notice when out of stock but still sellable
-  # Pre-order availability message takes priority over backorder notice
-  assign is_backordered = false
-  if inventory_managed and inventory_quantity <= 0 and inventory_policy == 'continue' and is_preorder == false and availability_msg == ''
-    assign is_backordered = true
+    assign shipping_note = product.metafields.custom.product_availability
+  elsif inventory_managed and inventory_quantity <= 0 and inventory_policy == 'continue' and is_preorder == false
+    assign shipping_note = 'This item is currently backordered. Shipping may be delayed.'
+  elsif can_add_to_cart
+    assign shipping_note = 'In stock. Ships in 1-2 business days.'
   endif
 
 %}
@@ -236,7 +234,7 @@
     height: var(--icon-size-xs);
   }
 
-  .preorder-note {
+  .shipping-note {
   flex-basis: 100%;
   margin-top: var(--gap-xs);
   font-size: var(--font-size--sm);
@@ -285,21 +283,13 @@
           %}
 
 
-          {% if is_preorder and availability_msg != '' %}
-  <div class="preorder-note" role="status" aria-live="polite">
-    {{ availability_msg }}
-  </div>
-{% endif %}
-
           {% if is_preorder %}
-  <input type="hidden" name="properties[Pre-order]" value="Note: Pre-order">
-{% endif %}
+            <input type="hidden" name="properties[Pre-order]" value="Note: Pre-order">
+          {% endif %}
 
-          {% if is_backordered %}
-  <div class="preorder-note" role="status" aria-live="polite">
-    This item is currently backordered. Shipping may be delayed.
-  </div>
-{% endif %}
+          <div class="shipping-note" ref="shippingNote" role="status" aria-live="polite"{% if shipping_note == '' %} hidden{% endif %}>
+            {{ shipping_note }}
+          </div>
 
 
           <span
