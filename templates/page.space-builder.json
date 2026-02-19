@@ -1,9 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "space-builder",
-      "settings": {}
+      "settings": {
+        "heading": "Welcome to your Meditation Space.",
+        "subheading": "First, your preference of seat",
+        "seating_product_1": "20-minute-candle-clock-set",
+        "seating_product_2": "vase",
+        "seating_product_3": "vase",
+        "color_scheme": ""
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
