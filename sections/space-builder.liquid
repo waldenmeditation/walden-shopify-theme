@@ -211,9 +211,9 @@
 {% endstylesheet %}
 
 {%- liquid
-  assign product_1 = section.settings.seating_product_1
-  assign product_2 = section.settings.seating_product_2
-  assign product_3 = section.settings.seating_product_3
+  assign seat_1 = section.settings.seating_product_1
+  assign seat_2 = section.settings.seating_product_2
+  assign seat_3 = section.settings.seating_product_3
   assign heading = section.settings.heading
   assign subheading = section.settings.subheading
 -%}
@@ -227,31 +227,59 @@
       <p>{{ subheading }}</p>
     </div>
     <div class="space-builder__grid-items">
-      {%- assign products = '' | split: '' -%}
-      {%- if product_1 != blank -%}{%- assign products = products | push: product_1 -%}{%- endif -%}
-      {%- if product_2 != blank -%}{%- assign products = products | push: product_2 -%}{%- endif -%}
-      {%- if product_3 != blank -%}{%- assign products = products | push: product_3 -%}{%- endif -%}
-
-      {%- for product in products -%}
-        {%- assign idx = forloop.index0 -%}
-        <div
-          class="space-builder__grid-card"
-          on:click="/selectSeating?index={{ idx }}"
-        >
+      {%- assign idx = 0 -%}
+      {%- if seat_1 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectSeating?index={{ idx }}">
           <div class="space-builder__grid-card-image">
-            {%- if product.featured_image != blank -%}
+            {%- if seat_1.featured_image != blank -%}
               <img
-                src="{{ product.featured_image | image_url: width: 600 }}"
-                alt="{{ product.featured_image.alt | escape }}"
+                src="{{ seat_1.featured_image | image_url: width: 600 }}"
+                alt="{{ seat_1.featured_image.alt | escape }}"
                 width="600"
-                height="{{ 600 | divided_by: product.featured_image.aspect_ratio | round }}"
+                height="{{ 600 | divided_by: seat_1.featured_image.aspect_ratio | round }}"
                 loading="lazy"
               >
             {%- endif -%}
           </div>
-          <div class="space-builder__grid-card-title">{{ product.title }}</div>
+          <div class="space-builder__grid-card-title">{{ seat_1.title }}</div>
         </div>
-      {%- endfor -%}
+        {%- assign idx = idx | plus: 1 -%}
+      {%- endif -%}
+
+      {%- if seat_2 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectSeating?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if seat_2.featured_image != blank -%}
+              <img
+                src="{{ seat_2.featured_image | image_url: width: 600 }}"
+                alt="{{ seat_2.featured_image.alt | escape }}"
+                width="600"
+                height="{{ 600 | divided_by: seat_2.featured_image.aspect_ratio | round }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ seat_2.title }}</div>
+        </div>
+        {%- assign idx = idx | plus: 1 -%}
+      {%- endif -%}
+
+      {%- if seat_3 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectSeating?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if seat_3.featured_image != blank -%}
+              <img
+                src="{{ seat_3.featured_image | image_url: width: 600 }}"
+                alt="{{ seat_3.featured_image.alt | escape }}"
+                width="600"
+                height="{{ 600 | divided_by: seat_3.featured_image.aspect_ratio | round }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ seat_3.title }}</div>
+        </div>
+      {%- endif -%}
     </div>
   </div>
 
@@ -260,20 +288,15 @@
 
     {%- comment -%} Left: Preview {%- endcomment -%}
     <div class="space-builder__preview">
-      {%- for product in products -%}
-        {%- if product.featured_image != blank -%}
-          <img
-            ref="previewImage[]"
-            class="space-builder__preview-image"
-            src="{{ product.featured_image | image_url: width: 1200 }}"
-            alt="{{ product.featured_image.alt | escape }}"
-            width="1200"
-            height="{{ 1200 | divided_by: product.featured_image.aspect_ratio | round }}"
-            loading="lazy"
-            hidden
-          >
-        {%- endif -%}
-      {%- endfor -%}
+      {%- if seat_1 != blank and seat_1.featured_image != blank -%}
+        <img ref="previewImage[]" class="space-builder__preview-image" src="{{ seat_1.featured_image | image_url: width: 1200 }}" alt="{{ seat_1.featured_image.alt | escape }}" width="1200" height="{{ 1200 | divided_by: seat_1.featured_image.aspect_ratio | round }}" loading="lazy" hidden>
+      {%- endif -%}
+      {%- if seat_2 != blank and seat_2.featured_image != blank -%}
+        <img ref="previewImage[]" class="space-builder__preview-image" src="{{ seat_2.featured_image | image_url: width: 1200 }}" alt="{{ seat_2.featured_image.alt | escape }}" width="1200" height="{{ 1200 | divided_by: seat_2.featured_image.aspect_ratio | round }}" loading="lazy" hidden>
+      {%- endif -%}
+      {%- if seat_3 != blank and seat_3.featured_image != blank -%}
+        <img ref="previewImage[]" class="space-builder__preview-image" src="{{ seat_3.featured_image | image_url: width: 1200 }}" alt="{{ seat_3.featured_image.alt | escape }}" width="1200" height="{{ 1200 | divided_by: seat_3.featured_image.aspect_ratio | round }}" loading="lazy" hidden>
+      {%- endif -%}
     </div>
 
     {%- comment -%} Right: Config panel {%- endcomment -%}
@@ -286,26 +309,30 @@
       <div>
         <div class="space-builder__step-label">Seating</div>
         <div class="space-builder__compact-options">
-          {%- for product in products -%}
-            {%- assign idx = forloop.index0 -%}
-            <button
-              class="space-builder__compact-option"
-              ref="compactOption[]"
-              on:click="/selectSeating?index={{ idx }}"
-              data-selected="false"
-              aria-label="Select {{ product.title | escape }}"
-            >
-              {%- if product.featured_image != blank -%}
-                <img
-                  src="{{ product.featured_image | image_url: width: 128 }}"
-                  alt="{{ product.featured_image.alt | escape }}"
-                  width="64"
-                  height="64"
-                  loading="lazy"
-                >
+          {%- assign idx = 0 -%}
+          {%- if seat_1 != blank -%}
+            <button class="space-builder__compact-option" ref="compactOption[]" on:click="/selectSeating?index={{ idx }}" data-selected="false" aria-label="Select {{ seat_1.title | escape }}">
+              {%- if seat_1.featured_image != blank -%}
+                <img src="{{ seat_1.featured_image | image_url: width: 128 }}" alt="{{ seat_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
               {%- endif -%}
             </button>
-          {%- endfor -%}
+            {%- assign idx = idx | plus: 1 -%}
+          {%- endif -%}
+          {%- if seat_2 != blank -%}
+            <button class="space-builder__compact-option" ref="compactOption[]" on:click="/selectSeating?index={{ idx }}" data-selected="false" aria-label="Select {{ seat_2.title | escape }}">
+              {%- if seat_2.featured_image != blank -%}
+                <img src="{{ seat_2.featured_image | image_url: width: 128 }}" alt="{{ seat_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+              {%- endif -%}
+            </button>
+            {%- assign idx = idx | plus: 1 -%}
+          {%- endif -%}
+          {%- if seat_3 != blank -%}
+            <button class="space-builder__compact-option" ref="compactOption[]" on:click="/selectSeating?index={{ idx }}" data-selected="false" aria-label="Select {{ seat_3.title | escape }}">
+              {%- if seat_3.featured_image != blank -%}
+                <img src="{{ seat_3.featured_image | image_url: width: 128 }}" alt="{{ seat_3.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+              {%- endif -%}
+            </button>
+          {%- endif -%}
         </div>
       </div>
 
@@ -323,16 +350,41 @@
   {%- comment -%} Product data for JS {%- endcomment -%}
   <script ref="productData" type="application/json">
     [
-      {%- for product in products -%}
+      {%- assign needs_comma = false -%}
+      {%- if seat_1 != blank -%}
         {
-          "handle": {{ product.handle | json }},
-          "title": {{ product.title | json }},
-          "price": {{ product.price | json }},
-          "priceFormatted": {{ product.price | money | json }},
-          "imageUrl": {{ product.featured_image | image_url: width: 1200 | json }},
-          "variantId": {{ product.selected_or_first_available_variant.id | json }}
-        }{%- unless forloop.last -%},{%- endunless -%}
-      {%- endfor -%}
+          "handle": {{ seat_1.handle | json }},
+          "title": {{ seat_1.title | json }},
+          "price": {{ seat_1.price | json }},
+          "priceFormatted": {{ seat_1.price | money | json }},
+          "imageUrl": {{ seat_1.featured_image | image_url: width: 1200 | json }},
+          "variantId": {{ seat_1.selected_or_first_available_variant.id | json }}
+        }
+        {%- assign needs_comma = true -%}
+      {%- endif -%}
+      {%- if seat_2 != blank -%}
+        {%- if needs_comma -%},{%- endif -%}
+        {
+          "handle": {{ seat_2.handle | json }},
+          "title": {{ seat_2.title | json }},
+          "price": {{ seat_2.price | json }},
+          "priceFormatted": {{ seat_2.price | money | json }},
+          "imageUrl": {{ seat_2.featured_image | image_url: width: 1200 | json }},
+          "variantId": {{ seat_2.selected_or_first_available_variant.id | json }}
+        }
+        {%- assign needs_comma = true -%}
+      {%- endif -%}
+      {%- if seat_3 != blank -%}
+        {%- if needs_comma -%},{%- endif -%}
+        {
+          "handle": {{ seat_3.handle | json }},
+          "title": {{ seat_3.title | json }},
+          "price": {{ seat_3.price | json }},
+          "priceFormatted": {{ seat_3.price | money | json }},
+          "imageUrl": {{ seat_3.featured_image | image_url: width: 1200 | json }},
+          "variantId": {{ seat_3.selected_or_first_available_variant.id | json }}
+        }
+      {%- endif -%}
     ]
   </script>
 
