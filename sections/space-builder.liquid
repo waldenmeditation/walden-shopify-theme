@@ -1,0 +1,379 @@
+{% stylesheet %}
+  .space-builder {
+    position: relative;
+    min-height: 60vh;
+    overflow: hidden;
+  }
+
+  .space-builder__grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4rem 1.5rem;
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+
+  .space-builder__grid[data-state="hidden"] {
+    opacity: 0;
+    transform: scale(0.95);
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+  }
+
+  .space-builder__grid-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .space-builder__grid-header h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .space-builder__grid-header p {
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .space-builder__grid-items {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 750px) {
+    .space-builder__grid-items {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .space-builder__grid-card {
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .space-builder__grid-card-image {
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: var(--color-background);
+  }
+
+  .space-builder__grid-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .space-builder__grid-card:hover .space-builder__grid-card-image img {
+    transform: scale(1.03);
+  }
+
+  .space-builder__grid-card-title {
+    margin-top: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  /* Configurator */
+
+  .space-builder__configurator {
+    display: grid;
+    grid-template-columns: 1fr;
+    min-height: 80vh;
+    opacity: 0;
+    transition: opacity 0.5s ease 0.2s;
+  }
+
+  @media (min-width: 750px) {
+    .space-builder__configurator {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  .space-builder__configurator[data-state="hidden"] {
+    display: none;
+  }
+
+  .space-builder__configurator[data-state="visible"] {
+    opacity: 1;
+  }
+
+  .space-builder__preview {
+    background: var(--color-background);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .space-builder__preview-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .space-builder__preview-image[hidden] {
+    display: none;
+  }
+
+  @media (min-width: 750px) {
+    .space-builder__preview {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+  }
+
+  .space-builder__config {
+    display: flex;
+    flex-direction: column;
+    padding: 3rem 2rem;
+    gap: 2rem;
+  }
+
+  .space-builder__config-heading h2 {
+    margin: 0 0 0.25rem;
+  }
+
+  .space-builder__config-heading p {
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .space-builder__step-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+  }
+
+  .space-builder__compact-options {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .space-builder__compact-option {
+    width: 64px;
+    height: 64px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    overflow: hidden;
+    padding: 0;
+    background: none;
+    transition: border-color 0.2s ease;
+  }
+
+  .space-builder__compact-option[data-selected="true"] {
+    border-color: var(--color-foreground);
+  }
+
+  .space-builder__compact-option img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .space-builder__selected-info {
+    padding-top: 1rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-foreground) 10%, transparent);
+  }
+
+  .space-builder__selected-title {
+    margin: 0 0 0.25rem;
+  }
+
+  .space-builder__selected-price {
+    margin: 0;
+    opacity: 0.7;
+  }
+
+  .space-builder__future-steps {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.3;
+    font-size: 0.875rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .space-builder__grid,
+    .space-builder__configurator,
+    .space-builder__grid-card-image img,
+    .space-builder__compact-option {
+      transition: none;
+    }
+  }
+{% endstylesheet %}
+
+{%- liquid
+  assign product_1 = section.settings.seating_product_1
+  assign product_2 = section.settings.seating_product_2
+  assign product_3 = section.settings.seating_product_3
+  assign heading = section.settings.heading
+  assign subheading = section.settings.subheading
+-%}
+
+<space-builder-component class="space-builder color-{{ section.settings.color_scheme }}">
+
+  {%- comment -%} Selection Grid {%- endcomment -%}
+  <div class="space-builder__grid" ref="selectionGrid">
+    <div class="space-builder__grid-header">
+      <h1>{{ heading }}</h1>
+      <p>{{ subheading }}</p>
+    </div>
+    <div class="space-builder__grid-items">
+      {%- assign products = '' | split: '' -%}
+      {%- if product_1 != blank -%}{%- assign products = products | push: product_1 -%}{%- endif -%}
+      {%- if product_2 != blank -%}{%- assign products = products | push: product_2 -%}{%- endif -%}
+      {%- if product_3 != blank -%}{%- assign products = products | push: product_3 -%}{%- endif -%}
+
+      {%- for product in products -%}
+        {%- assign idx = forloop.index0 -%}
+        <div
+          class="space-builder__grid-card"
+          on:click="/selectSeating?index={{ idx }}"
+        >
+          <div class="space-builder__grid-card-image">
+            {%- if product.featured_image != blank -%}
+              <img
+                src="{{ product.featured_image | image_url: width: 600 }}"
+                alt="{{ product.featured_image.alt | escape }}"
+                width="600"
+                height="{{ 600 | divided_by: product.featured_image.aspect_ratio | round }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ product.title }}</div>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- comment -%} Configurator (hidden initially) {%- endcomment -%}
+  <div class="space-builder__configurator" ref="configurator" data-state="hidden">
+
+    {%- comment -%} Left: Preview {%- endcomment -%}
+    <div class="space-builder__preview">
+      {%- for product in products -%}
+        {%- if product.featured_image != blank -%}
+          <img
+            ref="previewImage[]"
+            class="space-builder__preview-image"
+            src="{{ product.featured_image | image_url: width: 1200 }}"
+            alt="{{ product.featured_image.alt | escape }}"
+            width="1200"
+            height="{{ 1200 | divided_by: product.featured_image.aspect_ratio | round }}"
+            loading="lazy"
+            hidden
+          >
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Right: Config panel {%- endcomment -%}
+    <div class="space-builder__config">
+      <div class="space-builder__config-heading">
+        <h2>{{ heading }}</h2>
+        <p>{{ subheading }}</p>
+      </div>
+
+      <div>
+        <div class="space-builder__step-label">Seating</div>
+        <div class="space-builder__compact-options">
+          {%- for product in products -%}
+            {%- assign idx = forloop.index0 -%}
+            <button
+              class="space-builder__compact-option"
+              ref="compactOption[]"
+              on:click="/selectSeating?index={{ idx }}"
+              data-selected="false"
+              aria-label="Select {{ product.title | escape }}"
+            >
+              {%- if product.featured_image != blank -%}
+                <img
+                  src="{{ product.featured_image | image_url: width: 128 }}"
+                  alt="{{ product.featured_image.alt | escape }}"
+                  width="64"
+                  height="64"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </button>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <div class="space-builder__selected-info">
+        <p class="space-builder__selected-title" ref="selectedTitle"></p>
+        <p class="space-builder__selected-price" ref="selectedPrice"></p>
+      </div>
+
+      <div class="space-builder__future-steps">
+        More options coming soon
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Product data for JS {%- endcomment -%}
+  <script ref="productData" type="application/json">
+    [
+      {%- for product in products -%}
+        {
+          "handle": {{ product.handle | json }},
+          "title": {{ product.title | json }},
+          "price": {{ product.price | json }},
+          "priceFormatted": {{ product.price | money | json }},
+          "imageUrl": {{ product.featured_image | image_url: width: 1200 | json }},
+          "variantId": {{ product.selected_or_first_available_variant.id | json }}
+        }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endfor -%}
+    ]
+  </script>
+
+</space-builder-component>
+
+{% schema %}
+{
+  "name": "Meditation Space Builder",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Welcome to your Meditation Space."
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "First, your preference of seat"
+    },
+    {
+      "type": "product",
+      "id": "seating_product_1",
+      "label": "Seating option 1"
+    },
+    {
+      "type": "product",
+      "id": "seating_product_2",
+      "label": "Seating option 2"
+    },
+    {
+      "type": "product",
+      "id": "seating_product_3",
+      "label": "Seating option 3"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme"
+    }
+  ]
+}
+{% endschema %}

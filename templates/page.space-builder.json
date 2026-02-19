@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "space-builder",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}
