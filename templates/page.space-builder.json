@@ -1,9 +1,27 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "space-builder",
-      "settings": {}
+      "settings": {
+        "heading": "Welcome to your Meditation Space.",
+        "subheading": "First, your preference of seat",
+        "seating_product_1": "walden-original-meditation-cushion",
+        "seating_product_2": "meditation-bench",
+        "seating_product_3": "breathwork",
+        "color_scheme": "scheme-1"
+      }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
