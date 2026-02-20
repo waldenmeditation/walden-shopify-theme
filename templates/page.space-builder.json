@@ -15,9 +15,20 @@
         "heading": "Welcome to your Meditation Space.",
         "subheading": "First, your preference of seat",
         "seating_product_1": "walden-original-meditation-cushion",
+        "seating_description_1": "Choose your color",
         "seating_product_2": "meditation-bench",
+        "seating_description_2": "Choose your color",
         "seating_product_3": "breathwork",
-        "color_scheme": "scheme-1"
+        "seating_description_3": "Choose your color",
+        "color_scheme": "scheme-1",
+        "aroma_heading": "Choose your aroma",
+        "aroma_subheading": "Select an aroma product",
+        "aroma_product_1": "block-incense-holder-1",
+        "aroma_description_1": "Choose your style",
+        "aroma_product_2": "mesa-palo-santo-holder",
+        "aroma_description_2": "Choose your style",
+        "incense_product": "australian-sandalwood-incense-sticks",
+        "incense_description": "Choose your scent"
       }
     }
   },
