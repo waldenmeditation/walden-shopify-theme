@@ -28,7 +28,8 @@
         "aroma_product_2": "mesa-palo-santo-holder",
         "aroma_description_2": "Choose your style",
         "incense_product": "australian-sandalwood-incense-sticks",
-        "incense_description": "Choose your scent"
+        "incense_description": "Choose your scent",
+        "included_incense_product": "palo-santo-sticks"
       }
     }
   },
