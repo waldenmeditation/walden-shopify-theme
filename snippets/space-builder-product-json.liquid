@@ -1,0 +1,33 @@
+{% doc %}
+  Outputs a JSON object for a product in the space builder, including variant data.
+
+  @param {product} product_resource - The product to serialize
+{% enddoc %}
+
+{%- if product_resource == blank -%}
+  {%- break -%}
+{%- endif -%}
+
+{
+  "handle": {{ product_resource.handle | json }},
+  "title": {{ product_resource.title | json }},
+  "price": {{ product_resource.price | json }},
+  "priceFormatted": {{ product_resource.price | money | json }},
+  "imageUrl": {{ product_resource.featured_image | image_url: width: 1200 | json }},
+  "variantId": {{ product_resource.selected_or_first_available_variant.id | json }},
+  "variants": [
+    {%- assign needs_variant_comma = false -%}
+    {%- for variant in product_resource.variants -%}
+      {%- unless variant.available -%}{%- continue -%}{%- endunless -%}
+      {%- if needs_variant_comma -%},{%- endif -%}
+      {
+        "id": {{ variant.id | json }},
+        "name": {{ variant.title | json }},
+        "price": {{ variant.price | json }},
+        "priceFormatted": {{ variant.price | money | json }},
+        "imageUrl": {% if variant.featured_media %}{{ variant.featured_media.preview_image | image_url: width: 1200 | json }}{% else %}{{ product_resource.featured_image | image_url: width: 1200 | json }}{% endif %}
+      }
+      {%- assign needs_variant_comma = true -%}
+    {%- endfor -%}
+  ]
+}

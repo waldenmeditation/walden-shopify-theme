@@ -1,0 +1,59 @@
+{% doc %}
+  Renders a variant selection grid for a product in the space builder.
+  Same visual style as the product grid, but shows each variant with its image.
+
+  @param {product} product_resource - The product to render variants for
+  @param {number} product_index - The index of this product (0, 1, or 2)
+  @param {string} description - Custom description text shown below the product title
+  @param {string} ref_name - Ref attribute name for JS (default: variantGrid)
+  @param {string} click_method - JS method to call on click (default: selectVariant)
+{% enddoc %}
+
+{%- if product_resource == blank -%}
+  {%- break -%}
+{%- endif -%}
+
+{%- liquid
+  assign ref_name = ref_name | default: 'variantGrid'
+  assign click_method = click_method | default: 'selectVariant'
+-%}
+
+<div class="space-builder__grid" ref="{{ ref_name }}[]" data-product-index="{{ product_index }}" data-state="hidden">
+  <button class="space-builder__back" on:click="/goBack" aria-label="Back">Back</button>
+  <div class="space-builder__grid-header">
+    <h1>{{ product_resource.title }}</h1>
+    <p>{{ description }}</p>
+  </div>
+  <div class="space-builder__grid-items">
+    {%- assign variant_idx = 0 -%}
+    {%- for variant in product_resource.variants -%}
+      {%- unless variant.available -%}{%- continue -%}{%- endunless -%}
+      <div
+        class="space-builder__grid-card"
+        on:click="/{{ click_method }}?product={{ product_index }}&variant={{ variant_idx }}"
+      >
+        <div class="space-builder__grid-card-image">
+          {%- if variant.featured_media != blank -%}
+            <img
+              src="{{ variant.featured_media.preview_image | image_url: width: 600 }}"
+              alt="{{ variant.featured_media.preview_image.alt | escape }}"
+              width="600"
+              height="{{ 600 | divided_by: variant.featured_media.preview_image.aspect_ratio | round }}"
+              loading="lazy"
+            >
+          {%- elsif product_resource.featured_image != blank -%}
+            <img
+              src="{{ product_resource.featured_image | image_url: width: 600 }}"
+              alt="{{ product_resource.featured_image.alt | escape }}"
+              width="600"
+              height="{{ 600 | divided_by: product_resource.featured_image.aspect_ratio | round }}"
+              loading="lazy"
+            >
+          {%- endif -%}
+        </div>
+        <div class="space-builder__grid-card-title">{{ variant.title }}</div>
+      </div>
+      {%- assign variant_idx = variant_idx | plus: 1 -%}
+    {%- endfor -%}
+  </div>
+</div>

@@ -28,6 +28,7 @@
 
   .space-builder__grid-header h1 {
     margin: 0 0 0.5rem;
+    font-size: 1.5rem;
   }
 
   .space-builder__grid-header p {
@@ -58,13 +59,16 @@
   .space-builder__grid-card-image {
     aspect-ratio: 1;
     overflow: hidden;
-    background: var(--color-background);
+    background: #EEEEEE;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .space-builder__grid-card-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     transition: transform 0.3s ease;
   }
 
@@ -82,7 +86,7 @@
   .space-builder__configurator {
     display: grid;
     grid-template-columns: 1fr;
-    min-height: 80vh;
+    height: calc(100vh - var(--header-height, 0px));
     opacity: 0;
     transition: opacity 0.5s ease 0.2s;
   }
@@ -102,7 +106,7 @@
   }
 
   .space-builder__preview {
-    background: var(--color-background);
+    background: #EEEEEE;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -112,7 +116,7 @@
   .space-builder__preview-image {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .space-builder__preview-image[hidden] {
@@ -121,16 +125,22 @@
 
   @media (min-width: 750px) {
     .space-builder__preview {
-      position: sticky;
-      top: 0;
-      height: 100vh;
+      height: 100%;
     }
   }
 
   .space-builder__config {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+  }
+
+  .space-builder__config-scroll {
+    flex: 1;
+    overflow-y: auto;
     padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
     gap: 2rem;
   }
 
@@ -160,26 +170,26 @@
     width: 64px;
     height: 64px;
     border: 2px solid transparent;
+    border-radius: 6px;
     cursor: pointer;
     overflow: hidden;
     padding: 0;
-    background: none;
+    background: #EEEEEE;
     transition: border-color 0.2s ease;
   }
 
   .space-builder__compact-option[data-selected="true"] {
-    border-color: var(--color-foreground);
+    border-color: #3E3E3D;
   }
 
   .space-builder__compact-option img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .space-builder__selected-info {
-    padding-top: 1rem;
-    border-top: 1px solid color-mix(in srgb, var(--color-foreground) 10%, transparent);
+    padding-top: 0.5rem;
   }
 
   .space-builder__selected-title {
@@ -191,13 +201,118 @@
     opacity: 0.7;
   }
 
-  .space-builder__future-steps {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    opacity: 0.3;
+  .space-builder__back {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 0.8125rem;
+    opacity: 0.4;
+    transition: opacity 0.2s ease;
+  }
+
+  .space-builder__back:hover {
+    opacity: 1;
+  }
+
+  .space-builder__grid .space-builder__back {
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .space-builder__config .space-builder__back {
+    margin-bottom: 2rem;
+  }
+
+  .space-builder__selected-variant-name {
+    margin: 0;
     font-size: 0.875rem;
+    opacity: 0.7;
+  }
+
+  .space-builder__continue {
+    width: 100%;
+    background: #3E3E3D;
+    color: #fff;
+    border: none;
+    padding: 1rem 2rem;
+    font-family: 'Graphik', sans-serif;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .space-builder__continue:hover {
+    opacity: 0.85;
+  }
+
+  .space-builder__skip {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 0.75rem;
+    font-family: 'Graphik', sans-serif;
+    font-size: 0.8125rem;
+    color: inherit;
+    opacity: 0.4;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .space-builder__skip:hover {
+    opacity: 1;
+  }
+
+  .space-builder__section {
+    padding-top: 1.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-foreground) 10%, transparent);
+  }
+
+  .space-builder__total {
+    flex-shrink: 0;
+    padding: 1.5rem 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--color-foreground) 10%, transparent);
+  }
+
+  .space-builder__total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 1rem;
+  }
+
+  .space-builder__total-label {
+    font-size: 0.875rem;
+    opacity: 0.7;
+  }
+
+  .space-builder__total-price {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .space-builder__checkout {
+    width: 100%;
+    background: #EEEEEE;
+    color: #999;
+    border: none;
+    padding: 1rem;
+    font-family: 'Graphik', sans-serif;
+    font-size: 0.875rem;
+    cursor: default;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .space-builder__checkout[data-ready="true"] {
+    background: #3E3E3D;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .space-builder__checkout[data-ready="true"]:hover {
+    opacity: 0.85;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -216,6 +331,11 @@
   assign seat_3 = section.settings.seating_product_3
   assign heading = section.settings.heading
   assign subheading = section.settings.subheading
+  assign aroma_1 = section.settings.aroma_product_1
+  assign aroma_2 = section.settings.aroma_product_2
+  assign incense = section.settings.incense_product
+  assign aroma_heading = section.settings.aroma_heading
+  assign aroma_subheading = section.settings.aroma_subheading
 -%}
 
 <space-builder-component class="space-builder color-{{ section.settings.color_scheme }}">
@@ -283,6 +403,51 @@
     </div>
   </div>
 
+  {%- comment -%} Variant Grids (one per product, hidden initially) {%- endcomment -%}
+  {% render 'space-builder-variant-grid', product_resource: seat_1, product_index: 0, description: section.settings.seating_description_1 %}
+  {% render 'space-builder-variant-grid', product_resource: seat_2, product_index: 1, description: section.settings.seating_description_2 %}
+  {% render 'space-builder-variant-grid', product_resource: seat_3, product_index: 2, description: section.settings.seating_description_3 %}
+
+  {%- comment -%} Aroma Product Grid (hidden initially) {%- endcomment -%}
+  <div class="space-builder__grid" ref="aromaGrid" data-state="hidden">
+    <button class="space-builder__back" on:click="/goBack" aria-label="Back">Back</button>
+    <div class="space-builder__grid-header">
+      <h1>{{ aroma_heading }}</h1>
+      <p>{{ aroma_subheading }}</p>
+    </div>
+    <div class="space-builder__grid-items">
+      {%- assign idx = 0 -%}
+      {%- if aroma_1 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectAroma?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if aroma_1.featured_image != blank -%}
+              <img src="{{ aroma_1.featured_image | image_url: width: 600 }}" alt="{{ aroma_1.featured_image.alt | escape }}" width="600" height="{{ 600 | divided_by: aroma_1.featured_image.aspect_ratio | round }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ aroma_1.title }}</div>
+        </div>
+        {%- assign idx = idx | plus: 1 -%}
+      {%- endif -%}
+      {%- if aroma_2 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectAroma?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if aroma_2.featured_image != blank -%}
+              <img src="{{ aroma_2.featured_image | image_url: width: 600 }}" alt="{{ aroma_2.featured_image.alt | escape }}" width="600" height="{{ 600 | divided_by: aroma_2.featured_image.aspect_ratio | round }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ aroma_2.title }}</div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} Aroma Variant Grids {%- endcomment -%}
+  {% render 'space-builder-variant-grid', product_resource: aroma_1, product_index: 0, description: section.settings.aroma_description_1, ref_name: 'aromaVariantGrid', click_method: 'selectAromaVariant' %}
+  {% render 'space-builder-variant-grid', product_resource: aroma_2, product_index: 1, description: section.settings.aroma_description_2, ref_name: 'aromaVariantGrid', click_method: 'selectAromaVariant' %}
+
+  {%- comment -%} Incense Scent Grid (shown after selecting incense holder) {%- endcomment -%}
+  {% render 'space-builder-variant-grid', product_resource: incense, product_index: 0, description: section.settings.incense_description, ref_name: 'incenseVariantGrid', click_method: 'selectIncense' %}
+
   {%- comment -%} Configurator (hidden initially) {%- endcomment -%}
   <div class="space-builder__configurator" ref="configurator" data-state="hidden">
 
@@ -301,7 +466,9 @@
 
     {%- comment -%} Right: Config panel {%- endcomment -%}
     <div class="space-builder__config">
+      <div class="space-builder__config-scroll">
       <div class="space-builder__config-heading">
+        <button class="space-builder__back" on:click="/goBack" aria-label="Back to color selection">Back</button>
         <h2>{{ heading }}</h2>
         <p>{{ subheading }}</p>
       </div>
@@ -334,58 +501,101 @@
             </button>
           {%- endif -%}
         </div>
+        <div class="space-builder__selected-info">
+          <p class="space-builder__selected-title" ref="selectedTitle"></p>
+          <p class="space-builder__selected-variant-name" ref="selectedVariantName"></p>
+          <p class="space-builder__selected-price" ref="selectedPrice"></p>
+        </div>
       </div>
 
-      <div class="space-builder__selected-info">
-        <p class="space-builder__selected-title" ref="selectedTitle"></p>
-        <p class="space-builder__selected-price" ref="selectedPrice"></p>
+      {%- comment -%} Aroma section (shown after aroma selected) {%- endcomment -%}
+      <div class="space-builder__section" ref="aromaSection" hidden>
+        <div class="space-builder__step-label">Aroma</div>
+        <div class="space-builder__compact-options">
+          {%- assign idx = 0 -%}
+          {%- if aroma_1 != blank -%}
+            <button class="space-builder__compact-option" ref="aromaCompactOption[]" on:click="/selectAroma?index={{ idx }}" data-selected="false" aria-label="Select {{ aroma_1.title | escape }}">
+              {%- if aroma_1.featured_image != blank -%}
+                <img src="{{ aroma_1.featured_image | image_url: width: 128 }}" alt="{{ aroma_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+              {%- endif -%}
+            </button>
+            {%- assign idx = idx | plus: 1 -%}
+          {%- endif -%}
+          {%- if aroma_2 != blank -%}
+            <button class="space-builder__compact-option" ref="aromaCompactOption[]" on:click="/selectAroma?index={{ idx }}" data-selected="false" aria-label="Select {{ aroma_2.title | escape }}">
+              {%- if aroma_2.featured_image != blank -%}
+                <img src="{{ aroma_2.featured_image | image_url: width: 128 }}" alt="{{ aroma_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+              {%- endif -%}
+            </button>
+          {%- endif -%}
+        </div>
+        <div class="space-builder__selected-info">
+          <p class="space-builder__selected-title" ref="aromaSelectedTitle"></p>
+          <p class="space-builder__selected-variant-name" ref="aromaSelectedVariantName"></p>
+          <p class="space-builder__selected-price" ref="aromaSelectedPrice"></p>
+        </div>
       </div>
 
-      <div class="space-builder__future-steps">
-        More options coming soon
+      {%- comment -%} Incense section (shown after incense selected) {%- endcomment -%}
+      <div class="space-builder__section" ref="incenseSection" hidden>
+        <div class="space-builder__step-label">Incense</div>
+        <div class="space-builder__selected-info">
+          <p class="space-builder__selected-title" ref="incenseSelectedTitle"></p>
+          <p class="space-builder__selected-variant-name" ref="incenseSelectedVariantName"></p>
+          <p class="space-builder__selected-price" ref="incenseSelectedPrice"></p>
+        </div>
+      </div>
+
+      {%- comment -%} Continue button (hidden after aroma selected) {%- endcomment -%}
+      <div class="space-builder__section" ref="continueToAroma">
+        <button class="space-builder__continue" on:click="/continueToAroma">Add an Aroma Item</button>
+        <button class="space-builder__skip" on:click="/skipAroma">Skip</button>
+      </div>
+      </div>{%- comment -%} end config-scroll {%- endcomment -%}
+
+      {%- comment -%} Total + Checkout (pinned to bottom) {%- endcomment -%}
+      <div class="space-builder__total" ref="totalSection">
+        <div class="space-builder__total-row">
+          <span class="space-builder__total-label">Total</span>
+          <span class="space-builder__total-price" ref="totalPrice"></span>
+        </div>
+        <button class="space-builder__checkout" ref="checkoutBtn" on:click="/checkout">Checkout</button>
       </div>
     </div>
   </div>
 
   {%- comment -%} Product data for JS {%- endcomment -%}
   <script ref="productData" type="application/json">
-    [
-      {%- assign needs_comma = false -%}
-      {%- if seat_1 != blank -%}
-        {
-          "handle": {{ seat_1.handle | json }},
-          "title": {{ seat_1.title | json }},
-          "price": {{ seat_1.price | json }},
-          "priceFormatted": {{ seat_1.price | money | json }},
-          "imageUrl": {{ seat_1.featured_image | image_url: width: 1200 | json }},
-          "variantId": {{ seat_1.selected_or_first_available_variant.id | json }}
-        }
-        {%- assign needs_comma = true -%}
-      {%- endif -%}
-      {%- if seat_2 != blank -%}
-        {%- if needs_comma -%},{%- endif -%}
-        {
-          "handle": {{ seat_2.handle | json }},
-          "title": {{ seat_2.title | json }},
-          "price": {{ seat_2.price | json }},
-          "priceFormatted": {{ seat_2.price | money | json }},
-          "imageUrl": {{ seat_2.featured_image | image_url: width: 1200 | json }},
-          "variantId": {{ seat_2.selected_or_first_available_variant.id | json }}
-        }
-        {%- assign needs_comma = true -%}
-      {%- endif -%}
-      {%- if seat_3 != blank -%}
-        {%- if needs_comma -%},{%- endif -%}
-        {
-          "handle": {{ seat_3.handle | json }},
-          "title": {{ seat_3.title | json }},
-          "price": {{ seat_3.price | json }},
-          "priceFormatted": {{ seat_3.price | money | json }},
-          "imageUrl": {{ seat_3.featured_image | image_url: width: 1200 | json }},
-          "variantId": {{ seat_3.selected_or_first_available_variant.id | json }}
-        }
-      {%- endif -%}
-    ]
+    {
+      "seating": [
+        {%- assign needs_comma = false -%}
+        {%- if seat_1 != blank -%}
+          {% render 'space-builder-product-json', product_resource: seat_1 %}
+          {%- assign needs_comma = true -%}
+        {%- endif -%}
+        {%- if seat_2 != blank -%}
+          {%- if needs_comma -%},{%- endif -%}
+          {% render 'space-builder-product-json', product_resource: seat_2 %}
+          {%- assign needs_comma = true -%}
+        {%- endif -%}
+        {%- if seat_3 != blank -%}
+          {%- if needs_comma -%},{%- endif -%}
+          {% render 'space-builder-product-json', product_resource: seat_3 %}
+        {%- endif -%}
+      ],
+      "aroma": [
+        {%- assign needs_comma = false -%}
+        {%- if aroma_1 != blank -%}
+          {% render 'space-builder-product-json', product_resource: aroma_1 %}
+          {%- assign needs_comma = true -%}
+        {%- endif -%}
+        {%- if aroma_2 != blank -%}
+          {%- if needs_comma -%},{%- endif -%}
+          {% render 'space-builder-product-json', product_resource: aroma_2 %}
+        {%- endif -%}
+      ],
+      "incense": {% if incense != blank %}{% render 'space-builder-product-json', product_resource: incense %}{% else %}null{% endif %}
+    }
   </script>
 
 </space-builder-component>
@@ -412,9 +622,21 @@
       "label": "Seating option 1"
     },
     {
+      "type": "text",
+      "id": "seating_description_1",
+      "label": "Seating 1 description",
+      "default": "Choose your color"
+    },
+    {
       "type": "product",
       "id": "seating_product_2",
       "label": "Seating option 2"
+    },
+    {
+      "type": "text",
+      "id": "seating_description_2",
+      "label": "Seating 2 description",
+      "default": "Choose your color"
     },
     {
       "type": "product",
@@ -422,9 +644,64 @@
       "label": "Seating option 3"
     },
     {
+      "type": "text",
+      "id": "seating_description_3",
+      "label": "Seating 3 description",
+      "default": "Choose your color"
+    },
+    {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Aroma"
+    },
+    {
+      "type": "text",
+      "id": "aroma_heading",
+      "label": "Aroma heading",
+      "default": "Choose your aroma"
+    },
+    {
+      "type": "text",
+      "id": "aroma_subheading",
+      "label": "Aroma subheading",
+      "default": "Select an aroma product"
+    },
+    {
+      "type": "product",
+      "id": "aroma_product_1",
+      "label": "Aroma option 1"
+    },
+    {
+      "type": "text",
+      "id": "aroma_description_1",
+      "label": "Aroma 1 description",
+      "default": "Choose your style"
+    },
+    {
+      "type": "product",
+      "id": "aroma_product_2",
+      "label": "Aroma option 2"
+    },
+    {
+      "type": "text",
+      "id": "aroma_description_2",
+      "label": "Aroma 2 description",
+      "default": "Choose your style"
+    },
+    {
+      "type": "product",
+      "id": "incense_product",
+      "label": "Incense product"
+    },
+    {
+      "type": "text",
+      "id": "incense_description",
+      "label": "Incense description",
+      "default": "Choose your scent"
     }
   ]
 }
