@@ -19,6 +19,9 @@ class SpaceBuilder extends Component {
   // Aroma skipped
   #aromaSkipped = false;
 
+  // Whether the incense is included free (palo santo set)
+  #incenseIncluded = false;
+
   connectedCallback() {
     super.connectedCallback();
 
@@ -39,6 +42,7 @@ class SpaceBuilder extends Component {
       aromaVariantIndex: this.#selectedAromaVariantIndex,
       incenseVariantIndex: this.#selectedIncenseVariantIndex,
       aromaSkipped: this.#aromaSkipped,
+      incenseIncluded: this.#incenseIncluded,
     });
   }
 
@@ -76,6 +80,7 @@ class SpaceBuilder extends Component {
     this.#selectedAromaVariantIndex = snapshot.aromaVariantIndex;
     this.#selectedIncenseVariantIndex = snapshot.incenseVariantIndex;
     this.#aromaSkipped = snapshot.aromaSkipped;
+    this.#incenseIncluded = snapshot.incenseIncluded;
 
     switch (snapshot.state) {
       case 'product-grid':
@@ -181,15 +186,33 @@ class SpaceBuilder extends Component {
     }
 
     // Incense section visibility
-    const hasIncense = this.#selectedIncenseVariantIndex >= 0;
+    const hasIncense = this.#selectedIncenseVariantIndex >= 0 || this.#incenseIncluded;
     const incenseSection = this.refs.incenseSection;
     if (incenseSection) {
       incenseSection.hidden = !hasIncense;
     }
 
     if (hasIncense) {
-      const incenseProduct = this.#data.incense;
-      const incenseVariant = incenseProduct?.variants?.[this.#selectedIncenseVariantIndex];
+      let incenseProduct, incenseVariant, priceText;
+
+      if (this.#incenseIncluded) {
+        // Included incense from palo santo set — show first variant, price as "Included"
+        incenseProduct = this.#data.includedIncense;
+        incenseVariant = incenseProduct?.variants?.[0];
+        priceText = 'Included';
+      } else {
+        // User-selected incense
+        incenseProduct = this.#data.incense;
+        incenseVariant = incenseProduct?.variants?.[this.#selectedIncenseVariantIndex];
+        priceText = incenseVariant?.priceFormatted || '';
+      }
+
+      // Update incense compact option image
+      const incenseBtn = this.refs.incenseCompactOption;
+      if (incenseBtn && incenseVariant?.imageUrl) {
+        const img = incenseBtn.querySelector('img');
+        if (img) img.src = incenseVariant.imageUrl;
+      }
 
       if (this.refs.incenseSelectedTitle) {
         this.refs.incenseSelectedTitle.textContent = incenseProduct?.title || '';
@@ -198,7 +221,7 @@ class SpaceBuilder extends Component {
         this.refs.incenseSelectedVariantName.textContent = incenseVariant?.name || '';
       }
       if (this.refs.incenseSelectedPrice) {
-        this.refs.incenseSelectedPrice.textContent = incenseVariant?.priceFormatted || '';
+        this.refs.incenseSelectedPrice.textContent = priceText;
       }
     }
 
@@ -214,6 +237,15 @@ class SpaceBuilder extends Component {
 
   /** Calculate and display the total price */
   #updateTotal() {
+    const ready = this.#isReady();
+
+    // Show/hide total section
+    if (this.refs.totalSection) {
+      this.refs.totalSection.hidden = !ready;
+    }
+
+    if (!ready) return;
+
     let total = 0;
 
     const seatingVariant = this.#data.seating?.[this.#selectedProductIndex]?.variants?.[this.#selectedVariantIndex];
@@ -224,18 +256,14 @@ class SpaceBuilder extends Component {
       if (aromaVariant) total += aromaVariant.price;
     }
 
-    if (this.#selectedIncenseVariantIndex >= 0) {
+    // Only add incense price if user-selected (not included free)
+    if (this.#selectedIncenseVariantIndex >= 0 && !this.#incenseIncluded) {
       const incenseVariant = this.#data.incense?.variants?.[this.#selectedIncenseVariantIndex];
       if (incenseVariant) total += incenseVariant.price;
     }
 
     if (this.refs.totalPrice) {
       this.refs.totalPrice.textContent = this.#formatMoney(total);
-    }
-
-    // Checkout button ready state
-    if (this.refs.checkoutBtn) {
-      this.refs.checkoutBtn.setAttribute('data-ready', String(this.#isReady()));
     }
   }
 
@@ -330,9 +358,13 @@ class SpaceBuilder extends Component {
 
     // If first aroma product (block incense holder), show incense scent selection
     if (productIdx === 0 && this.#data.incense) {
+      this.#incenseIncluded = false;
       this.#state = 'incense-variant-grid';
       this.#showGrid('incenseVariantGrid', 0);
     } else {
+      // Second aroma product (palo santo set) — include free incense
+      this.#incenseIncluded = this.#data.includedIncense != null;
+      this.#selectedIncenseVariantIndex = -1;
       this.#state = 'configurator';
       this.#showConfigurator();
     }
@@ -367,7 +399,7 @@ class SpaceBuilder extends Component {
       if (aromaVariant) items.push({ id: aromaVariant.id, quantity: 1 });
     }
 
-    if (this.#selectedIncenseVariantIndex >= 0) {
+    if (this.#selectedIncenseVariantIndex >= 0 && !this.#incenseIncluded) {
       const incenseVariant = this.#data.incense?.variants?.[this.#selectedIncenseVariantIndex];
       if (incenseVariant) items.push({ id: incenseVariant.id, quantity: 1 });
     }

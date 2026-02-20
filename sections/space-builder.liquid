@@ -49,6 +49,16 @@
     .space-builder__grid-items {
       grid-template-columns: repeat(3, 1fr);
     }
+
+    .space-builder__grid-items--few {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 640px;
+    }
+
+    .space-builder__grid-items--single {
+      grid-template-columns: 1fr;
+      max-width: 320px;
+    }
   }
 
   .space-builder__grid-card {
@@ -295,23 +305,17 @@
 
   .space-builder__checkout {
     width: 100%;
-    background: #EEEEEE;
-    color: #999;
+    background: #3E3E3D;
+    color: #fff;
     border: none;
     padding: 1rem;
     font-family: 'Graphik', sans-serif;
     font-size: 0.875rem;
-    cursor: default;
-    transition: background 0.2s ease, color 0.2s ease;
-  }
-
-  .space-builder__checkout[data-ready="true"] {
-    background: #3E3E3D;
-    color: #fff;
     cursor: pointer;
+    transition: opacity 0.2s ease;
   }
 
-  .space-builder__checkout[data-ready="true"]:hover {
+  .space-builder__checkout:hover {
     opacity: 0.85;
   }
 
@@ -334,6 +338,7 @@
   assign aroma_1 = section.settings.aroma_product_1
   assign aroma_2 = section.settings.aroma_product_2
   assign incense = section.settings.incense_product
+  assign included_incense = section.settings.included_incense_product
   assign aroma_heading = section.settings.aroma_heading
   assign aroma_subheading = section.settings.aroma_subheading
 -%}
@@ -415,7 +420,7 @@
       <h1>{{ aroma_heading }}</h1>
       <p>{{ aroma_subheading }}</p>
     </div>
-    <div class="space-builder__grid-items">
+    <div class="space-builder__grid-items space-builder__grid-items--few">
       {%- assign idx = 0 -%}
       {%- if aroma_1 != blank -%}
         <div class="space-builder__grid-card" on:click="/selectAroma?index={{ idx }}">
@@ -539,6 +544,15 @@
       {%- comment -%} Incense section (shown after incense selected) {%- endcomment -%}
       <div class="space-builder__section" ref="incenseSection" hidden>
         <div class="space-builder__step-label">Incense</div>
+        <div class="space-builder__compact-options">
+          {%- if incense != blank -%}
+            <button class="space-builder__compact-option" ref="incenseCompactOption" data-selected="true" aria-label="{{ incense.title | escape }}">
+              {%- if incense.featured_image != blank -%}
+                <img src="{{ incense.featured_image | image_url: width: 128 }}" alt="{{ incense.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+              {%- endif -%}
+            </button>
+          {%- endif -%}
+        </div>
         <div class="space-builder__selected-info">
           <p class="space-builder__selected-title" ref="incenseSelectedTitle"></p>
           <p class="space-builder__selected-variant-name" ref="incenseSelectedVariantName"></p>
@@ -554,7 +568,7 @@
       </div>{%- comment -%} end config-scroll {%- endcomment -%}
 
       {%- comment -%} Total + Checkout (pinned to bottom) {%- endcomment -%}
-      <div class="space-builder__total" ref="totalSection">
+      <div class="space-builder__total" ref="totalSection" hidden>
         <div class="space-builder__total-row">
           <span class="space-builder__total-label">Total</span>
           <span class="space-builder__total-price" ref="totalPrice"></span>
@@ -594,7 +608,8 @@
           {% render 'space-builder-product-json', product_resource: aroma_2 %}
         {%- endif -%}
       ],
-      "incense": {% if incense != blank %}{% render 'space-builder-product-json', product_resource: incense %}{% else %}null{% endif %}
+      "incense": {% if incense != blank %}{% render 'space-builder-product-json', product_resource: incense %}{% else %}null{% endif %},
+      "includedIncense": {% if included_incense != blank %}{% render 'space-builder-product-json', product_resource: included_incense %}{% else %}null{% endif %}
     }
   </script>
 
@@ -702,6 +717,11 @@
       "id": "incense_description",
       "label": "Incense description",
       "default": "Choose your scent"
+    },
+    {
+      "type": "product",
+      "id": "included_incense_product",
+      "label": "Included incense (shown with aroma option 2)"
     }
   ]
 }
