@@ -319,6 +319,24 @@
     opacity: 0.85;
   }
 
+  /* Skip card */
+
+  .space-builder__grid-card--skip .space-builder__grid-card-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ccc;
+    font-size: 4rem;
+    line-height: 1;
+  }
+
+  .space-builder__grid-card--skip .space-builder__grid-card-image svg {
+    width: 4rem;
+    height: 4rem;
+    stroke: #ccc;
+    stroke-width: 2;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .space-builder__grid,
     .space-builder__configurator,
@@ -335,6 +353,7 @@
   assign seat_3 = section.settings.seating_product_3
   assign heading = section.settings.heading
   assign subheading = section.settings.subheading
+  assign platform = section.settings.platform_product
   assign aroma_1 = section.settings.aroma_product_1
   assign aroma_2 = section.settings.aroma_product_2
   assign incense = section.settings.incense_product
@@ -412,6 +431,39 @@
   {% render 'space-builder-variant-grid', product_resource: seat_1, product_index: 0, description: section.settings.seating_description_1 %}
   {% render 'space-builder-variant-grid', product_resource: seat_2, product_index: 1, description: section.settings.seating_description_2 %}
   {% render 'space-builder-variant-grid', product_resource: seat_3, product_index: 2, description: section.settings.seating_description_3 %}
+
+  {%- comment -%} Platform Grid (hidden initially) {%- endcomment -%}
+  <div class="space-builder__grid" ref="platformGrid" data-state="hidden">
+    <button class="space-builder__back" on:click="/goBack" aria-label="Back">Back</button>
+    <div class="space-builder__grid-header">
+      <h1>{{ section.settings.platform_heading }}</h1>
+      <p>{{ section.settings.platform_subheading }}</p>
+    </div>
+    <div class="space-builder__grid-items space-builder__grid-items--few">
+      {%- if platform != blank -%}
+        <div class="space-builder__grid-card" on:click="/addPlatform">
+          <div class="space-builder__grid-card-image">
+            {%- if platform.featured_image != blank -%}
+              <img
+                src="{{ platform.featured_image | image_url: width: 600 }}"
+                alt="{{ platform.featured_image.alt | escape }}"
+                width="600"
+                height="{{ 600 | divided_by: platform.featured_image.aspect_ratio | round }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ platform.title }}</div>
+        </div>
+      {%- endif -%}
+      <div class="space-builder__grid-card space-builder__grid-card--skip" on:click="/skipPlatform">
+        <div class="space-builder__grid-card-image">
+          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="12" y1="12" x2="36" y2="36"/><line x1="36" y1="12" x2="12" y2="36"/></svg>
+        </div>
+        <div class="space-builder__grid-card-title">Skip</div>
+      </div>
+    </div>
+  </div>
 
   {%- comment -%} Aroma Product Grid (hidden initially) {%- endcomment -%}
   <div class="space-builder__grid" ref="aromaGrid" data-state="hidden">
@@ -513,6 +565,24 @@
         </div>
       </div>
 
+      {%- comment -%} Platform section (shown after platform added) {%- endcomment -%}
+      <div class="space-builder__section" ref="platformSection" hidden>
+        <div class="space-builder__step-label">Platform</div>
+        <div class="space-builder__compact-options">
+          {%- if platform != blank -%}
+            <button class="space-builder__compact-option" data-selected="true" aria-label="{{ platform.title | escape }}">
+              {%- if platform.featured_image != blank -%}
+                <img src="{{ platform.featured_image | image_url: width: 128 }}" alt="{{ platform.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+              {%- endif -%}
+            </button>
+          {%- endif -%}
+        </div>
+        <div class="space-builder__selected-info">
+          <p class="space-builder__selected-title" ref="platformSelectedTitle"></p>
+          <p class="space-builder__selected-price" ref="platformSelectedPrice"></p>
+        </div>
+      </div>
+
       {%- comment -%} Aroma section (shown after aroma selected) {%- endcomment -%}
       <div class="space-builder__section" ref="aromaSection" hidden>
         <div class="space-builder__step-label">Aroma</div>
@@ -546,7 +616,7 @@
         <div class="space-builder__step-label">Incense</div>
         <div class="space-builder__compact-options">
           {%- if incense != blank -%}
-            <button class="space-builder__compact-option" ref="incenseCompactOption" data-selected="true" aria-label="{{ incense.title | escape }}">
+            <button class="space-builder__compact-option" ref="incenseCompactOption" on:click="/changeIncense" data-selected="true" aria-label="{{ incense.title | escape }}">
               {%- if incense.featured_image != blank -%}
                 <img src="{{ incense.featured_image | image_url: width: 128 }}" alt="{{ incense.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
               {%- endif -%}
@@ -608,6 +678,7 @@
           {% render 'space-builder-product-json', product_resource: aroma_2 %}
         {%- endif -%}
       ],
+      "platform": {% if platform != blank %}{% render 'space-builder-product-json', product_resource: platform %}{% else %}null{% endif %},
       "incense": {% if incense != blank %}{% render 'space-builder-product-json', product_resource: incense %}{% else %}null{% endif %},
       "includedIncense": {% if included_incense != blank %}{% render 'space-builder-product-json', product_resource: included_incense %}{% else %}null{% endif %}
     }
@@ -668,6 +739,27 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme"
+    },
+    {
+      "type": "header",
+      "content": "Platform"
+    },
+    {
+      "type": "text",
+      "id": "platform_heading",
+      "label": "Platform heading",
+      "default": "Add a meditation platform?"
+    },
+    {
+      "type": "text",
+      "id": "platform_subheading",
+      "label": "Platform subheading",
+      "default": "Elevate your practice"
+    },
+    {
+      "type": "product",
+      "id": "platform_product",
+      "label": "Meditation platform"
     },
     {
       "type": "header",

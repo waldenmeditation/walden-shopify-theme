@@ -2,12 +2,15 @@ import { Component } from '@theme/component';
 
 class SpaceBuilder extends Component {
   #state = 'product-grid';
-  #data = { seating: [], aroma: [], incense: null };
+  #data = { seating: [], aroma: [], platform: null, incense: null };
   #history = [];
 
   // Seating selections
   #selectedProductIndex = -1;
   #selectedVariantIndex = -1;
+
+  // Platform
+  #platformAdded = false;
 
   // Aroma selections
   #selectedAromaProductIndex = -1;
@@ -28,7 +31,7 @@ class SpaceBuilder extends Component {
     try {
       this.#data = JSON.parse(this.refs.productData?.textContent || '{}');
     } catch {
-      this.#data = { seating: [], aroma: [], incense: null };
+      this.#data = { seating: [], aroma: [], platform: null, incense: null };
     }
   }
 
@@ -38,6 +41,7 @@ class SpaceBuilder extends Component {
       state: this.#state,
       productIndex: this.#selectedProductIndex,
       variantIndex: this.#selectedVariantIndex,
+      platformAdded: this.#platformAdded,
       aromaProductIndex: this.#selectedAromaProductIndex,
       aromaVariantIndex: this.#selectedAromaVariantIndex,
       incenseVariantIndex: this.#selectedIncenseVariantIndex,
@@ -49,6 +53,7 @@ class SpaceBuilder extends Component {
   /** Hide all layers */
   #hideAll() {
     this.refs.selectionGrid?.setAttribute('data-state', 'hidden');
+    this.refs.platformGrid?.setAttribute('data-state', 'hidden');
     this.refs.aromaGrid?.setAttribute('data-state', 'hidden');
     this.refs.configurator?.setAttribute('data-state', 'hidden');
 
@@ -76,6 +81,7 @@ class SpaceBuilder extends Component {
     this.#state = snapshot.state;
     this.#selectedProductIndex = snapshot.productIndex;
     this.#selectedVariantIndex = snapshot.variantIndex;
+    this.#platformAdded = snapshot.platformAdded;
     this.#selectedAromaProductIndex = snapshot.aromaProductIndex;
     this.#selectedAromaVariantIndex = snapshot.aromaVariantIndex;
     this.#selectedIncenseVariantIndex = snapshot.incenseVariantIndex;
@@ -88,6 +94,9 @@ class SpaceBuilder extends Component {
         break;
       case 'variant-grid':
         this.#showGrid('variantGrid', snapshot.productIndex);
+        break;
+      case 'platform-grid':
+        this.refs.platformGrid?.removeAttribute('data-state');
         break;
       case 'configurator':
         this.#showConfigurator();
@@ -150,8 +159,27 @@ class SpaceBuilder extends Component {
       this.refs.selectedPrice.textContent = seatingVariant.priceFormatted;
     }
 
+    // Platform section visibility
+    const platformSection = this.refs.platformSection;
+    if (platformSection) {
+      platformSection.hidden = !this.#platformAdded;
+    }
+    if (this.#platformAdded && this.#data.platform) {
+      if (this.refs.platformSelectedTitle) {
+        this.refs.platformSelectedTitle.textContent = this.#data.platform.title || '';
+      }
+      if (this.refs.platformSelectedPrice) {
+        this.refs.platformSelectedPrice.textContent = this.#data.platform.priceFormatted || '';
+      }
+    }
+
     // Aroma section visibility
     const hasAroma = this.#selectedAromaVariantIndex >= 0;
+    const continueAromaBtn = this.refs.continueToAroma;
+    if (continueAromaBtn) {
+      continueAromaBtn.hidden = hasAroma || this.#aromaSkipped;
+    }
+
     const aromaSection = this.refs.aromaSection;
     if (aromaSection) {
       aromaSection.hidden = !hasAroma;
@@ -161,7 +189,6 @@ class SpaceBuilder extends Component {
       const aromaProduct = this.#data.aroma?.[this.#selectedAromaProductIndex];
       const aromaVariant = aromaProduct?.variants?.[this.#selectedAromaVariantIndex];
 
-      // Update aroma compact options
       const aromaOptions = this.refs.aromaCompactOption;
       if (Array.isArray(aromaOptions)) {
         aromaOptions.forEach((btn, i) => {
@@ -173,7 +200,6 @@ class SpaceBuilder extends Component {
         });
       }
 
-      // Update aroma text
       if (this.refs.aromaSelectedTitle) {
         this.refs.aromaSelectedTitle.textContent = aromaProduct?.title || '';
       }
@@ -196,22 +222,23 @@ class SpaceBuilder extends Component {
       let incenseProduct, incenseVariant, priceText;
 
       if (this.#incenseIncluded) {
-        // Included incense from palo santo set — show first variant, price as "Included"
         incenseProduct = this.#data.includedIncense;
         incenseVariant = incenseProduct?.variants?.[0];
         priceText = 'Included';
       } else {
-        // User-selected incense
         incenseProduct = this.#data.incense;
         incenseVariant = incenseProduct?.variants?.[this.#selectedIncenseVariantIndex];
         priceText = incenseVariant?.priceFormatted || '';
       }
 
-      // Update incense compact option image
       const incenseBtn = this.refs.incenseCompactOption;
-      if (incenseBtn && incenseVariant?.imageUrl) {
-        const img = incenseBtn.querySelector('img');
-        if (img) img.src = incenseVariant.imageUrl;
+      if (incenseBtn) {
+        if (incenseVariant?.imageUrl) {
+          const img = incenseBtn.querySelector('img');
+          if (img) img.src = incenseVariant.imageUrl;
+        }
+        incenseBtn.disabled = this.#incenseIncluded;
+        incenseBtn.style.cursor = this.#incenseIncluded ? 'default' : '';
       }
 
       if (this.refs.incenseSelectedTitle) {
@@ -225,12 +252,6 @@ class SpaceBuilder extends Component {
       }
     }
 
-    // Show/hide "Continue to Aroma" button
-    const continueBtn = this.refs.continueToAroma;
-    if (continueBtn) {
-      continueBtn.hidden = hasAroma;
-    }
-
     // Update total price
     this.#updateTotal();
   }
@@ -239,7 +260,6 @@ class SpaceBuilder extends Component {
   #updateTotal() {
     const ready = this.#isReady();
 
-    // Show/hide total section
     if (this.refs.totalSection) {
       this.refs.totalSection.hidden = !ready;
     }
@@ -251,12 +271,15 @@ class SpaceBuilder extends Component {
     const seatingVariant = this.#data.seating?.[this.#selectedProductIndex]?.variants?.[this.#selectedVariantIndex];
     if (seatingVariant) total += seatingVariant.price;
 
+    if (this.#platformAdded && this.#data.platform) {
+      total += this.#data.platform.price;
+    }
+
     if (this.#selectedAromaVariantIndex >= 0) {
       const aromaVariant = this.#data.aroma?.[this.#selectedAromaProductIndex]?.variants?.[this.#selectedAromaVariantIndex];
       if (aromaVariant) total += aromaVariant.price;
     }
 
-    // Only add incense price if user-selected (not included free)
     if (this.#selectedIncenseVariantIndex >= 0 && !this.#incenseIncluded) {
       const incenseVariant = this.#data.incense?.variants?.[this.#selectedIncenseVariantIndex];
       if (incenseVariant) total += incenseVariant.price;
@@ -269,7 +292,9 @@ class SpaceBuilder extends Component {
 
   /** Check if all required selections are made */
   #isReady() {
-    return this.#selectedVariantIndex >= 0 && (this.#selectedAromaVariantIndex >= 0 || this.#aromaSkipped);
+    const seatingDone = this.#selectedVariantIndex >= 0;
+    const aromaDone = this.#selectedAromaVariantIndex >= 0 || this.#aromaSkipped;
+    return seatingDone && aromaDone;
   }
 
   /** Format cents as currency */
@@ -291,7 +316,7 @@ class SpaceBuilder extends Component {
     this.#showGrid('variantGrid', idx);
   }
 
-  /** Pick a seating variant → show the configurator */
+  /** Pick a seating variant → show platform grid */
   selectVariant({ product, variant }, event) {
     const productIdx = Number(product);
     const variantIdx = Number(variant);
@@ -303,6 +328,28 @@ class SpaceBuilder extends Component {
 
     this.#selectedProductIndex = productIdx;
     this.#selectedVariantIndex = variantIdx;
+    this.#state = 'platform-grid';
+
+    this.refs.platformGrid?.removeAttribute('data-state');
+  }
+
+  /** Add platform → go to configurator */
+  addPlatform() {
+    this.#pushHistory();
+    this.#hideAll();
+
+    this.#platformAdded = true;
+    this.#state = 'configurator';
+
+    this.#showConfigurator();
+  }
+
+  /** Skip platform → go to configurator */
+  skipPlatform() {
+    this.#pushHistory();
+    this.#hideAll();
+
+    this.#platformAdded = false;
     this.#state = 'configurator';
 
     this.#showConfigurator();
@@ -356,18 +403,27 @@ class SpaceBuilder extends Component {
     this.#selectedAromaProductIndex = productIdx;
     this.#selectedAromaVariantIndex = variantIdx;
 
-    // If first aroma product (block incense holder), show incense scent selection
     if (productIdx === 0 && this.#data.incense) {
       this.#incenseIncluded = false;
       this.#state = 'incense-variant-grid';
       this.#showGrid('incenseVariantGrid', 0);
     } else {
-      // Second aroma product (palo santo set) — include free incense
       this.#incenseIncluded = this.#data.includedIncense != null;
       this.#selectedIncenseVariantIndex = -1;
       this.#state = 'configurator';
       this.#showConfigurator();
     }
+  }
+
+  /** Re-select incense scent from configurator */
+  changeIncense() {
+    if (!this.#data.incense || this.#incenseIncluded) return;
+
+    this.#pushHistory();
+    this.#hideAll();
+
+    this.#state = 'incense-variant-grid';
+    this.#showGrid('incenseVariantGrid', 0);
   }
 
   /** Pick an incense scent → return to configurator */
@@ -394,6 +450,11 @@ class SpaceBuilder extends Component {
     const seatingVariant = this.#data.seating?.[this.#selectedProductIndex]?.variants?.[this.#selectedVariantIndex];
     if (seatingVariant) items.push({ id: seatingVariant.id, quantity: 1 });
 
+    if (this.#platformAdded && this.#data.platform) {
+      const platformVariant = this.#data.platform.variants?.[0];
+      if (platformVariant) items.push({ id: platformVariant.id, quantity: 1 });
+    }
+
     if (this.#selectedAromaVariantIndex >= 0) {
       const aromaVariant = this.#data.aroma?.[this.#selectedAromaProductIndex]?.variants?.[this.#selectedAromaVariantIndex];
       if (aromaVariant) items.push({ id: aromaVariant.id, quantity: 1 });
@@ -415,7 +476,6 @@ class SpaceBuilder extends Component {
 
       window.location.href = (window.Theme?.routes?.root || '/') + 'checkout';
     } catch {
-      // Fallback: redirect to cart page
       window.location.href = (window.Theme?.routes?.root || '/') + 'cart';
     }
   }

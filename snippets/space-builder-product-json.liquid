@@ -22,7 +22,7 @@
       {%- if needs_variant_comma -%},{%- endif -%}
       {
         "id": {{ variant.id | json }},
-        "name": {{ variant.title | json }},
+        "name": {% if variant.title == 'Default Title' %}""{% else %}{{ variant.title | json }}{% endif %},
         "price": {{ variant.price | json }},
         "priceFormatted": {{ variant.price | money | json }},
         "imageUrl": {% if variant.featured_media %}{{ variant.featured_media.preview_image | image_url: width: 1200 | json }}{% else %}{{ product_resource.featured_image | image_url: width: 1200 | json }}{% endif %}

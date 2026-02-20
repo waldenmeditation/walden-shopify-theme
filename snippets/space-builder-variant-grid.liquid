@@ -57,7 +57,9 @@
             >
           {%- endif -%}
         </div>
-        <div class="space-builder__grid-card-title">{{ variant.title }}</div>
+        {%- unless variant.title == 'Default Title' -%}
+          <div class="space-builder__grid-card-title">{{ variant.title }}</div>
+        {%- endunless -%}
       </div>
       {%- assign variant_idx = variant_idx | plus: 1 -%}
     {%- endfor -%}
