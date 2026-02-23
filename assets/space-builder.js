@@ -387,6 +387,12 @@ class SpaceBuilder extends Component {
 
     // Update total price
     this.#updateTotal();
+
+    // Auto-scroll the config panel to reveal the latest section
+    requestAnimationFrame(() => {
+      const scroll = this.refs.configScroll;
+      if (scroll) scroll.scrollTo({ top: scroll.scrollHeight, behavior: 'smooth' });
+    });
   }
 
   /** Calculate and display the total price */
