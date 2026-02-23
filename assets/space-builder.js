@@ -63,6 +63,8 @@ class SpaceBuilder extends Component {
         this.#state = 'configurator';
         this.#hideAll();
         this.#showConfigurator();
+        const save = this.querySelector('.space-builder__save');
+        if (save) save.hidden = true;
       }
     }
   }
