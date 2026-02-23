@@ -388,6 +388,8 @@
   assign aroma_subheading = section.settings.aroma_subheading
   assign home_1 = section.settings.home_product_1
   assign home_2 = section.settings.home_product_2
+  assign home_3 = section.settings.home_product_3
+  assign home_4 = section.settings.home_product_4
 -%}
 
 <space-builder-component class="space-builder color-{{ section.settings.color_scheme }}">
@@ -562,6 +564,28 @@
           </div>
           <div class="space-builder__grid-card-title">{{ home_2.title }}</div>
         </div>
+        {%- assign idx = idx | plus: 1 -%}
+      {%- endif -%}
+      {%- if home_3 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectHome?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if home_3.featured_image != blank -%}
+              <img src="{{ home_3.featured_image | image_url: width: 600 }}" alt="{{ home_3.featured_image.alt | escape }}" width="600" height="{{ 600 | divided_by: home_3.featured_image.aspect_ratio | round }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ home_3.title }}</div>
+        </div>
+        {%- assign idx = idx | plus: 1 -%}
+      {%- endif -%}
+      {%- if home_4 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectHome?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if home_4.featured_image != blank -%}
+              <img src="{{ home_4.featured_image | image_url: width: 600 }}" alt="{{ home_4.featured_image.alt | escape }}" width="600" height="{{ 600 | divided_by: home_4.featured_image.aspect_ratio | round }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ home_4.title }}</div>
+        </div>
       {%- endif -%}
     </div>
   </div>
@@ -569,6 +593,8 @@
   {%- comment -%} Home Variant Grids {%- endcomment -%}
   {% render 'space-builder-variant-grid', product_resource: home_1, product_index: 0, description: '', ref_name: 'homeVariantGrid', click_method: 'selectHomeVariant' %}
   {% render 'space-builder-variant-grid', product_resource: home_2, product_index: 1, description: '', ref_name: 'homeVariantGrid', click_method: 'selectHomeVariant' %}
+  {% render 'space-builder-variant-grid', product_resource: home_3, product_index: 2, description: '', ref_name: 'homeVariantGrid', click_method: 'selectHomeVariant' %}
+  {% render 'space-builder-variant-grid', product_resource: home_4, product_index: 3, description: '', ref_name: 'homeVariantGrid', click_method: 'selectHomeVariant' %}
 
   {%- comment -%} Configurator (hidden initially) {%- endcomment -%}
   <div class="space-builder__configurator" ref="configurator" data-state="hidden">
@@ -766,6 +792,26 @@
               <span class="space-builder__compact-label" ref="homeCompactLabel[]"></span>
             </button>
           {%- endif -%}
+          {%- if home_3 != blank -%}
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_3.title | escape }}">
+              <div class="space-builder__compact-option-image">
+                {%- if home_3.featured_image != blank -%}
+                  <img src="{{ home_3.featured_image | image_url: width: 128 }}" alt="{{ home_3.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="homeCompactLabel[]"></span>
+            </button>
+          {%- endif -%}
+          {%- if home_4 != blank -%}
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_4.title | escape }}">
+              <div class="space-builder__compact-option-image">
+                {%- if home_4.featured_image != blank -%}
+                  <img src="{{ home_4.featured_image | image_url: width: 128 }}" alt="{{ home_4.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="homeCompactLabel[]"></span>
+            </button>
+          {%- endif -%}
           <button class="space-builder__compact-option space-builder__compact-option--remove" ref="homeSkipOption" on:click="/removeHome" data-selected="false" aria-label="No home product">
             <div class="space-builder__compact-option-image">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2"/><line x1="34" y1="14" x2="14" y2="34" stroke="currentColor" stroke-width="2"/></svg>
@@ -840,6 +886,16 @@
         {%- if home_2 != blank -%}
           {%- if needs_comma -%},{%- endif -%}
           {% render 'space-builder-product-json', product_resource: home_2 %}
+          {%- assign needs_comma = true -%}
+        {%- endif -%}
+        {%- if home_3 != blank -%}
+          {%- if needs_comma -%},{%- endif -%}
+          {% render 'space-builder-product-json', product_resource: home_3 %}
+          {%- assign needs_comma = true -%}
+        {%- endif -%}
+        {%- if home_4 != blank -%}
+          {%- if needs_comma -%},{%- endif -%}
+          {% render 'space-builder-product-json', product_resource: home_4 %}
         {%- endif -%}
       ]
     }
@@ -1001,6 +1057,16 @@
       "type": "product",
       "id": "home_product_2",
       "label": "Home option 2"
+    },
+    {
+      "type": "product",
+      "id": "home_product_3",
+      "label": "Home option 3"
+    },
+    {
+      "type": "product",
+      "id": "home_product_4",
+      "label": "Home option 4"
     }
   ]
 }
