@@ -566,6 +566,10 @@
     </div>
   </div>
 
+  {%- comment -%} Home Variant Grids {%- endcomment -%}
+  {% render 'space-builder-variant-grid', product_resource: home_1, product_index: 0, description: '', ref_name: 'homeVariantGrid', click_method: 'selectHomeVariant' %}
+  {% render 'space-builder-variant-grid', product_resource: home_2, product_index: 1, description: '', ref_name: 'homeVariantGrid', click_method: 'selectHomeVariant' %}
+
   {%- comment -%} Configurator (hidden initially) {%- endcomment -%}
   <div class="space-builder__configurator" ref="configurator" data-state="hidden">
 
@@ -771,6 +775,7 @@
         </div>
         <div class="space-builder__selected-info">
           <p class="space-builder__selected-title" ref="homeSelectedTitle"></p>
+          <p class="space-builder__selected-variant-name" ref="homeSelectedVariantName"></p>
           <p class="space-builder__selected-price" ref="homeSelectedPrice"></p>
         </div>
       </div>
