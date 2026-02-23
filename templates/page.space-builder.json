@@ -32,7 +32,11 @@
         "aroma_description_2": "Choose your style",
         "incense_product": "australian-sandalwood-incense-sticks",
         "incense_description": "Choose your scent",
-        "included_incense_product": "palo-santo-sticks"
+        "included_incense_product": "palo-santo-sticks",
+        "home_heading": "Add a home product?",
+        "home_subheading": "Complete your space",
+        "home_product_1": "salt-lamp",
+        "home_product_2": "gong"
       }
     }
   },
