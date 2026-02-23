@@ -2,7 +2,7 @@ import { Component } from '@theme/component';
 
 class SpaceBuilder extends Component {
   #state = 'product-grid';
-  #data = { seating: [], aroma: [], platform: null, incense: null };
+  #data = { seating: [], aroma: [], platform: null, incense: null, home: [] };
   #history = [];
 
   // Seating selections
@@ -25,13 +25,20 @@ class SpaceBuilder extends Component {
   // Whether the incense is included free (palo santo set)
   #incenseIncluded = false;
 
+  // Incense skipped
+  #incenseSkipped = false;
+
+  // Home selection
+  #selectedHomeProductIndex = -1;
+  #homeSkipped = false;
+
   connectedCallback() {
     super.connectedCallback();
 
     try {
       this.#data = JSON.parse(this.refs.productData?.textContent || '{}');
     } catch {
-      this.#data = { seating: [], aroma: [], platform: null, incense: null };
+      this.#data = { seating: [], aroma: [], platform: null, incense: null, home: [] };
     }
   }
 
@@ -47,6 +54,9 @@ class SpaceBuilder extends Component {
       incenseVariantIndex: this.#selectedIncenseVariantIndex,
       aromaSkipped: this.#aromaSkipped,
       incenseIncluded: this.#incenseIncluded,
+      incenseSkipped: this.#incenseSkipped,
+      homeProductIndex: this.#selectedHomeProductIndex,
+      homeSkipped: this.#homeSkipped,
     });
   }
 
@@ -55,6 +65,7 @@ class SpaceBuilder extends Component {
     this.refs.selectionGrid?.setAttribute('data-state', 'hidden');
     this.refs.platformGrid?.setAttribute('data-state', 'hidden');
     this.refs.aromaGrid?.setAttribute('data-state', 'hidden');
+    this.refs.homeGrid?.setAttribute('data-state', 'hidden');
     this.refs.configurator?.setAttribute('data-state', 'hidden');
 
     for (const key of ['variantGrid', 'aromaVariantGrid', 'incenseVariantGrid']) {
@@ -87,6 +98,9 @@ class SpaceBuilder extends Component {
     this.#selectedIncenseVariantIndex = snapshot.incenseVariantIndex;
     this.#aromaSkipped = snapshot.aromaSkipped;
     this.#incenseIncluded = snapshot.incenseIncluded;
+    this.#incenseSkipped = snapshot.incenseSkipped;
+    this.#selectedHomeProductIndex = snapshot.homeProductIndex;
+    this.#homeSkipped = snapshot.homeSkipped;
 
     switch (snapshot.state) {
       case 'product-grid':
@@ -106,6 +120,9 @@ class SpaceBuilder extends Component {
         break;
       case 'aroma-variant-grid':
         this.#showGrid('aromaVariantGrid', snapshot.aromaProductIndex);
+        break;
+      case 'home-grid':
+        this.refs.homeGrid?.removeAttribute('data-state');
         break;
       case 'incense-variant-grid':
         this.#showGrid('incenseVariantGrid', 0);
@@ -136,15 +153,22 @@ class SpaceBuilder extends Component {
       });
     }
 
-    // Update seating compact option highlights and image
+    // Update seating compact option highlights, image, and labels
     const options = this.refs.compactOption;
+    const labels = this.refs.compactLabel;
     if (Array.isArray(options)) {
       options.forEach((btn, i) => {
-        btn.setAttribute('data-selected', String(i === this.#selectedProductIndex));
-        if (i === this.#selectedProductIndex && seatingVariant.imageUrl) {
+        const selected = i === this.#selectedProductIndex;
+        btn.setAttribute('data-selected', String(selected));
+        if (selected && seatingVariant.imageUrl) {
           const img = btn.querySelector('img');
           if (img) img.src = seatingVariant.imageUrl;
         }
+      });
+    }
+    if (Array.isArray(labels)) {
+      labels.forEach((label, i) => {
+        label.textContent = i === this.#selectedProductIndex ? 'Edit' : 'Swap';
       });
     }
 
@@ -159,10 +183,18 @@ class SpaceBuilder extends Component {
       this.refs.selectedPrice.textContent = seatingVariant.priceFormatted;
     }
 
-    // Platform section visibility
+    // Platform section — always visible once in configurator
     const platformSection = this.refs.platformSection;
     if (platformSection) {
-      platformSection.hidden = !this.#platformAdded;
+      platformSection.hidden = false;
+    }
+    const platformCompact = this.refs.platformCompactOption;
+    if (platformCompact) {
+      platformCompact.setAttribute('data-selected', String(this.#platformAdded));
+    }
+    const platformSkip = this.refs.platformSkipOption;
+    if (platformSkip) {
+      platformSkip.setAttribute('data-selected', String(!this.#platformAdded));
     }
     if (this.#platformAdded && this.#data.platform) {
       if (this.refs.platformSelectedTitle) {
@@ -171,51 +203,69 @@ class SpaceBuilder extends Component {
       if (this.refs.platformSelectedPrice) {
         this.refs.platformSelectedPrice.textContent = this.#data.platform.priceFormatted || '';
       }
+    } else {
+      if (this.refs.platformSelectedTitle) {
+        this.refs.platformSelectedTitle.textContent = '';
+      }
+      if (this.refs.platformSelectedPrice) {
+        this.refs.platformSelectedPrice.textContent = '';
+      }
     }
 
-    // Aroma section visibility
+    // Aroma section
     const hasAroma = this.#selectedAromaVariantIndex >= 0;
+    const aromaVisible = hasAroma || this.#aromaSkipped;
     const continueAromaBtn = this.refs.continueToAroma;
     if (continueAromaBtn) {
-      continueAromaBtn.hidden = hasAroma || this.#aromaSkipped;
+      continueAromaBtn.hidden = aromaVisible;
     }
 
     const aromaSection = this.refs.aromaSection;
     if (aromaSection) {
-      aromaSection.hidden = !hasAroma;
+      aromaSection.hidden = !aromaVisible;
     }
 
-    if (hasAroma) {
-      const aromaProduct = this.#data.aroma?.[this.#selectedAromaProductIndex];
-      const aromaVariant = aromaProduct?.variants?.[this.#selectedAromaVariantIndex];
+    const aromaProduct = hasAroma ? this.#data.aroma?.[this.#selectedAromaProductIndex] : null;
+    const aromaVariant = hasAroma ? aromaProduct?.variants?.[this.#selectedAromaVariantIndex] : null;
 
-      const aromaOptions = this.refs.aromaCompactOption;
-      if (Array.isArray(aromaOptions)) {
-        aromaOptions.forEach((btn, i) => {
-          btn.setAttribute('data-selected', String(i === this.#selectedAromaProductIndex));
-          if (i === this.#selectedAromaProductIndex && aromaVariant?.imageUrl) {
-            const img = btn.querySelector('img');
-            if (img) img.src = aromaVariant.imageUrl;
-          }
-        });
-      }
-
-      if (this.refs.aromaSelectedTitle) {
-        this.refs.aromaSelectedTitle.textContent = aromaProduct?.title || '';
-      }
-      if (this.refs.aromaSelectedVariantName) {
-        this.refs.aromaSelectedVariantName.textContent = aromaVariant?.name || '';
-      }
-      if (this.refs.aromaSelectedPrice) {
-        this.refs.aromaSelectedPrice.textContent = aromaVariant?.priceFormatted || '';
-      }
+    const aromaOptions = this.refs.aromaCompactOption;
+    const aromaLabels = this.refs.aromaCompactLabel;
+    if (Array.isArray(aromaOptions)) {
+      aromaOptions.forEach((btn, i) => {
+        const selected = hasAroma && i === this.#selectedAromaProductIndex;
+        btn.setAttribute('data-selected', String(selected));
+        if (selected && aromaVariant?.imageUrl) {
+          const img = btn.querySelector('img');
+          if (img) img.src = aromaVariant.imageUrl;
+        }
+      });
+    }
+    if (Array.isArray(aromaLabels)) {
+      aromaLabels.forEach((label, i) => {
+        label.textContent = hasAroma && i === this.#selectedAromaProductIndex ? 'Edit' : 'Swap';
+      });
+    }
+    const aromaSkipBtn = this.refs.aromaSkipOption;
+    if (aromaSkipBtn) {
+      aromaSkipBtn.setAttribute('data-selected', String(this.#aromaSkipped && !hasAroma));
     }
 
-    // Incense section visibility
+    if (this.refs.aromaSelectedTitle) {
+      this.refs.aromaSelectedTitle.textContent = aromaProduct?.title || '';
+    }
+    if (this.refs.aromaSelectedVariantName) {
+      this.refs.aromaSelectedVariantName.textContent = aromaVariant?.name || '';
+    }
+    if (this.refs.aromaSelectedPrice) {
+      this.refs.aromaSelectedPrice.textContent = aromaVariant?.priceFormatted || '';
+    }
+
+    // Incense section
     const hasIncense = this.#selectedIncenseVariantIndex >= 0 || this.#incenseIncluded;
+    const incenseVisible = hasIncense || this.#incenseSkipped;
     const incenseSection = this.refs.incenseSection;
     if (incenseSection) {
-      incenseSection.hidden = !hasIncense;
+      incenseSection.hidden = !incenseVisible;
     }
 
     if (hasIncense) {
@@ -233,12 +283,22 @@ class SpaceBuilder extends Component {
 
       const incenseBtn = this.refs.incenseCompactOption;
       if (incenseBtn) {
+        incenseBtn.setAttribute('data-selected', 'true');
         if (incenseVariant?.imageUrl) {
           const img = incenseBtn.querySelector('img');
           if (img) img.src = incenseVariant.imageUrl;
         }
         incenseBtn.disabled = this.#incenseIncluded;
         incenseBtn.style.cursor = this.#incenseIncluded ? 'default' : '';
+      }
+      if (this.refs.incenseCompactLabel) {
+        this.refs.incenseCompactLabel.textContent = this.#incenseIncluded ? '' : 'Edit';
+      }
+
+      const incenseSkipBtn = this.refs.incenseSkipOption;
+      if (incenseSkipBtn) {
+        incenseSkipBtn.setAttribute('data-selected', 'false');
+        incenseSkipBtn.hidden = this.#incenseIncluded;
       }
 
       if (this.refs.incenseSelectedTitle) {
@@ -250,6 +310,68 @@ class SpaceBuilder extends Component {
       if (this.refs.incenseSelectedPrice) {
         this.refs.incenseSelectedPrice.textContent = priceText;
       }
+    } else if (this.#incenseSkipped) {
+      const incenseBtn = this.refs.incenseCompactOption;
+      if (incenseBtn) {
+        incenseBtn.setAttribute('data-selected', 'false');
+      }
+      const incenseSkipBtn = this.refs.incenseSkipOption;
+      if (incenseSkipBtn) {
+        incenseSkipBtn.setAttribute('data-selected', 'true');
+      }
+      if (this.refs.incenseSelectedTitle) {
+        this.refs.incenseSelectedTitle.textContent = '';
+      }
+      if (this.refs.incenseSelectedVariantName) {
+        this.refs.incenseSelectedVariantName.textContent = '';
+      }
+      if (this.refs.incenseSelectedPrice) {
+        this.refs.incenseSelectedPrice.textContent = '';
+      }
+    }
+
+    // Home section
+    const hasHome = this.#selectedHomeProductIndex >= 0;
+    const homeVisible = hasHome || this.#homeSkipped;
+    const continueHomeBtn = this.refs.continueToHome;
+    if (continueHomeBtn) {
+      continueHomeBtn.hidden = !aromaVisible || homeVisible;
+    }
+
+    const homeSection = this.refs.homeSection;
+    if (homeSection) {
+      homeSection.hidden = !homeVisible;
+    }
+
+    const homeProduct = hasHome ? this.#data.home?.[this.#selectedHomeProductIndex] : null;
+
+    const homeOptions = this.refs.homeCompactOption;
+    const homeLabels = this.refs.homeCompactLabel;
+    if (Array.isArray(homeOptions)) {
+      homeOptions.forEach((btn, i) => {
+        const selected = hasHome && i === this.#selectedHomeProductIndex;
+        btn.setAttribute('data-selected', String(selected));
+        if (selected && homeProduct?.imageUrl) {
+          const img = btn.querySelector('img');
+          if (img) img.src = homeProduct.imageUrl;
+        }
+      });
+    }
+    if (Array.isArray(homeLabels)) {
+      homeLabels.forEach((label, i) => {
+        label.textContent = hasHome && i === this.#selectedHomeProductIndex ? 'Edit' : 'Swap';
+      });
+    }
+    const homeSkipBtn = this.refs.homeSkipOption;
+    if (homeSkipBtn) {
+      homeSkipBtn.setAttribute('data-selected', String(this.#homeSkipped && !hasHome));
+    }
+
+    if (this.refs.homeSelectedTitle) {
+      this.refs.homeSelectedTitle.textContent = homeProduct?.title || '';
+    }
+    if (this.refs.homeSelectedPrice) {
+      this.refs.homeSelectedPrice.textContent = homeProduct?.priceFormatted || '';
     }
 
     // Update total price
@@ -285,6 +407,11 @@ class SpaceBuilder extends Component {
       if (incenseVariant) total += incenseVariant.price;
     }
 
+    if (this.#selectedHomeProductIndex >= 0) {
+      const homeProduct = this.#data.home?.[this.#selectedHomeProductIndex];
+      if (homeProduct) total += homeProduct.price;
+    }
+
     if (this.refs.totalPrice) {
       this.refs.totalPrice.textContent = this.#formatMoney(total);
     }
@@ -294,7 +421,8 @@ class SpaceBuilder extends Component {
   #isReady() {
     const seatingDone = this.#selectedVariantIndex >= 0;
     const aromaDone = this.#selectedAromaVariantIndex >= 0 || this.#aromaSkipped;
-    return seatingDone && aromaDone;
+    const homeDone = this.#selectedHomeProductIndex >= 0 || this.#homeSkipped;
+    return seatingDone && aromaDone && homeDone;
   }
 
   /** Format cents as currency */
@@ -355,6 +483,18 @@ class SpaceBuilder extends Component {
     this.#showConfigurator();
   }
 
+  /** Re-add platform from configurator compact option */
+  addPlatformFromConfig() {
+    this.#platformAdded = true;
+    this.#showConfigurator();
+  }
+
+  /** Deselect platform (select skip option) */
+  removePlatform() {
+    this.#platformAdded = false;
+    this.#showConfigurator();
+  }
+
   /** Continue to aroma selection → show aroma product grid */
   continueToAroma() {
     this.#pushHistory();
@@ -364,16 +504,29 @@ class SpaceBuilder extends Component {
     this.refs.aromaGrid?.removeAttribute('data-state');
   }
 
-  /** Skip aroma selection → activate checkout */
+  /** Skip aroma selection → select the X option */
   skipAroma() {
     this.#aromaSkipped = true;
+    this.#showConfigurator();
+  }
 
-    const continueBtn = this.refs.continueToAroma;
-    if (continueBtn) {
-      continueBtn.hidden = true;
-    }
+  /** Deselect aroma (select skip option) */
+  removeAroma() {
+    this.#selectedAromaProductIndex = -1;
+    this.#selectedAromaVariantIndex = -1;
+    this.#selectedIncenseVariantIndex = -1;
+    this.#incenseIncluded = false;
+    this.#incenseSkipped = false;
+    this.#aromaSkipped = true;
+    this.#showConfigurator();
+  }
 
-    this.#updateTotal();
+  /** Deselect incense (select skip option) */
+  removeIncense() {
+    if (this.#incenseIncluded) return;
+    this.#selectedIncenseVariantIndex = -1;
+    this.#incenseSkipped = true;
+    this.#showConfigurator();
   }
 
   /** Pick an aroma product → show its variant grid */
@@ -441,6 +594,43 @@ class SpaceBuilder extends Component {
     this.#showConfigurator();
   }
 
+  /** Continue to home product selection → show home grid */
+  continueToHome() {
+    this.#pushHistory();
+    this.#hideAll();
+
+    this.#state = 'home-grid';
+    this.refs.homeGrid?.removeAttribute('data-state');
+  }
+
+  /** Skip home selection → select the X option */
+  skipHome() {
+    this.#homeSkipped = true;
+    this.#showConfigurator();
+  }
+
+  /** Pick a home product → return to configurator */
+  selectHome({ index }, event) {
+    const idx = Number(index);
+    if (isNaN(idx) || idx < 0 || idx >= this.#data.home.length) return;
+
+    this.#pushHistory();
+    this.#hideAll();
+
+    this.#selectedHomeProductIndex = idx;
+    this.#homeSkipped = false;
+    this.#state = 'configurator';
+
+    this.#showConfigurator();
+  }
+
+  /** Deselect home product (select skip option) */
+  removeHome() {
+    this.#selectedHomeProductIndex = -1;
+    this.#homeSkipped = true;
+    this.#showConfigurator();
+  }
+
   /** Add all selected items to cart and redirect to checkout */
   async checkout() {
     if (!this.#isReady()) return;
@@ -463,6 +653,12 @@ class SpaceBuilder extends Component {
     if (this.#selectedIncenseVariantIndex >= 0 && !this.#incenseIncluded) {
       const incenseVariant = this.#data.incense?.variants?.[this.#selectedIncenseVariantIndex];
       if (incenseVariant) items.push({ id: incenseVariant.id, quantity: 1 });
+    }
+
+    if (this.#selectedHomeProductIndex >= 0) {
+      const homeProduct = this.#data.home?.[this.#selectedHomeProductIndex];
+      const homeVariant = homeProduct?.variants?.[0];
+      if (homeVariant) items.push({ id: homeVariant.id, quantity: 1 });
     }
 
     if (items.length === 0) return;

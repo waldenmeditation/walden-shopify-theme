@@ -178,7 +178,7 @@
 
   .space-builder__compact-option {
     width: 64px;
-    height: 64px;
+    height: auto;
     border: 2px solid transparent;
     border-radius: 6px;
     cursor: pointer;
@@ -186,16 +186,42 @@
     padding: 0;
     background: #EEEEEE;
     transition: border-color 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .space-builder__compact-option[data-selected="true"] {
     border-color: #3E3E3D;
   }
 
-  .space-builder__compact-option img {
+  .space-builder__compact-option-image {
+    width: 100%;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .space-builder__compact-option-image img {
     width: 100%;
     height: 100%;
     object-fit: contain;
+  }
+
+  .space-builder__compact-label {
+    font-size: 0.5625rem;
+    font-family: 'Graphik', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    padding: 2px 0 4px;
+    color: #666;
+  }
+
+  .space-builder__compact-option--remove .space-builder__compact-option-image svg {
+    width: 24px;
+    height: 24px;
+    color: #999;
   }
 
   .space-builder__selected-info {
@@ -360,6 +386,8 @@
   assign included_incense = section.settings.included_incense_product
   assign aroma_heading = section.settings.aroma_heading
   assign aroma_subheading = section.settings.aroma_subheading
+  assign home_1 = section.settings.home_product_1
+  assign home_2 = section.settings.home_product_2
 -%}
 
 <space-builder-component class="space-builder color-{{ section.settings.color_scheme }}">
@@ -505,6 +533,39 @@
   {%- comment -%} Incense Scent Grid (shown after selecting incense holder) {%- endcomment -%}
   {% render 'space-builder-variant-grid', product_resource: incense, product_index: 0, description: section.settings.incense_description, ref_name: 'incenseVariantGrid', click_method: 'selectIncense' %}
 
+  {%- comment -%} Home Product Grid (hidden initially) {%- endcomment -%}
+  <div class="space-builder__grid" ref="homeGrid" data-state="hidden">
+    <button class="space-builder__back" on:click="/goBack" aria-label="Back">Back</button>
+    <div class="space-builder__grid-header">
+      <h1>{{ section.settings.home_heading }}</h1>
+      <p>{{ section.settings.home_subheading }}</p>
+    </div>
+    <div class="space-builder__grid-items space-builder__grid-items--few">
+      {%- assign idx = 0 -%}
+      {%- if home_1 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectHome?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if home_1.featured_image != blank -%}
+              <img src="{{ home_1.featured_image | image_url: width: 600 }}" alt="{{ home_1.featured_image.alt | escape }}" width="600" height="{{ 600 | divided_by: home_1.featured_image.aspect_ratio | round }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ home_1.title }}</div>
+        </div>
+        {%- assign idx = idx | plus: 1 -%}
+      {%- endif -%}
+      {%- if home_2 != blank -%}
+        <div class="space-builder__grid-card" on:click="/selectHome?index={{ idx }}">
+          <div class="space-builder__grid-card-image">
+            {%- if home_2.featured_image != blank -%}
+              <img src="{{ home_2.featured_image | image_url: width: 600 }}" alt="{{ home_2.featured_image.alt | escape }}" width="600" height="{{ 600 | divided_by: home_2.featured_image.aspect_ratio | round }}" loading="lazy">
+            {%- endif -%}
+          </div>
+          <div class="space-builder__grid-card-title">{{ home_2.title }}</div>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
   {%- comment -%} Configurator (hidden initially) {%- endcomment -%}
   <div class="space-builder__configurator" ref="configurator" data-state="hidden">
 
@@ -536,25 +597,34 @@
           {%- assign idx = 0 -%}
           {%- if seat_1 != blank -%}
             <button class="space-builder__compact-option" ref="compactOption[]" on:click="/selectSeating?index={{ idx }}" data-selected="false" aria-label="Select {{ seat_1.title | escape }}">
-              {%- if seat_1.featured_image != blank -%}
-                <img src="{{ seat_1.featured_image | image_url: width: 128 }}" alt="{{ seat_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
-              {%- endif -%}
+              <div class="space-builder__compact-option-image">
+                {%- if seat_1.featured_image != blank -%}
+                  <img src="{{ seat_1.featured_image | image_url: width: 128 }}" alt="{{ seat_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="compactLabel[]"></span>
             </button>
             {%- assign idx = idx | plus: 1 -%}
           {%- endif -%}
           {%- if seat_2 != blank -%}
             <button class="space-builder__compact-option" ref="compactOption[]" on:click="/selectSeating?index={{ idx }}" data-selected="false" aria-label="Select {{ seat_2.title | escape }}">
-              {%- if seat_2.featured_image != blank -%}
-                <img src="{{ seat_2.featured_image | image_url: width: 128 }}" alt="{{ seat_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
-              {%- endif -%}
+              <div class="space-builder__compact-option-image">
+                {%- if seat_2.featured_image != blank -%}
+                  <img src="{{ seat_2.featured_image | image_url: width: 128 }}" alt="{{ seat_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="compactLabel[]"></span>
             </button>
             {%- assign idx = idx | plus: 1 -%}
           {%- endif -%}
           {%- if seat_3 != blank -%}
             <button class="space-builder__compact-option" ref="compactOption[]" on:click="/selectSeating?index={{ idx }}" data-selected="false" aria-label="Select {{ seat_3.title | escape }}">
-              {%- if seat_3.featured_image != blank -%}
-                <img src="{{ seat_3.featured_image | image_url: width: 128 }}" alt="{{ seat_3.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
-              {%- endif -%}
+              <div class="space-builder__compact-option-image">
+                {%- if seat_3.featured_image != blank -%}
+                  <img src="{{ seat_3.featured_image | image_url: width: 128 }}" alt="{{ seat_3.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="compactLabel[]"></span>
             </button>
           {%- endif -%}
         </div>
@@ -570,12 +640,21 @@
         <div class="space-builder__step-label">Platform</div>
         <div class="space-builder__compact-options">
           {%- if platform != blank -%}
-            <button class="space-builder__compact-option" data-selected="true" aria-label="{{ platform.title | escape }}">
-              {%- if platform.featured_image != blank -%}
-                <img src="{{ platform.featured_image | image_url: width: 128 }}" alt="{{ platform.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
-              {%- endif -%}
+            <button class="space-builder__compact-option" ref="platformCompactOption" on:click="/addPlatformFromConfig" data-selected="false" aria-label="{{ platform.title | escape }}">
+              <div class="space-builder__compact-option-image">
+                {%- if platform.featured_image != blank -%}
+                  <img src="{{ platform.featured_image | image_url: width: 128 }}" alt="{{ platform.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label"></span>
             </button>
           {%- endif -%}
+          <button class="space-builder__compact-option space-builder__compact-option--remove" ref="platformSkipOption" on:click="/removePlatform" data-selected="false" aria-label="No platform">
+            <div class="space-builder__compact-option-image">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2"/><line x1="34" y1="14" x2="14" y2="34" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <span class="space-builder__compact-label">Skip</span>
+          </button>
         </div>
         <div class="space-builder__selected-info">
           <p class="space-builder__selected-title" ref="platformSelectedTitle"></p>
@@ -590,19 +669,31 @@
           {%- assign idx = 0 -%}
           {%- if aroma_1 != blank -%}
             <button class="space-builder__compact-option" ref="aromaCompactOption[]" on:click="/selectAroma?index={{ idx }}" data-selected="false" aria-label="Select {{ aroma_1.title | escape }}">
-              {%- if aroma_1.featured_image != blank -%}
-                <img src="{{ aroma_1.featured_image | image_url: width: 128 }}" alt="{{ aroma_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
-              {%- endif -%}
+              <div class="space-builder__compact-option-image">
+                {%- if aroma_1.featured_image != blank -%}
+                  <img src="{{ aroma_1.featured_image | image_url: width: 128 }}" alt="{{ aroma_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="aromaCompactLabel[]"></span>
             </button>
             {%- assign idx = idx | plus: 1 -%}
           {%- endif -%}
           {%- if aroma_2 != blank -%}
             <button class="space-builder__compact-option" ref="aromaCompactOption[]" on:click="/selectAroma?index={{ idx }}" data-selected="false" aria-label="Select {{ aroma_2.title | escape }}">
-              {%- if aroma_2.featured_image != blank -%}
-                <img src="{{ aroma_2.featured_image | image_url: width: 128 }}" alt="{{ aroma_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
-              {%- endif -%}
+              <div class="space-builder__compact-option-image">
+                {%- if aroma_2.featured_image != blank -%}
+                  <img src="{{ aroma_2.featured_image | image_url: width: 128 }}" alt="{{ aroma_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="aromaCompactLabel[]"></span>
             </button>
           {%- endif -%}
+          <button class="space-builder__compact-option space-builder__compact-option--remove" ref="aromaSkipOption" on:click="/removeAroma" data-selected="false" aria-label="No aroma">
+            <div class="space-builder__compact-option-image">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2"/><line x1="34" y1="14" x2="14" y2="34" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <span class="space-builder__compact-label">Skip</span>
+          </button>
         </div>
         <div class="space-builder__selected-info">
           <p class="space-builder__selected-title" ref="aromaSelectedTitle"></p>
@@ -617,11 +708,20 @@
         <div class="space-builder__compact-options">
           {%- if incense != blank -%}
             <button class="space-builder__compact-option" ref="incenseCompactOption" on:click="/changeIncense" data-selected="true" aria-label="{{ incense.title | escape }}">
-              {%- if incense.featured_image != blank -%}
-                <img src="{{ incense.featured_image | image_url: width: 128 }}" alt="{{ incense.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
-              {%- endif -%}
+              <div class="space-builder__compact-option-image">
+                {%- if incense.featured_image != blank -%}
+                  <img src="{{ incense.featured_image | image_url: width: 128 }}" alt="{{ incense.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="incenseCompactLabel"></span>
             </button>
           {%- endif -%}
+          <button class="space-builder__compact-option space-builder__compact-option--remove" ref="incenseSkipOption" on:click="/removeIncense" data-selected="false" aria-label="No incense">
+            <div class="space-builder__compact-option-image">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2"/><line x1="34" y1="14" x2="14" y2="34" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <span class="space-builder__compact-label">Skip</span>
+          </button>
         </div>
         <div class="space-builder__selected-info">
           <p class="space-builder__selected-title" ref="incenseSelectedTitle"></p>
@@ -630,10 +730,55 @@
         </div>
       </div>
 
-      {%- comment -%} Continue button (hidden after aroma selected) {%- endcomment -%}
+      {%- comment -%} Continue to aroma button (hidden after aroma selected) {%- endcomment -%}
       <div class="space-builder__section" ref="continueToAroma">
         <button class="space-builder__continue" on:click="/continueToAroma">Add an Aroma Item</button>
         <button class="space-builder__skip" on:click="/skipAroma">Skip</button>
+      </div>
+
+      {%- comment -%} Home section (shown after home product selected) {%- endcomment -%}
+      <div class="space-builder__section" ref="homeSection" hidden>
+        <div class="space-builder__step-label">Home</div>
+        <div class="space-builder__compact-options">
+          {%- assign idx = 0 -%}
+          {%- if home_1 != blank -%}
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_1.title | escape }}">
+              <div class="space-builder__compact-option-image">
+                {%- if home_1.featured_image != blank -%}
+                  <img src="{{ home_1.featured_image | image_url: width: 128 }}" alt="{{ home_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="homeCompactLabel[]"></span>
+            </button>
+            {%- assign idx = idx | plus: 1 -%}
+          {%- endif -%}
+          {%- if home_2 != blank -%}
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_2.title | escape }}">
+              <div class="space-builder__compact-option-image">
+                {%- if home_2.featured_image != blank -%}
+                  <img src="{{ home_2.featured_image | image_url: width: 128 }}" alt="{{ home_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
+                {%- endif -%}
+              </div>
+              <span class="space-builder__compact-label" ref="homeCompactLabel[]"></span>
+            </button>
+          {%- endif -%}
+          <button class="space-builder__compact-option space-builder__compact-option--remove" ref="homeSkipOption" on:click="/removeHome" data-selected="false" aria-label="No home product">
+            <div class="space-builder__compact-option-image">
+              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><line x1="14" y1="14" x2="34" y2="34" stroke="currentColor" stroke-width="2"/><line x1="34" y1="14" x2="14" y2="34" stroke="currentColor" stroke-width="2"/></svg>
+            </div>
+            <span class="space-builder__compact-label">Skip</span>
+          </button>
+        </div>
+        <div class="space-builder__selected-info">
+          <p class="space-builder__selected-title" ref="homeSelectedTitle"></p>
+          <p class="space-builder__selected-price" ref="homeSelectedPrice"></p>
+        </div>
+      </div>
+
+      {%- comment -%} Continue to home button (hidden after home selected) {%- endcomment -%}
+      <div class="space-builder__section" ref="continueToHome">
+        <button class="space-builder__continue" on:click="/continueToHome">Add a Home Item</button>
+        <button class="space-builder__skip" on:click="/skipHome">Skip</button>
       </div>
       </div>{%- comment -%} end config-scroll {%- endcomment -%}
 
@@ -680,7 +825,18 @@
       ],
       "platform": {% if platform != blank %}{% render 'space-builder-product-json', product_resource: platform %}{% else %}null{% endif %},
       "incense": {% if incense != blank %}{% render 'space-builder-product-json', product_resource: incense %}{% else %}null{% endif %},
-      "includedIncense": {% if included_incense != blank %}{% render 'space-builder-product-json', product_resource: included_incense %}{% else %}null{% endif %}
+      "includedIncense": {% if included_incense != blank %}{% render 'space-builder-product-json', product_resource: included_incense %}{% else %}null{% endif %},
+      "home": [
+        {%- assign needs_comma = false -%}
+        {%- if home_1 != blank -%}
+          {% render 'space-builder-product-json', product_resource: home_1 %}
+          {%- assign needs_comma = true -%}
+        {%- endif -%}
+        {%- if home_2 != blank -%}
+          {%- if needs_comma -%},{%- endif -%}
+          {% render 'space-builder-product-json', product_resource: home_2 %}
+        {%- endif -%}
+      ]
     }
   </script>
 
@@ -814,6 +970,32 @@
       "type": "product",
       "id": "included_incense_product",
       "label": "Included incense (shown with aroma option 2)"
+    },
+    {
+      "type": "header",
+      "content": "Home"
+    },
+    {
+      "type": "text",
+      "id": "home_heading",
+      "label": "Home heading",
+      "default": "Add a home product?"
+    },
+    {
+      "type": "text",
+      "id": "home_subheading",
+      "label": "Home subheading",
+      "default": "Complete your space"
+    },
+    {
+      "type": "product",
+      "id": "home_product_1",
+      "label": "Home option 1"
+    },
+    {
+      "type": "product",
+      "id": "home_product_2",
+      "label": "Home option 2"
     }
   ]
 }
