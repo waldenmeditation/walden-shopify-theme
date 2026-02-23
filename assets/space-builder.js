@@ -737,6 +737,158 @@ class SpaceBuilder extends Component {
       this.#restore(prev);
     }
   }
+
+  // ── Save / Restore ──
+
+  /** Convert index (0–31) to single character: 0–9 then A–V */
+  #toChar(index) {
+    if (index < 0) return 'X';
+    if (index < 10) return String(index);
+    return String.fromCharCode(55 + index); // 10→'A', 31→'V'
+  }
+
+  /** Convert character back to index, or -1 for X */
+  #fromChar(ch) {
+    if (ch === 'X') return -1;
+    const code = ch.charCodeAt(0);
+    if (code >= 48 && code <= 57) return code - 48;       // '0'–'9'
+    if (code >= 65 && code <= 86) return code - 55;        // 'A'–'V'
+    return -1;
+  }
+
+  /** Encode current state into 8-char code */
+  #encodeState() {
+    let code = '';
+    code += this.#toChar(this.#selectedProductIndex);       // 0: seating product
+    code += this.#toChar(this.#selectedVariantIndex);        // 1: seating variant
+    code += this.#platformAdded ? '1' : '0';                // 2: platform
+    code += this.#aromaSkipped
+      ? 'X' : this.#toChar(this.#selectedAromaProductIndex); // 3: aroma product
+    code += (this.#aromaSkipped || this.#selectedAromaVariantIndex < 0)
+      ? 'X' : this.#toChar(this.#selectedAromaVariantIndex); // 4: aroma variant
+    // 5: incense variant — X if skipped, included, or no selection
+    if (this.#incenseSkipped || this.#incenseIncluded || this.#selectedIncenseVariantIndex < 0) {
+      code += 'X';
+    } else {
+      code += this.#toChar(this.#selectedIncenseVariantIndex);
+    }
+    code += this.#homeSkipped
+      ? 'X' : this.#toChar(this.#selectedHomeProductIndex);  // 6: home product
+    code += (this.#homeSkipped || this.#selectedHomeVariantIndex < 0)
+      ? 'X' : this.#toChar(this.#selectedHomeVariantIndex);  // 7: home variant
+    return code;
+  }
+
+  /** Decode 8-char code into a state object, or null if invalid */
+  #decodeState(code) {
+    if (!code || code.length !== 8 || !/^[0-9A-VX]{8}$/.test(code)) return null;
+
+    const seatProduct = this.#fromChar(code[0]);
+    const seatVariant = this.#fromChar(code[1]);
+    const platform = code[2] === '1';
+    const aromaProduct = this.#fromChar(code[3]);
+    const aromaVariant = this.#fromChar(code[4]);
+    const incenseVariant = this.#fromChar(code[5]);
+    const homeProduct = this.#fromChar(code[6]);
+    const homeVariant = this.#fromChar(code[7]);
+
+    // Validate indices exist in data
+    if (seatProduct < 0 || !this.#data.seating?.[seatProduct]) return null;
+    if (seatVariant < 0 || !this.#data.seating[seatProduct].variants?.[seatVariant]) return null;
+
+    const aromaSkipped = code[3] === 'X';
+    if (!aromaSkipped) {
+      if (!this.#data.aroma?.[aromaProduct]) return null;
+      if (aromaVariant < 0 || !this.#data.aroma[aromaProduct].variants?.[aromaVariant]) return null;
+    }
+
+    const incenseSkipped = code[5] === 'X';
+    if (!incenseSkipped) {
+      if (!this.#data.incense?.variants?.[incenseVariant]) return null;
+    }
+
+    const homeSkipped = code[6] === 'X';
+    if (!homeSkipped) {
+      if (!this.#data.home?.[homeProduct]) return null;
+      if (homeVariant < 0 || !this.#data.home[homeProduct].variants?.[homeVariant]) return null;
+    }
+
+    // Derive incense included: aroma product !== 0 and includedIncense exists
+    const incenseIncluded = !aromaSkipped && aromaProduct !== 0 && this.#data.includedIncense != null;
+
+    return {
+      seatProduct, seatVariant, platform,
+      aromaProduct, aromaVariant, aromaSkipped,
+      incenseVariant, incenseSkipped, incenseIncluded,
+      homeProduct, homeVariant, homeSkipped,
+    };
+  }
+
+  /** Generate save code, show it, and submit email if provided */
+  async saveConfig() {
+    const emailInput = this.refs.saveEmailInput;
+    if (!emailInput) return;
+
+    const email = emailInput.value.trim();
+    if (!email) {
+      emailInput.reportValidity();
+      return;
+    }
+
+    const code = this.#encodeState();
+    if (this.refs.saveCode) this.refs.saveCode.textContent = code;
+    if (this.refs.saveResult) this.refs.saveResult.hidden = false;
+
+    // Submit email via hidden contact form
+    const form = this.querySelector('#SpaceBuilderSave');
+    if (form) {
+      const formData = new FormData(form);
+      formData.set('contact[email]', email);
+      formData.set('contact[body]', code);
+      try {
+        await fetch(form.action, { method: 'POST', body: formData });
+        if (this.refs.saveEmailSuccess) this.refs.saveEmailSuccess.hidden = false;
+      } catch {
+        // Silently fail
+      }
+    }
+  }
+
+  /** Restore configuration from an 8-char code in the restore input */
+  restoreConfig() {
+    const input = this.refs.restoreInput;
+    if (!input) return;
+
+    const code = input.value.trim().toUpperCase();
+    const decoded = this.#decodeState(code);
+    if (!decoded) {
+      input.setCustomValidity('Invalid save code');
+      input.reportValidity();
+      return;
+    }
+    input.setCustomValidity('');
+
+    // Apply decoded state
+    this.#selectedProductIndex = decoded.seatProduct;
+    this.#selectedVariantIndex = decoded.seatVariant;
+    this.#platformAdded = decoded.platform;
+    this.#selectedAromaProductIndex = decoded.aromaSkipped ? -1 : decoded.aromaProduct;
+    this.#selectedAromaVariantIndex = decoded.aromaSkipped ? -1 : decoded.aromaVariant;
+    this.#aromaSkipped = decoded.aromaSkipped;
+    this.#selectedIncenseVariantIndex = decoded.incenseSkipped ? -1 : decoded.incenseVariant;
+    this.#incenseIncluded = decoded.incenseIncluded;
+    this.#incenseSkipped = decoded.incenseSkipped;
+    this.#selectedHomeProductIndex = decoded.homeSkipped ? -1 : decoded.homeProduct;
+    this.#selectedHomeVariantIndex = decoded.homeSkipped ? -1 : decoded.homeVariant;
+    this.#homeSkipped = decoded.homeSkipped;
+
+    // Reset history and go straight to configurator
+    this.#history = [];
+    this.#state = 'configurator';
+    this.#hideAll();
+    this.#showConfigurator();
+  }
+
 }
 
 if (!customElements.get('space-builder-component')) {

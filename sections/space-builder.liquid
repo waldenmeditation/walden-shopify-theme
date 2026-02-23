@@ -363,6 +363,107 @@
     stroke-width: 2;
   }
 
+  /* Restore input */
+
+  .space-builder__restore {
+    display: flex;
+    gap: 0.375rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    opacity: 0.35;
+    transition: opacity 0.2s ease;
+  }
+
+  .space-builder__restore:focus-within {
+    opacity: 1;
+  }
+
+  .space-builder__restore-label {
+    font-size: 0.6875rem;
+    font-family: 'Graphik', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #999;
+  }
+
+  .space-builder__restore input {
+    width: 12ch;
+    padding: 0.25rem 0.4rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background: transparent;
+    color: inherit;
+  }
+
+  .space-builder__restore button {
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    padding: 0.25rem 0.5rem;
+    font-family: 'Graphik', sans-serif;
+    font-size: 0.6875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: #999;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .space-builder__restore button:hover {
+    opacity: 0.7;
+  }
+
+  /* Save section */
+
+  .space-builder__save {
+    margin-top: 0.75rem;
+  }
+
+  .space-builder__save-email {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .space-builder__save-email input {
+    flex: 1;
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8125rem;
+    border: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
+    background: transparent;
+  }
+
+  .space-builder__save-email button {
+    background: none;
+    border: 1px solid color-mix(in srgb, var(--color-foreground) 15%, transparent);
+    padding: 0.5rem 0.75rem;
+    font-family: 'Graphik', sans-serif;
+    font-size: 0.75rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: opacity 0.2s ease;
+  }
+
+  .space-builder__save-email button:hover {
+    opacity: 0.7;
+  }
+
+  .space-builder__save-result {
+    margin-top: 0.75rem;
+    font-size: 0.8125rem;
+    opacity: 0.7;
+  }
+
+  .space-builder__save-result strong {
+    font-family: monospace;
+    letter-spacing: 0.1em;
+    font-size: 0.875rem;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .space-builder__grid,
     .space-builder__configurator,
@@ -454,6 +555,11 @@
           <div class="space-builder__grid-card-title">{{ seat_3.title }}</div>
         </div>
       {%- endif -%}
+    </div>
+    <div class="space-builder__restore">
+      <span class="space-builder__restore-label">Have a code?</span>
+      <input type="text" ref="restoreInput" placeholder="e.g. 02100XXX" maxlength="8" aria-label="Enter save code">
+      <button on:click="/restoreConfig">Load</button>
     </div>
   </div>
 
@@ -840,8 +946,24 @@
           <span class="space-builder__total-price" ref="totalPrice"></span>
         </div>
         <button class="space-builder__checkout" ref="checkoutBtn" on:click="/checkout">Checkout</button>
+        <div class="space-builder__save">
+          <div class="space-builder__save-email">
+            <input type="email" ref="saveEmailInput" placeholder="Enter email to save progress" aria-label="Email address">
+            <button on:click="/saveConfig">Save Progress</button>
+          </div>
+          <div class="space-builder__save-result" ref="saveResult" hidden>
+            Your code: <strong ref="saveCode"></strong> <span ref="saveEmailSuccess" hidden>&mdash; we'll email this to you shortly.</span>
+          </div>
+        </div>
       </div>
     </div>
+  </div>
+
+  {%- comment -%} Hidden contact form for save email submission {%- endcomment -%}
+  <div hidden>
+    {%- form 'contact', id: 'SpaceBuilderSave' -%}
+      <input type="hidden" name="contact[Form Source]" value="Space Builder">
+    {%- endform -%}
   </div>
 
   {%- comment -%} Product data for JS {%- endcomment -%}
