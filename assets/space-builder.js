@@ -42,6 +42,29 @@ class SpaceBuilder extends Component {
     } catch {
       this.#data = { seating: [], aroma: [], platform: null, incense: null, home: [] };
     }
+
+    // Auto-restore from ?code= URL parameter
+    const urlCode = new URLSearchParams(window.location.search).get('code');
+    if (urlCode) {
+      const decoded = this.#decodeState(urlCode.toUpperCase());
+      if (decoded) {
+        this.#selectedProductIndex = decoded.seatProduct;
+        this.#selectedVariantIndex = decoded.seatVariant;
+        this.#platformAdded = decoded.platform;
+        this.#selectedAromaProductIndex = decoded.aromaSkipped ? -1 : decoded.aromaProduct;
+        this.#selectedAromaVariantIndex = decoded.aromaSkipped ? -1 : decoded.aromaVariant;
+        this.#aromaSkipped = decoded.aromaSkipped;
+        this.#selectedIncenseVariantIndex = decoded.incenseSkipped ? -1 : decoded.incenseVariant;
+        this.#incenseIncluded = decoded.incenseIncluded;
+        this.#incenseSkipped = decoded.incenseSkipped;
+        this.#selectedHomeProductIndex = decoded.homeSkipped ? -1 : decoded.homeProduct;
+        this.#selectedHomeVariantIndex = decoded.homeSkipped ? -1 : decoded.homeVariant;
+        this.#homeSkipped = decoded.homeSkipped;
+        this.#state = 'configurator';
+        this.#hideAll();
+        this.#showConfigurator();
+      }
+    }
   }
 
   /** Save current state to history before transitioning */
@@ -839,18 +862,44 @@ class SpaceBuilder extends Component {
     if (this.refs.saveCode) this.refs.saveCode.textContent = code;
     if (this.refs.saveResult) this.refs.saveResult.hidden = false;
 
-    // Submit email via hidden contact form
-    const form = this.querySelector('#SpaceBuilderSave');
-    if (form) {
-      const formData = new FormData(form);
-      formData.set('contact[email]', email);
-      formData.set('contact[body]', code);
-      try {
-        await fetch(form.action, { method: 'POST', body: formData });
-        if (this.refs.saveEmailSuccess) this.refs.saveEmailSuccess.hidden = false;
-      } catch {
-        // Silently fail
-      }
+    // Send to Klaviyo: track event + subscribe to email marketing
+    const klaviyoHeaders = { 'Content-Type': 'application/json', revision: '2024-10-15' };
+    try {
+      await Promise.all([
+        fetch('https://a.klaviyo.com/client/events/?company_id=HqHz2C', {
+          method: 'POST',
+          headers: klaviyoHeaders,
+          body: JSON.stringify({
+            data: {
+              type: 'event',
+              attributes: {
+                metric: { data: { type: 'metric', attributes: { name: 'Space Builder Save' } } },
+                profile: { data: { type: 'profile', attributes: { email } } },
+                properties: { save_code: code },
+              },
+            },
+          }),
+        }),
+        fetch('https://a.klaviyo.com/client/subscriptions/?company_id=HqHz2C', {
+          method: 'POST',
+          headers: klaviyoHeaders,
+          body: JSON.stringify({
+            data: {
+              type: 'subscription',
+              attributes: {
+                profile: { data: { type: 'profile', attributes: { email } } },
+                custom_source: 'Space Builder',
+              },
+              relationships: {
+                list: { data: { type: 'list', id: 'QiSjSL' } },
+              },
+            },
+          }),
+        }),
+      ]);
+      if (this.refs.saveEmailSuccess) this.refs.saveEmailSuccess.hidden = false;
+    } catch {
+      // Silently fail
     }
   }
 
