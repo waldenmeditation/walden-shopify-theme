@@ -1,4 +1,5 @@
 import { Component } from '@theme/component';
+import { fetchConfig } from '@theme/utilities';
 
 class SpaceBuilder extends Component {
   #state = 'product-grid';
@@ -30,6 +31,7 @@ class SpaceBuilder extends Component {
 
   // Home selection
   #selectedHomeProductIndex = -1;
+  #selectedHomeVariantIndex = -1;
   #homeSkipped = false;
 
   connectedCallback() {
@@ -56,6 +58,7 @@ class SpaceBuilder extends Component {
       incenseIncluded: this.#incenseIncluded,
       incenseSkipped: this.#incenseSkipped,
       homeProductIndex: this.#selectedHomeProductIndex,
+      homeVariantIndex: this.#selectedHomeVariantIndex,
       homeSkipped: this.#homeSkipped,
     });
   }
@@ -68,7 +71,7 @@ class SpaceBuilder extends Component {
     this.refs.homeGrid?.setAttribute('data-state', 'hidden');
     this.refs.configurator?.setAttribute('data-state', 'hidden');
 
-    for (const key of ['variantGrid', 'aromaVariantGrid', 'incenseVariantGrid']) {
+    for (const key of ['variantGrid', 'aromaVariantGrid', 'incenseVariantGrid', 'homeVariantGrid']) {
       const grids = this.refs[key];
       if (Array.isArray(grids)) {
         grids.forEach((g) => g.setAttribute('data-state', 'hidden'));
@@ -100,6 +103,7 @@ class SpaceBuilder extends Component {
     this.#incenseIncluded = snapshot.incenseIncluded;
     this.#incenseSkipped = snapshot.incenseSkipped;
     this.#selectedHomeProductIndex = snapshot.homeProductIndex;
+    this.#selectedHomeVariantIndex = snapshot.homeVariantIndex;
     this.#homeSkipped = snapshot.homeSkipped;
 
     switch (snapshot.state) {
@@ -123,6 +127,9 @@ class SpaceBuilder extends Component {
         break;
       case 'home-grid':
         this.refs.homeGrid?.removeAttribute('data-state');
+        break;
+      case 'home-variant-grid':
+        this.#showGrid('homeVariantGrid', snapshot.homeProductIndex);
         break;
       case 'incense-variant-grid':
         this.#showGrid('incenseVariantGrid', 0);
@@ -344,6 +351,7 @@ class SpaceBuilder extends Component {
     }
 
     const homeProduct = hasHome ? this.#data.home?.[this.#selectedHomeProductIndex] : null;
+    const homeVariant = hasHome ? homeProduct?.variants?.[this.#selectedHomeVariantIndex] : null;
 
     const homeOptions = this.refs.homeCompactOption;
     const homeLabels = this.refs.homeCompactLabel;
@@ -351,9 +359,9 @@ class SpaceBuilder extends Component {
       homeOptions.forEach((btn, i) => {
         const selected = hasHome && i === this.#selectedHomeProductIndex;
         btn.setAttribute('data-selected', String(selected));
-        if (selected && homeProduct?.imageUrl) {
+        if (selected && homeVariant?.imageUrl) {
           const img = btn.querySelector('img');
-          if (img) img.src = homeProduct.imageUrl;
+          if (img) img.src = homeVariant.imageUrl;
         }
       });
     }
@@ -370,8 +378,11 @@ class SpaceBuilder extends Component {
     if (this.refs.homeSelectedTitle) {
       this.refs.homeSelectedTitle.textContent = homeProduct?.title || '';
     }
+    if (this.refs.homeSelectedVariantName) {
+      this.refs.homeSelectedVariantName.textContent = homeVariant?.name || '';
+    }
     if (this.refs.homeSelectedPrice) {
-      this.refs.homeSelectedPrice.textContent = homeProduct?.priceFormatted || '';
+      this.refs.homeSelectedPrice.textContent = homeVariant?.priceFormatted || '';
     }
 
     // Update total price
@@ -407,9 +418,9 @@ class SpaceBuilder extends Component {
       if (incenseVariant) total += incenseVariant.price;
     }
 
-    if (this.#selectedHomeProductIndex >= 0) {
-      const homeProduct = this.#data.home?.[this.#selectedHomeProductIndex];
-      if (homeProduct) total += homeProduct.price;
+    if (this.#selectedHomeVariantIndex >= 0) {
+      const homeVariant = this.#data.home?.[this.#selectedHomeProductIndex]?.variants?.[this.#selectedHomeVariantIndex];
+      if (homeVariant) total += homeVariant.price;
     }
 
     if (this.refs.totalPrice) {
@@ -421,7 +432,7 @@ class SpaceBuilder extends Component {
   #isReady() {
     const seatingDone = this.#selectedVariantIndex >= 0;
     const aromaDone = this.#selectedAromaVariantIndex >= 0 || this.#aromaSkipped;
-    const homeDone = this.#selectedHomeProductIndex >= 0 || this.#homeSkipped;
+    const homeDone = this.#selectedHomeVariantIndex >= 0 || this.#homeSkipped;
     return seatingDone && aromaDone && homeDone;
   }
 
@@ -609,7 +620,7 @@ class SpaceBuilder extends Component {
     this.#showConfigurator();
   }
 
-  /** Pick a home product → return to configurator */
+  /** Pick a home product → show its variant grid */
   selectHome({ index }, event) {
     const idx = Number(index);
     if (isNaN(idx) || idx < 0 || idx >= this.#data.home.length) return;
@@ -618,6 +629,23 @@ class SpaceBuilder extends Component {
     this.#hideAll();
 
     this.#selectedHomeProductIndex = idx;
+    this.#state = 'home-variant-grid';
+
+    this.#showGrid('homeVariantGrid', idx);
+  }
+
+  /** Pick a home variant → return to configurator */
+  selectHomeVariant({ product, variant }, event) {
+    const productIdx = Number(product);
+    const variantIdx = Number(variant);
+
+    if (!this.#data.home?.[productIdx]?.variants?.[variantIdx]) return;
+
+    this.#pushHistory();
+    this.#hideAll();
+
+    this.#selectedHomeProductIndex = productIdx;
+    this.#selectedHomeVariantIndex = variantIdx;
     this.#homeSkipped = false;
     this.#state = 'configurator';
 
@@ -627,6 +655,7 @@ class SpaceBuilder extends Component {
   /** Deselect home product (select skip option) */
   removeHome() {
     this.#selectedHomeProductIndex = -1;
+    this.#selectedHomeVariantIndex = -1;
     this.#homeSkipped = true;
     this.#showConfigurator();
   }
@@ -634,6 +663,12 @@ class SpaceBuilder extends Component {
   /** Add all selected items to cart and redirect to checkout */
   async checkout() {
     if (!this.#isReady()) return;
+
+    const btn = this.refs.checkoutBtn;
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = 'Processing...';
+    }
 
     const items = [];
 
@@ -650,30 +685,43 @@ class SpaceBuilder extends Component {
       if (aromaVariant) items.push({ id: aromaVariant.id, quantity: 1 });
     }
 
-    if (this.#selectedIncenseVariantIndex >= 0 && !this.#incenseIncluded) {
+    if (this.#incenseIncluded && this.#data.includedIncense) {
+      const includedVariant = this.#data.includedIncense.variants?.[0];
+      if (includedVariant) items.push({ id: includedVariant.id, quantity: 1 });
+    } else if (this.#selectedIncenseVariantIndex >= 0) {
       const incenseVariant = this.#data.incense?.variants?.[this.#selectedIncenseVariantIndex];
       if (incenseVariant) items.push({ id: incenseVariant.id, quantity: 1 });
     }
 
-    if (this.#selectedHomeProductIndex >= 0) {
-      const homeProduct = this.#data.home?.[this.#selectedHomeProductIndex];
-      const homeVariant = homeProduct?.variants?.[0];
+    if (this.#selectedHomeVariantIndex >= 0) {
+      const homeVariant = this.#data.home?.[this.#selectedHomeProductIndex]?.variants?.[this.#selectedHomeVariantIndex];
       if (homeVariant) items.push({ id: homeVariant.id, quantity: 1 });
     }
 
-    if (items.length === 0) return;
+    if (items.length === 0) {
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = 'Checkout';
+      }
+      return;
+    }
 
     try {
-      await fetch((window.Theme?.routes?.root || '/') + 'cart/add.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ items }),
-      });
+      for (const item of items) {
+        const body = new FormData();
+        body.append('id', item.id);
+        body.append('quantity', item.quantity);
 
-      window.location.href = (window.Theme?.routes?.root || '/') + 'checkout';
+        await fetch(Theme.routes.root + 'cart/add.js', {
+          ...fetchConfig('javascript', { body }),
+          headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        });
+      }
     } catch {
-      window.location.href = (window.Theme?.routes?.root || '/') + 'cart';
+      // Fall through to redirect
     }
+
+    window.location.href = Theme.routes.root + 'cart';
   }
 
   /** Pop history and restore previous state */
