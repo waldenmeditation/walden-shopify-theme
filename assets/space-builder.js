@@ -172,6 +172,8 @@ class SpaceBuilder extends Component {
     if (configurator) {
       configurator.removeAttribute('hidden');
       configurator.setAttribute('data-state', 'visible');
+      const backBtn = configurator.querySelector('.space-builder__back');
+      if (backBtn) backBtn.hidden = this.#history.length === 0;
     }
 
     // Update seating preview image
@@ -865,10 +867,11 @@ class SpaceBuilder extends Component {
     if (this.refs.saveResult) this.refs.saveResult.hidden = false;
 
     // Send to Klaviyo: track event + subscribe to email marketing
-    const klaviyoHeaders = { 'Content-Type': 'application/json', revision: '2024-10-15' };
+    const klaviyoHeaders = { 'content-type': 'application/json', revision: '2024-10-15' };
+    const companyId = 'HqHz2C';
     try {
-      await Promise.all([
-        fetch('https://a.klaviyo.com/client/events/?company_id=HqHz2C', {
+      const [eventRes, subRes] = await Promise.all([
+        fetch(`https://a.klaviyo.com/client/events/?company_id=${companyId}`, {
           method: 'POST',
           headers: klaviyoHeaders,
           body: JSON.stringify({
@@ -882,7 +885,7 @@ class SpaceBuilder extends Component {
             },
           }),
         }),
-        fetch('https://a.klaviyo.com/client/subscriptions/?company_id=HqHz2C', {
+        fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${companyId}`, {
           method: 'POST',
           headers: klaviyoHeaders,
           body: JSON.stringify({
@@ -899,9 +902,11 @@ class SpaceBuilder extends Component {
           }),
         }),
       ]);
+      if (!eventRes.ok) console.error('Klaviyo event error:', eventRes.status, await eventRes.text());
+      if (!subRes.ok) console.error('Klaviyo subscription error:', subRes.status, await subRes.text());
       if (this.refs.saveEmailSuccess) this.refs.saveEmailSuccess.hidden = false;
-    } catch {
-      // Silently fail
+    } catch (err) {
+      console.error('Klaviyo request failed:', err);
     }
   }
 
