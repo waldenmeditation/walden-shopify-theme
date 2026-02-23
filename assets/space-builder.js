@@ -866,48 +866,11 @@ class SpaceBuilder extends Component {
     if (this.refs.saveCode) this.refs.saveCode.textContent = code;
     if (this.refs.saveResult) this.refs.saveResult.hidden = false;
 
-    // Send to Klaviyo: track event + subscribe to email marketing
-    const klaviyoHeaders = { 'content-type': 'application/json', revision: '2024-10-15' };
-    const companyId = 'HqHz2C';
-    try {
-      const [eventRes, subRes] = await Promise.all([
-        fetch(`https://a.klaviyo.com/client/events/?company_id=${companyId}`, {
-          method: 'POST',
-          headers: klaviyoHeaders,
-          body: JSON.stringify({
-            data: {
-              type: 'event',
-              attributes: {
-                metric: { data: { type: 'metric', attributes: { name: 'Space Builder Save' } } },
-                profile: { data: { type: 'profile', attributes: { email } } },
-                properties: { save_code: code },
-              },
-            },
-          }),
-        }),
-        fetch(`https://a.klaviyo.com/client/subscriptions/?company_id=${companyId}`, {
-          method: 'POST',
-          headers: klaviyoHeaders,
-          body: JSON.stringify({
-            data: {
-              type: 'subscription',
-              attributes: {
-                profile: { data: { type: 'profile', attributes: { email } } },
-                custom_source: 'Space Builder',
-              },
-              relationships: {
-                list: { data: { type: 'list', id: 'QiSjSL' } },
-              },
-            },
-          }),
-        }),
-      ]);
-      if (!eventRes.ok) console.error('Klaviyo event error:', eventRes.status, await eventRes.text());
-      if (!subRes.ok) console.error('Klaviyo subscription error:', subRes.status, await subRes.text());
-      if (this.refs.saveEmailSuccess) this.refs.saveEmailSuccess.hidden = false;
-    } catch (err) {
-      console.error('Klaviyo request failed:', err);
-    }
+    // Send to Klaviyo via onsite JS (already loaded by Klaviyo snippet)
+    const _learnq = window._learnq || [];
+    _learnq.push(['identify', { '$email': email, '$consent': ['email'] }]);
+    _learnq.push(['track', 'Space Builder Save', { save_code: code }]);
+    if (this.refs.saveEmailSuccess) this.refs.saveEmailSuccess.hidden = false;
   }
 
   /** Restore configuration from an 8-char code in the restore input */
