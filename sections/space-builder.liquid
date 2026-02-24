@@ -723,8 +723,7 @@
       <div class="space-builder__config-scroll" ref="configScroll">
       <div class="space-builder__config-heading">
         <button class="space-builder__back" on:click="/goBack" aria-label="Back to color selection">Back</button>
-        <h2>{{ heading }}</h2>
-        <p>{{ subheading }}</p>
+        <h2>{{ section.settings.configurator_heading }}</h2>
       </div>
 
       <div>
@@ -1031,6 +1030,12 @@
       "id": "subheading",
       "label": "Subheading",
       "default": "First, your preference of seat"
+    },
+    {
+      "type": "text",
+      "id": "configurator_heading",
+      "label": "Configurator heading",
+      "default": "Your Space"
     },
     {
       "type": "product",
