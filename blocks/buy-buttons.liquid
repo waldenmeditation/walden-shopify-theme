@@ -49,15 +49,22 @@
     assign add_to_cart_text = 'Pre-order'
   endif
 
-  # Shipping / availability note shown under the button
-  # Priority: pre-order availability msg > backorder > in-stock shipping
-  assign shipping_note = ''
+  # Stock chip: dot color + text
+  # Priority: pre-order > backorder > in-stock > sold out
+  assign stock_chip_text = ''
+  assign stock_chip_dot = 'green'
   if is_preorder and product.metafields.custom.product_availability != blank
-    assign shipping_note = product.metafields.custom.product_availability
+    assign stock_chip_text = product.metafields.custom.product_availability
+    assign stock_chip_dot = 'orange'
   elsif inventory_managed and inventory_quantity <= 0 and inventory_policy == 'continue' and is_preorder == false
-    assign shipping_note = 'This item is currently backordered. Shipping may be delayed.'
+    assign stock_chip_text = 'Backordered. Shipping may be delayed.'
+    assign stock_chip_dot = 'orange'
   elsif can_add_to_cart
-    assign shipping_note = 'In stock. Ships in 1-2 business days.'
+    assign stock_chip_text = 'In stock. Ships in 1-2 days.'
+    assign stock_chip_dot = 'green'
+  elsif can_add_to_cart == false
+    assign stock_chip_text = 'Sold out'
+    assign stock_chip_dot = 'red'
   endif
 
 %}
@@ -234,14 +241,45 @@
     height: var(--icon-size-xs);
   }
 
-  .shipping-note {
-  flex-basis: 100%;
-  margin-top: var(--gap-xs);
-  font-size: var(--font-size--sm);
-  color: var(--color-foreground, #333);
-  opacity: 0.85;
-  text-align: center;
-}
+  .conversion-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
+    flex-basis: 100%;
+  }
+
+  .conversion-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.75rem 1rem;
+    background: color-mix(in srgb, var(--color-foreground, #333) 6%, transparent);
+    border-radius: 6px;
+    font-size: 0.875rem;
+    text-align: center;
+  }
+
+  .conversion-chip__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .conversion-chip__dot--green { background: #22c55e; }
+  .conversion-chip__dot--orange { background: #f59e0b; }
+  .conversion-chip__dot--red { background: #ef4444; }
+
+  .conversion-chip__laurel {
+    height: 1.5em;
+    width: auto;
+  }
+
+  .conversion-chip__laurel--flip {
+    transform: scaleX(-1);
+  }
 {% endstylesheet %}
 
 <span
@@ -287,8 +325,15 @@
             <input type="hidden" name="properties[Pre-order]" value="Note: Pre-order">
           {% endif %}
 
-          <div class="shipping-note" ref="shippingNote" role="status" aria-live="polite"{% if shipping_note == '' %} hidden{% endif %}>
-            {{ shipping_note }}
+          <div class="conversion-chips" ref="shippingNote">
+            {%- if stock_chip_text != '' -%}
+              <div class="conversion-chip">
+                <span class="conversion-chip__dot conversion-chip__dot--{{ stock_chip_dot }}"></span>
+                {{ stock_chip_text }}
+              </div>
+            {%- endif -%}
+            <div class="conversion-chip">30-Day Returns &nbsp;&middot;&nbsp; Free Shipping Over $100</div>
+            <div class="conversion-chip"><img src="{{ 'Laurel.svg' | asset_url }}" alt="" width="20" height="38" class="conversion-chip__laurel"> 10,000+ customers meditate with Walden <img src="{{ 'Laurel.svg' | asset_url }}" alt="" width="20" height="38" class="conversion-chip__laurel conversion-chip__laurel--flip"></div>
           </div>
 
 
