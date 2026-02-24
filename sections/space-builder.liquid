@@ -558,7 +558,7 @@
     </div>
     <div class="space-builder__restore">
       <span class="space-builder__restore-label">Have a code?</span>
-      <input type="text" ref="restoreInput" placeholder="e.g. 02100XXX" maxlength="8" aria-label="Enter save code">
+      <input type="text" ref="restoreInput" placeholder="e.g. 02100XXXXX" maxlength="10" aria-label="Enter save code">
       <button on:click="/restoreConfig">Load</button>
     </div>
   </div>
@@ -878,7 +878,7 @@
         <div class="space-builder__compact-options">
           {%- assign idx = 0 -%}
           {%- if home_1 != blank -%}
-            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_1.title | escape }}">
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/selectHome?index={{ idx }}" data-selected="false" aria-label="Select {{ home_1.title | escape }}">
               <div class="space-builder__compact-option-image">
                 {%- if home_1.featured_image != blank -%}
                   <img src="{{ home_1.featured_image | image_url: width: 128 }}" alt="{{ home_1.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
@@ -889,7 +889,7 @@
             {%- assign idx = idx | plus: 1 -%}
           {%- endif -%}
           {%- if home_2 != blank -%}
-            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_2.title | escape }}">
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/selectHome?index={{ idx }}" data-selected="false" aria-label="Select {{ home_2.title | escape }}">
               <div class="space-builder__compact-option-image">
                 {%- if home_2.featured_image != blank -%}
                   <img src="{{ home_2.featured_image | image_url: width: 128 }}" alt="{{ home_2.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
@@ -897,9 +897,10 @@
               </div>
               <span class="space-builder__compact-label" ref="homeCompactLabel[]"></span>
             </button>
+            {%- assign idx = idx | plus: 1 -%}
           {%- endif -%}
           {%- if home_3 != blank -%}
-            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_3.title | escape }}">
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/selectHome?index={{ idx }}" data-selected="false" aria-label="Select {{ home_3.title | escape }}">
               <div class="space-builder__compact-option-image">
                 {%- if home_3.featured_image != blank -%}
                   <img src="{{ home_3.featured_image | image_url: width: 128 }}" alt="{{ home_3.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
@@ -907,9 +908,10 @@
               </div>
               <span class="space-builder__compact-label" ref="homeCompactLabel[]"></span>
             </button>
+            {%- assign idx = idx | plus: 1 -%}
           {%- endif -%}
           {%- if home_4 != blank -%}
-            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/continueToHome" data-selected="false" aria-label="Select {{ home_4.title | escape }}">
+            <button class="space-builder__compact-option" ref="homeCompactOption[]" on:click="/selectHome?index={{ idx }}" data-selected="false" aria-label="Select {{ home_4.title | escape }}">
               <div class="space-builder__compact-option-image">
                 {%- if home_4.featured_image != blank -%}
                   <img src="{{ home_4.featured_image | image_url: width: 128 }}" alt="{{ home_4.featured_image.alt | escape }}" width="64" height="64" loading="lazy">
@@ -925,11 +927,7 @@
             <span class="space-builder__compact-label">Skip</span>
           </button>
         </div>
-        <div class="space-builder__selected-info">
-          <p class="space-builder__selected-title" ref="homeSelectedTitle"></p>
-          <p class="space-builder__selected-variant-name" ref="homeSelectedVariantName"></p>
-          <p class="space-builder__selected-price" ref="homeSelectedPrice"></p>
-        </div>
+        <div class="space-builder__selected-info" ref="homeSelectedInfo"></div>
       </div>
 
       {%- comment -%} Continue to home button (hidden after home selected) {%- endcomment -%}

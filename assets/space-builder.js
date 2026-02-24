@@ -29,9 +29,9 @@ class SpaceBuilder extends Component {
   // Incense skipped
   #incenseSkipped = false;
 
-  // Home selection
-  #selectedHomeProductIndex = -1;
-  #selectedHomeVariantIndex = -1;
+  // Home selections (multi-select, up to 4)
+  #selectedHomeItems = [];  // Array of { productIndex, variantIndex }
+  #activeHomeProductIndex = -1;  // Which home product's variant grid is showing
   #homeSkipped = false;
 
   connectedCallback() {
@@ -57,8 +57,7 @@ class SpaceBuilder extends Component {
         this.#selectedIncenseVariantIndex = decoded.incenseSkipped ? -1 : decoded.incenseVariant;
         this.#incenseIncluded = decoded.incenseIncluded;
         this.#incenseSkipped = decoded.incenseSkipped;
-        this.#selectedHomeProductIndex = decoded.homeSkipped ? -1 : decoded.homeProduct;
-        this.#selectedHomeVariantIndex = decoded.homeSkipped ? -1 : decoded.homeVariant;
+        this.#selectedHomeItems = decoded.homeItems;
         this.#homeSkipped = decoded.homeSkipped;
         this.#state = 'configurator';
         this.#hideAll();
@@ -82,8 +81,8 @@ class SpaceBuilder extends Component {
       aromaSkipped: this.#aromaSkipped,
       incenseIncluded: this.#incenseIncluded,
       incenseSkipped: this.#incenseSkipped,
-      homeProductIndex: this.#selectedHomeProductIndex,
-      homeVariantIndex: this.#selectedHomeVariantIndex,
+      homeItems: [...this.#selectedHomeItems],
+      activeHomeProductIndex: this.#activeHomeProductIndex,
       homeSkipped: this.#homeSkipped,
     });
   }
@@ -127,8 +126,8 @@ class SpaceBuilder extends Component {
     this.#aromaSkipped = snapshot.aromaSkipped;
     this.#incenseIncluded = snapshot.incenseIncluded;
     this.#incenseSkipped = snapshot.incenseSkipped;
-    this.#selectedHomeProductIndex = snapshot.homeProductIndex;
-    this.#selectedHomeVariantIndex = snapshot.homeVariantIndex;
+    this.#selectedHomeItems = snapshot.homeItems;
+    this.#activeHomeProductIndex = snapshot.activeHomeProductIndex;
     this.#homeSkipped = snapshot.homeSkipped;
 
     switch (snapshot.state) {
@@ -154,7 +153,7 @@ class SpaceBuilder extends Component {
         this.refs.homeGrid?.removeAttribute('data-state');
         break;
       case 'home-variant-grid':
-        this.#showGrid('homeVariantGrid', snapshot.homeProductIndex);
+        this.#showGrid('homeVariantGrid', snapshot.activeHomeProductIndex);
         break;
       case 'incense-variant-grid':
         this.#showGrid('incenseVariantGrid', 0);
@@ -364,8 +363,8 @@ class SpaceBuilder extends Component {
       }
     }
 
-    // Home section
-    const hasHome = this.#selectedHomeProductIndex >= 0;
+    // Home section (multi-select)
+    const hasHome = this.#selectedHomeItems.length > 0;
     const homeVisible = hasHome || this.#homeSkipped;
     const continueHomeBtn = this.refs.continueToHome;
     if (continueHomeBtn) {
@@ -377,24 +376,28 @@ class SpaceBuilder extends Component {
       homeSection.hidden = !homeVisible;
     }
 
-    const homeProduct = hasHome ? this.#data.home?.[this.#selectedHomeProductIndex] : null;
-    const homeVariant = hasHome ? homeProduct?.variants?.[this.#selectedHomeVariantIndex] : null;
+    // Build set of selected product indices for quick lookup
+    const selectedHomeSet = new Set(this.#selectedHomeItems.map(item => item.productIndex));
 
     const homeOptions = this.refs.homeCompactOption;
     const homeLabels = this.refs.homeCompactLabel;
     if (Array.isArray(homeOptions)) {
       homeOptions.forEach((btn, i) => {
-        const selected = hasHome && i === this.#selectedHomeProductIndex;
+        const item = this.#selectedHomeItems.find(h => h.productIndex === i);
+        const selected = !!item;
         btn.setAttribute('data-selected', String(selected));
-        if (selected && homeVariant?.imageUrl) {
-          const img = btn.querySelector('img');
-          if (img) img.src = homeVariant.imageUrl;
+        if (selected) {
+          const variant = this.#data.home?.[i]?.variants?.[item.variantIndex];
+          if (variant?.imageUrl) {
+            const img = btn.querySelector('img');
+            if (img) img.src = variant.imageUrl;
+          }
         }
       });
     }
     if (Array.isArray(homeLabels)) {
       homeLabels.forEach((label, i) => {
-        label.textContent = hasHome && i === this.#selectedHomeProductIndex ? 'Edit' : 'Swap';
+        label.textContent = selectedHomeSet.has(i) ? 'Remove' : 'Add';
       });
     }
     const homeSkipBtn = this.refs.homeSkipOption;
@@ -402,14 +405,18 @@ class SpaceBuilder extends Component {
       homeSkipBtn.setAttribute('data-selected', String(this.#homeSkipped && !hasHome));
     }
 
-    if (this.refs.homeSelectedTitle) {
-      this.refs.homeSelectedTitle.textContent = homeProduct?.title || '';
-    }
-    if (this.refs.homeSelectedVariantName) {
-      this.refs.homeSelectedVariantName.textContent = homeVariant?.name || '';
-    }
-    if (this.refs.homeSelectedPrice) {
-      this.refs.homeSelectedPrice.textContent = homeVariant?.priceFormatted || '';
+    // Build selected info for all home items
+    const homeInfoEl = this.refs.homeSelectedInfo;
+    if (homeInfoEl) {
+      if (hasHome) {
+        homeInfoEl.innerHTML = this.#selectedHomeItems.map(item => {
+          const product = this.#data.home?.[item.productIndex];
+          const variant = product?.variants?.[item.variantIndex];
+          return `<p class="space-builder__selected-title">${product?.title || ''} — ${variant?.name || ''} — ${variant?.priceFormatted || ''}</p>`;
+        }).join('');
+      } else {
+        homeInfoEl.innerHTML = '';
+      }
     }
 
     // Update total price
@@ -451,8 +458,8 @@ class SpaceBuilder extends Component {
       if (incenseVariant) total += incenseVariant.price;
     }
 
-    if (this.#selectedHomeVariantIndex >= 0) {
-      const homeVariant = this.#data.home?.[this.#selectedHomeProductIndex]?.variants?.[this.#selectedHomeVariantIndex];
+    for (const item of this.#selectedHomeItems) {
+      const homeVariant = this.#data.home?.[item.productIndex]?.variants?.[item.variantIndex];
       if (homeVariant) total += homeVariant.price;
     }
 
@@ -465,7 +472,7 @@ class SpaceBuilder extends Component {
   #isReady() {
     const seatingDone = this.#selectedVariantIndex >= 0;
     const aromaDone = this.#selectedAromaVariantIndex >= 0 || this.#aromaSkipped;
-    const homeDone = this.#selectedHomeVariantIndex >= 0 || this.#homeSkipped;
+    const homeDone = this.#selectedHomeItems.length > 0 || this.#homeSkipped;
     return seatingDone && aromaDone && homeDone;
   }
 
@@ -653,15 +660,24 @@ class SpaceBuilder extends Component {
     this.#showConfigurator();
   }
 
-  /** Pick a home product → show its variant grid */
+  /** Pick a home product → remove if already selected, otherwise show its variant grid */
   selectHome({ index }, event) {
     const idx = Number(index);
     if (isNaN(idx) || idx < 0 || idx >= this.#data.home.length) return;
 
+    // If already selected, remove it
+    const existingIdx = this.#selectedHomeItems.findIndex(h => h.productIndex === idx);
+    if (existingIdx >= 0) {
+      this.#selectedHomeItems.splice(existingIdx, 1);
+      if (this.#selectedHomeItems.length === 0) this.#homeSkipped = true;
+      this.#showConfigurator();
+      return;
+    }
+
     this.#pushHistory();
     this.#hideAll();
 
-    this.#selectedHomeProductIndex = idx;
+    this.#activeHomeProductIndex = idx;
     this.#state = 'home-variant-grid';
 
     this.#showGrid('homeVariantGrid', idx);
@@ -677,18 +693,22 @@ class SpaceBuilder extends Component {
     this.#pushHistory();
     this.#hideAll();
 
-    this.#selectedHomeProductIndex = productIdx;
-    this.#selectedHomeVariantIndex = variantIdx;
+    // Update existing entry or add new one
+    const existing = this.#selectedHomeItems.find(h => h.productIndex === productIdx);
+    if (existing) {
+      existing.variantIndex = variantIdx;
+    } else {
+      this.#selectedHomeItems.push({ productIndex: productIdx, variantIndex: variantIdx });
+    }
     this.#homeSkipped = false;
     this.#state = 'configurator';
 
     this.#showConfigurator();
   }
 
-  /** Deselect home product (select skip option) */
+  /** Deselect all home products (select skip option) */
   removeHome() {
-    this.#selectedHomeProductIndex = -1;
-    this.#selectedHomeVariantIndex = -1;
+    this.#selectedHomeItems = [];
     this.#homeSkipped = true;
     this.#showConfigurator();
   }
@@ -726,8 +746,8 @@ class SpaceBuilder extends Component {
       if (incenseVariant) items.push({ id: incenseVariant.id, quantity: 1 });
     }
 
-    if (this.#selectedHomeVariantIndex >= 0) {
-      const homeVariant = this.#data.home?.[this.#selectedHomeProductIndex]?.variants?.[this.#selectedHomeVariantIndex];
+    for (const item of this.#selectedHomeItems) {
+      const homeVariant = this.#data.home?.[item.productIndex]?.variants?.[item.variantIndex];
       if (homeVariant) items.push({ id: homeVariant.id, quantity: 1 });
     }
 
@@ -783,7 +803,7 @@ class SpaceBuilder extends Component {
     return -1;
   }
 
-  /** Encode current state into 8-char code */
+  /** Encode current state into 10-char code */
   #encodeState() {
     let code = '';
     code += this.#toChar(this.#selectedProductIndex);       // 0: seating product
@@ -799,16 +819,17 @@ class SpaceBuilder extends Component {
     } else {
       code += this.#toChar(this.#selectedIncenseVariantIndex);
     }
-    code += this.#homeSkipped
-      ? 'X' : this.#toChar(this.#selectedHomeProductIndex);  // 6: home product
-    code += (this.#homeSkipped || this.#selectedHomeVariantIndex < 0)
-      ? 'X' : this.#toChar(this.#selectedHomeVariantIndex);  // 7: home variant
+    // 6–9: home product slots (variant index per product, X if not selected)
+    for (let i = 0; i < 4; i++) {
+      const item = this.#selectedHomeItems.find(h => h.productIndex === i);
+      code += item ? this.#toChar(item.variantIndex) : 'X';
+    }
     return code;
   }
 
-  /** Decode 8-char code into a state object, or null if invalid */
+  /** Decode 10-char code into a state object, or null if invalid */
   #decodeState(code) {
-    if (!code || code.length !== 8 || !/^[0-9A-VX]{8}$/.test(code)) return null;
+    if (!code || code.length !== 10 || !/^[0-9A-VX]{10}$/.test(code)) return null;
 
     const seatProduct = this.#fromChar(code[0]);
     const seatVariant = this.#fromChar(code[1]);
@@ -816,8 +837,6 @@ class SpaceBuilder extends Component {
     const aromaProduct = this.#fromChar(code[3]);
     const aromaVariant = this.#fromChar(code[4]);
     const incenseVariant = this.#fromChar(code[5]);
-    const homeProduct = this.#fromChar(code[6]);
-    const homeVariant = this.#fromChar(code[7]);
 
     // Validate indices exist in data
     if (seatProduct < 0 || !this.#data.seating?.[seatProduct]) return null;
@@ -834,11 +853,17 @@ class SpaceBuilder extends Component {
       if (!this.#data.incense?.variants?.[incenseVariant]) return null;
     }
 
-    const homeSkipped = code[6] === 'X';
-    if (!homeSkipped) {
-      if (!this.#data.home?.[homeProduct]) return null;
-      if (homeVariant < 0 || !this.#data.home[homeProduct].variants?.[homeVariant]) return null;
+    // Decode home items from positions 6–9
+    const homeItems = [];
+    for (let i = 0; i < 4; i++) {
+      const ch = code[6 + i];
+      if (ch !== 'X') {
+        const variantIdx = this.#fromChar(ch);
+        if (variantIdx < 0 || !this.#data.home?.[i]?.variants?.[variantIdx]) return null;
+        homeItems.push({ productIndex: i, variantIndex: variantIdx });
+      }
     }
+    const homeSkipped = homeItems.length === 0;
 
     // Derive incense included: aroma product !== 0 and includedIncense exists
     const incenseIncluded = !aromaSkipped && aromaProduct !== 0 && this.#data.includedIncense != null;
@@ -847,7 +872,7 @@ class SpaceBuilder extends Component {
       seatProduct, seatVariant, platform,
       aromaProduct, aromaVariant, aromaSkipped,
       incenseVariant, incenseSkipped, incenseIncluded,
-      homeProduct, homeVariant, homeSkipped,
+      homeItems, homeSkipped,
     };
   }
 
@@ -873,7 +898,7 @@ class SpaceBuilder extends Component {
     if (this.refs.saveEmailSuccess) this.refs.saveEmailSuccess.hidden = false;
   }
 
-  /** Restore configuration from an 8-char code in the restore input */
+  /** Restore configuration from a 10-char code in the restore input */
   restoreConfig() {
     const input = this.refs.restoreInput;
     if (!input) return;
@@ -897,8 +922,7 @@ class SpaceBuilder extends Component {
     this.#selectedIncenseVariantIndex = decoded.incenseSkipped ? -1 : decoded.incenseVariant;
     this.#incenseIncluded = decoded.incenseIncluded;
     this.#incenseSkipped = decoded.incenseSkipped;
-    this.#selectedHomeProductIndex = decoded.homeSkipped ? -1 : decoded.homeProduct;
-    this.#selectedHomeVariantIndex = decoded.homeSkipped ? -1 : decoded.homeVariant;
+    this.#selectedHomeItems = decoded.homeItems;
     this.#homeSkipped = decoded.homeSkipped;
 
     // Reset history and go straight to configurator
