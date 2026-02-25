@@ -244,6 +244,7 @@
               "settings": {
                 "product": "{{ closest.product }}",
                 "stacking": false,
+                "banner_chip_url": "https://walden.us/pages/meditation-space-builder",
                 "show_pickup_availability": false,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
