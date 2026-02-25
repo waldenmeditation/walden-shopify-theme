@@ -244,7 +244,6 @@
               "settings": {
                 "product": "{{ closest.product }}",
                 "stacking": false,
-                "banner_chip_url": "https://walden.us/pages/meditation-space-builder",
                 "show_pickup_availability": false,
                 "padding-block-start": 0,
                 "padding-block-end": 0,
@@ -437,6 +436,12 @@
                 "accordion_row_kmdwc8"
               ]
             },
+            "space_builder_chip": {
+              "type": "space-builder-chip",
+              "settings": {
+                "url": "https://walden.us/pages/meditation-space-builder"
+              }
+            },
             "okendo_reviews_carousel_jcWdAH": {
               "type": "shopify://apps/okendo/blocks/reviews-carousel/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
               "settings": {
@@ -489,6 +494,7 @@
             "product_info_tabs_trjDRY",
             "product_rich_content_GxP3sK",
             "accordion_iWQwkW",
+            "space_builder_chip",
             "okendo_reviews_carousel_jcWdAH",
             "text_j7hieF",
             "custom_liquid_bxrAGy"
