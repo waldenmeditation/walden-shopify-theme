@@ -19,11 +19,21 @@
     object-fit: cover;
   }
 
-  .space-builder-chip__text {
+  .space-builder-chip__content {
     position: relative;
+  }
+
+  .space-builder-chip__title {
     font-size: 1.1rem;
     font-weight: 400;
     line-height: 1.2;
+  }
+
+  .space-builder-chip__subtitle {
+    font-size: 0.75rem;
+    font-weight: 400;
+    opacity: 0.85;
+    margin-top: 0.4rem;
   }
 
   .space-builder-chip__arrow {
@@ -39,7 +49,12 @@
 {%- if block.settings.url != blank -%}
   <a href="{{ block.settings.url }}" class="space-builder-chip" {{ block.shopify_attributes }}>
     <img src="{{ 'Chip Background.png' | asset_url }}" alt="" class="space-builder-chip__bg" loading="lazy">
-    <span class="space-builder-chip__text">Meditation<br>Space Builder <img src="{{ 'Arrow.svg' | asset_url }}" alt="" class="space-builder-chip__arrow"></span>
+    <div class="space-builder-chip__content">
+      <div class="space-builder-chip__title">Meditation<br>Space Builder <img src="{{ 'Arrow.svg' | asset_url }}" alt="" class="space-builder-chip__arrow"></div>
+      {%- if block.settings.subtitle != blank -%}
+        <div class="space-builder-chip__subtitle">{{ block.settings.subtitle }}</div>
+      {%- endif -%}
+    </div>
   </a>
 {%- endif -%}
 
@@ -51,6 +66,12 @@
       "type": "url",
       "id": "url",
       "label": "Link URL"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Design your meditation space with our new tool."
     }
   ],
   "presets": [
