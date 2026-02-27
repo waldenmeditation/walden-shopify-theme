@@ -1043,7 +1043,6 @@
       {% if predictive_search.performed %}
         {% assign search_results_count = predictive_search.resources.products.size
           | plus: predictive_search.resources.articles.size
-          | plus: predictive_search.resources.collections.size
           | plus: predictive_search.resources.queries.size
         %}
       {% else %}
@@ -1066,9 +1065,7 @@
         {%- if search_results_count > 0 -%}
           {% assign shared_results_index = 0 %}
           {% if predictive_search.resources.queries.size > 0 %}
-            {% assign shared_results_index = shared_results_index
-              | plus: predictive_search.resources.collections.size
-            %}
+            {% assign shared_results_index = shared_results_index %}
             <ul
               class="predictive-search-results__list predictive-search-results__wrapper predictive-search-results__wrapper-queries list-unstyled"
               role="listbox"
@@ -1101,17 +1098,6 @@
               assign products = predictive_search.resources.products
               render 'predictive-search-products-list', title: title, products: products, filter_collection_handle: 'explore'
             -%}
-          {% endif %}
-
-          {% if predictive_search.resources.collections.size > 0 %}
-            {% assign shared_results_index = shared_results_index | plus: predictive_search.resources.articles.size %}
-            {% assign resource_title = 'content.search_results_resource_collections' | t %}
-
-            {% render 'predictive-search-resource-carousel',
-              title: resource_title,
-              resource_type: 'collection',
-              resources: predictive_search.resources.collections
-            %}
           {% endif %}
 
           {% if predictive_search.resources.articles.size > 0 %}
@@ -1149,15 +1135,12 @@
       {% if predictive_search.performed %}
         {%- if search_results_count > 0 -%}
           {% assign total_results = predictive_search.resources.products.size
-            | plus: predictive_search.resources.collections.size
             | plus: predictive_search.resources.articles.size
           %}
           {% assign single_result_url = null %}
           {% if total_results == 1 %}
             {% if predictive_search.resources.products.size == 1 %}
               {% assign single_result_url = predictive_search.resources.products.first.url %}
-            {% elsif predictive_search.resources.collections.size == 1 %}
-              {% assign single_result_url = predictive_search.resources.collections.first.url %}
             {% elsif predictive_search.resources.articles.size == 1 %}
               {% assign single_result_url = predictive_search.resources.articles.first.url %}
             {% endif %}
