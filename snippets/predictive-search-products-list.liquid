@@ -60,7 +60,7 @@
                 resource: product,
                 image_width: 500,
                 image_hover: true,
-                image_aspect_ratio: '4 / 5'
+                image_aspect_ratio: '1 / 1'
               %}
             </li>
           {% endfor %}
@@ -75,7 +75,7 @@
                 resource: product,
                 image_width: 500,
                 image_hover: true,
-                image_aspect_ratio: '4 / 5'
+                image_aspect_ratio: '1 / 1'
               %}
             </li>
           {% endfor %}
@@ -98,33 +98,42 @@
         {% for _id in order_ids %}
           {% assign int_id = _id | times: 1 %}
           {% assign product = products | find: 'id', int_id %}
-          <li
-            class="predictive-search-results__card predictive-search-results__card--product"
-            ref="resultsItems[]"
-          >
-            {% render 'resource-card',
-              resource_type: 'product',
-              resource: product,
-              image_width: 500,
-              image_hover: true,
-              image_aspect_ratio: '4 / 5'
-            %}
-          </li>
+          {% assign in_explore = product.collections | where: 'handle', 'explore' %}
+          {% if filter_collection_handle == blank or in_explore.size > 0 %}
+            <li
+              class="predictive-search-results__card predictive-search-results__card--product"
+              ref="resultsItems[]"
+            >
+              {% render 'resource-card',
+                resource_type: 'product',
+                resource: product,
+                image_width: 500,
+                image_hover: true,
+                image_aspect_ratio: '1 / 1'
+              %}
+            </li>
+          {% endif %}
         {% endfor %}
       {% else %}
-        {% for product in products limit: limit %}
-          <li
-            class="predictive-search-results__card predictive-search-results__card--product"
-            ref="resultsItems[]"
-          >
-            {% render 'resource-card',
-              resource_type: 'product',
-              resource: product,
-              image_width: 500,
-              image_hover: true,
-              image_aspect_ratio: '4 / 5'
-            %}
-          </li>
+        {% assign shown = 0 %}
+        {% for product in products %}
+          {% if shown >= limit %}{% break %}{% endif %}
+          {% assign in_explore = product.collections | where: 'handle', 'explore' %}
+          {% if filter_collection_handle == blank or in_explore.size > 0 %}
+            <li
+              class="predictive-search-results__card predictive-search-results__card--product"
+              ref="resultsItems[]"
+            >
+              {% render 'resource-card',
+                resource_type: 'product',
+                resource: product,
+                image_width: 500,
+                image_hover: true,
+                image_aspect_ratio: '1 / 1'
+              %}
+            </li>
+            {% assign shown = shown | plus: 1 %}
+          {% endif %}
         {% endfor %}
       {% endif %}
     </ul>

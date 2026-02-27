@@ -62,7 +62,7 @@ class PredictiveSearchComponent extends Component {
       document.addEventListener(ThemeEvents.megaMenuHover, this.#blurSearch, { signal });
     }
 
-    this.#getRecentlyViewed();
+    this.#resetSearch();
 
     // TODO: Could we put a ref directly on the results child
     const results = this.refs.predictiveSearchResults.firstElementChild;
@@ -432,7 +432,9 @@ class PredictiveSearchComponent extends Component {
     this.#hideResetButton();
 
     const abortController = this.#createAbortController();
-    const emptySectionMarkup = await sectionRenderer.getSectionHTML(emptySectionId, false);
+    const bestSellingUrl = new URL('/collections/all', location.origin);
+    bestSellingUrl.searchParams.set('sort_by', 'best-selling');
+    const emptySectionMarkup = await sectionRenderer.getSectionHTML(emptySectionId, false, bestSellingUrl);
     const parsedEmptySectionMarkup = new DOMParser()
       .parseFromString(emptySectionMarkup, 'text/html')
       .querySelector('.predictive-search-empty-section');

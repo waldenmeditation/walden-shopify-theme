@@ -816,8 +816,8 @@
     {% endif %}
 
     {%- assign heading_tag = section.settings.heading_tag | default: 'h3' -%}
-    <{{ heading_tag }} class="collection-header-title" style="margin:0;font-size:2rem;">
-      {{ collection.title | default: 'Collection' }}
+    <{{ heading_tag }} class="collection-header-title" style="margin:0;{% if template.name == 'search' %}font-size:1.4rem;{% else %}font-size:2rem;{% endif %}">
+      {% if template.name == 'search' %}Search Results{% else %}{{ collection.title | default: 'Collection' }}{% endif %}
     </{{ heading_tag }}>
 
     {%- liquid

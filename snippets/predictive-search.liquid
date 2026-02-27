@@ -68,18 +68,13 @@
         <span class="svg-wrapper predictive-search__icon">
           {{ 'icon-search.svg' | inline_asset_content }}
         </span>
+        <span ref="resetButton" hidden></span>
         <button
-          type="button"
-          class="button-unstyled predictive-search__reset-button"
-          aria-label="{{ 'accessibility.reset_search' | t }}"
-          ref="resetButton"
-          hidden
-          on:click="/resetSearch"
+          type="submit"
+          class="button button-primary predictive-search__search-button"
+          ref="viewAllButton"
         >
-          <span class="svg-wrapper predictive-search__reset-button-icon">
-            {{ 'icon-reset.svg' | inline_asset_content }}
-          </span>
-          <span class="predictive-search__reset-button-text">{{ 'actions.clear' | t }}</span>
+          Search
         </button>
       </div>
       <button
@@ -105,28 +100,18 @@
         {% render 'predictive-search-empty-state', products_test_id: products_test_id %}
       </div>
 
-      <div class="predictive-search-form__footer">
-        <button
-          class="button button-primary predictive-search__search-button"
-          ref="viewAllButton"
-        >
-          {{ 'content.search_results_view_all' | t }}
-        </button>
-      </div>
     </div>
   </form>
 </predictive-search-component>
 
 {% stylesheet %}
-  predictive-search-component {
-    &:has([data-search-results]):not(:has(.predictive-search-results__no-results)) {
-      .predictive-search-form__footer {
-        display: block;
-      }
-    }
+  .predictive-search__search-button {
+    display: none;
   }
 
-  .predictive-search-form__footer {
-    display: none;
+  predictive-search-component:has([data-search-results]):not(:has(.predictive-search-results__no-results)) {
+    .predictive-search__search-button {
+      display: inline-flex;
+    }
   }
 {% endstylesheet %}
