@@ -129,6 +129,16 @@
       endfor
     endif
 
+    # Add images with alt tag "all-[option1]" to appear for all variants sharing that top-level option
+    assign current_option1 = current_variant.option1 | downcase
+    assign partial_all_alt = "all-" | append: current_option1
+    for media in media_source
+      assign media_alt_lower = media.alt | downcase
+      if media_alt_lower == partial_all_alt
+        assign temp_media_list = temp_media_list | concat: [media]
+      endif
+    endfor
+
     # Add images with alt tag "all" to appear for all variants
     for media in media_source
       if media.alt == "all"
