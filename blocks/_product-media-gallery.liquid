@@ -125,7 +125,9 @@
     if media_start_index <= media_end_index
       for i in (media_start_index..media_end_index)
         assign media_to_add = media_source[i]
-        assign temp_media_list = temp_media_list | concat: [media_to_add]
+        unless media_to_add.alt contains "all-" or media_to_add.alt == "all" or media_to_add.alt == "skip"
+          assign temp_media_list = temp_media_list | concat: [media_to_add]
+        endunless
       endfor
     endif
 
