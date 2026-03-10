@@ -182,6 +182,10 @@ export default class VariantPicker extends Component {
         } else {
           const newProduct = this.updateVariantPicker(html);
 
+          // If the resulting selection is disabled, swap to the first available
+          // option in that group and re-fetch instead of dispatching the update event.
+          if (this.#swapToAvailableVariant()) return;
+
           // We grab the variant object from the response and dispatch an event with it.
           if (this.selectedOptionId) {
             this.dispatchEvent(
@@ -302,6 +306,44 @@ export default class VariantPicker extends Component {
 
       return optionValueId;
     });
+  }
+
+  /**
+   * If the current selection includes a disabled input (e.g. Sienna/4 is grayed out),
+   * auto-selects the first available option in the same group and re-fetches.
+   * @returns {boolean} True if a swap was triggered (caller should skip further processing).
+   */
+  #swapToAvailableVariant() {
+    const disabledChecked = this.querySelector('fieldset input:checked[disabled]');
+    if (!disabledChecked) return false;
+
+    const fieldset = disabledChecked.closest('fieldset');
+    if (!fieldset) return false;
+
+    const firstAvailable = fieldset.querySelector('input:not([disabled])');
+    if (!firstAvailable) return false;
+
+    // Selecting a radio auto-unchecks others in the same name group
+    firstAvailable.checked = true;
+
+    // Update the URL to reflect the new variant
+    const isOnProductPage =
+      Theme.template.name === 'product' &&
+      !this.closest('product-card') &&
+      !this.closest('quick-add-dialog');
+
+    if (isOnProductPage) {
+      const url = new URL(window.location.href);
+      if (firstAvailable.dataset.variantId) {
+        url.searchParams.set('variant', firstAvailable.dataset.variantId);
+      } else {
+        url.searchParams.delete('variant');
+      }
+      history.replaceState({}, '', url.toString());
+    }
+
+    this.fetchUpdatedSection(this.buildRequestUrl(firstAvailable));
+    return true;
   }
 }
 

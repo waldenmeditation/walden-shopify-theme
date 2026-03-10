@@ -190,6 +190,12 @@
     outline-offset: var(--focus-outline-offset);
   }
 
+  .variant-option__button-label--disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
   .variant-option__button-label:has([data-option-available='false']):has(:checked) {
     --variant-picker-stroke-color: rgba(from var(--color-variant-text) r g b / 60%);
 
@@ -374,6 +380,34 @@
                 {% assign longest_value = product_option_value.size %}
               {% endif %}
 
+              {%- liquid
+                assign option_should_disable = false
+                if product_option.position == 1
+                  # Color option: check across ALL variants of this color
+                  assign option_has_image = false
+                  assign option_has_stock = false
+                  for variant in product_resource.variants
+                    if variant.option1 == product_option_value.name
+                      if variant.featured_media != blank
+                        assign option_has_image = true
+                      endif
+                      if variant.inventory_quantity > 0
+                        assign option_has_stock = true
+                      endif
+                    endif
+                  endfor
+                  if option_has_image == false and option_has_stock == false
+                    assign option_should_disable = true
+                  endif
+                else
+                  # Quantity/other options: check the contextual variant (current color + this value)
+                  assign ctx_variant = product_option_value.variant
+                  if ctx_variant.featured_media == blank and ctx_variant.available == false
+                    assign option_should_disable = true
+                  endif
+                endif
+              -%}
+
               {%- if variant_style == 'swatch' -%}
                 {% assign ov_handle = product_option_value.name | handle %}
                 {%- unless break_inserted -%}
@@ -384,7 +418,7 @@
                 {%- endunless -%}
               {%- endif -%}
 
-              <label class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}">
+              <label class="variant-option__button-label{% if variant_style == 'swatch' %} variant-option__button-label--has-swatch{% endif %}{% if option_should_disable %} variant-option__button-label--disabled{% endif %}">
                 <input
                   type="radio"
                   name="{{ product_option.name | escape }}-{{ block.id }}-{{ product_resource.id }}"
@@ -392,6 +426,9 @@
                   aria-label="{{ product_option_value.name }}"
                   {% if product_option_value.available == false %}
                     aria-disabled="true"
+                  {% endif %}
+                  {% if option_should_disable %}
+                    disabled
                   {% endif %}
                   data-input-id="{{ product_option.position }}-{{ forloop.index0 }}"
                   data-option-value-id="{{ product_option_value.id }}"
