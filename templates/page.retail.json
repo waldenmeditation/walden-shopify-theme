@@ -28,7 +28,7 @@
           "type": "feature_row",
           "settings": {
             "image": "shopify://shop_images/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg",
-            "eyebrow": "The Collection",
+            "eyebrow": "",
             "heading": "Seating, sets, and surfaces",
             "body": "<p>Salt lamps, journey sets, cushions, and mats — a giftable range that merchandises beautifully together and reorders simply through the partner portal.</p>",
             "cta_text": "Request a line sheet"
@@ -38,7 +38,7 @@
           "type": "feature_row",
           "settings": {
             "image": "shopify://shop_images/Brass_Holder_SideTiltedView_Candle_V004-min.jpg",
-            "eyebrow": "Aroma",
+            "eyebrow": "",
             "heading": "Brass, stone, and scent",
             "body": "<p>Incense holders, vases, and aroma essentials — small-format pieces with strong attachment rates that anchor a beautiful counter display.</p>",
             "cta_text": "See trade pricing"
@@ -48,7 +48,7 @@
           "type": "feature_row",
           "settings": {
             "image": "shopify://shop_images/Walden_Gong12i_InteriorShot_Front_Cropped_003_post_jpeg_1.png",
-            "eyebrow": "Sound & Seating",
+            "eyebrow": "",
             "heading": "Pieces worth the shelf",
             "body": "<p>Gongs, benches, and timers — quietly engineered objects that draw customers in and hold their place in the store over seasons.</p>",
             "cta_text": "Apply to carry Walden"
@@ -67,7 +67,7 @@
         "tab3_label": "Corporate Gifting",
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/all-products-wide-Edit-2_1.png",
-        "hero_eyebrow": "Retail Partners",
+        "hero_eyebrow": "",
         "hero_title": "Objects designed to be picked up.",
         "hero_lead": "<p>Our products are designed with purpose, to invite thoughtful interaction. Become a retail partner and access the full collection with trade pricing and simple restocking.</p>",
         "hero_cta_text": "Inquire",

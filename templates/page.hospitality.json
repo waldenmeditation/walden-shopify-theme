@@ -28,7 +28,7 @@
           "type": "feature_row",
           "settings": {
             "image": "shopify://shop_images/Frame_13.jpg",
-            "eyebrow": "Seating Collection",
+            "eyebrow": "",
             "heading": "Built to support every body",
             "body": "<p>Our seating is designed to support all body types and hold a consistent shape over time. Materials are durable, easy to clean, and suited to repeated use in shared spaces.</p>",
             "cta_text": "Request the collection"
@@ -38,7 +38,7 @@
           "type": "feature_row",
           "settings": {
             "image": "shopify://shop_images/mecca-lyingmat-interior.png",
-            "eyebrow": "Journey Set",
+            "eyebrow": "",
             "heading": "Immersive experiences",
             "body": "<p>Our lying mats are designed specifically for sound baths, breathwork, and still practices. The Journey Set provides full-body support, letting guests rest deeply without distraction or discomfort.</p>",
             "cta_text": "Discuss a partnership"
@@ -48,7 +48,7 @@
           "type": "feature_row",
           "settings": {
             "image": "shopify://shop_images/2022.03.28_-_Beverly_Hills_Room_-_Tag_Detail_1.jpg",
-            "eyebrow": "Home & Gifting",
+            "eyebrow": "",
             "heading": "Extend the experience",
             "body": "<p>Build out a retail and gift corner so guests can continue the practice at home. Co-branded or exclusive product options are available through partnership.</p>",
             "cta_text": "Plan a retail corner"
@@ -67,7 +67,7 @@
         "tab3_label": "Corporate Gifting",
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V007_47aad304-540f-4f61-9c08-8dd9ec82ff3d.jpg",
-        "hero_eyebrow": "Hospitality & Studio",
+        "hero_eyebrow": "",
         "hero_title": "A dedicated space for rest, in your space.",
         "hero_lead": "<p>We partner with retreats, hotels, and studios to create rooms for rest and renewal — with the full collection at volume pricing, partnership options, and design support for your space.</p>",
         "hero_cta_text": "Inquire",
