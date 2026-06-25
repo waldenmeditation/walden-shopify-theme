@@ -1,0 +1,225 @@
+{% comment %}
+  Hospitality & Studio landing page.
+  Baseline layout adapted from the "Walden B2B Landing Pages" mockup, rebuilt with
+  the theme's own design language: type comes from the global h1–h6 / .button styles
+  (Geist), colors come from the active color scheme variables. The warm section bands
+  are derived from the existing --color-border token (no new color literals).
+  Content is editable via section settings + "feature_row" blocks.
+{% endcomment %}
+
+{{ 'section-hospitality-landing.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign form_anchor = 'inquire-' | append: section.id
+-%}
+
+<div class="hosp color-{{ section.settings.color_scheme }}">
+
+  {%- comment -%} ---------- PROGRAM SWITCHER ---------- {%- endcomment -%}
+  {%- if section.settings.show_switcher -%}
+    {%- assign active_tab = section.settings.active_tab -%}
+    <nav class="hosp-switcher" aria-label="Trade programs">
+      <div class="hosp-switcher__inner">
+        {%- render 'hosp-switcher-tab', label: section.settings.tab1_label, url: section.settings.tab1_url, id: 'tab1', active_tab: active_tab -%}
+        {%- render 'hosp-switcher-tab', label: section.settings.tab2_label, url: section.settings.tab2_url, id: 'tab2', active_tab: active_tab -%}
+        {%- render 'hosp-switcher-tab', label: section.settings.tab3_label, url: section.settings.tab3_url, id: 'tab3', active_tab: active_tab -%}
+      </div>
+    </nav>
+  {%- endif -%}
+
+  {%- comment -%} ---------- HERO ---------- {%- endcomment -%}
+  <section class="hosp-hero">
+    {%- if section.settings.hero_image != blank -%}
+      <img
+        class="hosp-hero__bg"
+        src="{{ section.settings.hero_image | image_url: width: 2400 }}"
+        srcset="{{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.hero_image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ section.settings.hero_image.alt | escape }}"
+        width="{{ section.settings.hero_image.width }}"
+        height="{{ section.settings.hero_image.height }}"
+        loading="eager"
+      >
+    {%- else -%}
+      <div class="hosp-hero__bg hosp-placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+    {%- endif -%}
+    <div class="hosp-hero__scrim"></div>
+    <div class="hosp__inner hosp-hero__content">
+      <div class="hosp-hero__copy">
+        {%- if section.settings.hero_eyebrow != blank -%}
+          <p class="hosp-eyebrow hosp-eyebrow--light">{{ section.settings.hero_eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="hosp-hero__title">{{ section.settings.hero_title }}</h1>
+        {%- if section.settings.hero_lead != blank -%}
+          <div class="hosp-hero__lead">{{ section.settings.hero_lead }}</div>
+        {%- endif -%}
+        {%- if section.settings.hero_cta_text != blank -%}
+          <a href="#{{ form_anchor }}" class="hosp-hero__cta">{{ section.settings.hero_cta_text }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  {%- comment -%} ---------- INTRO ---------- {%- endcomment -%}
+  {%- if section.settings.intro != blank -%}
+    <section class="hosp-intro">
+      <div class="hosp__inner hosp-intro__inner">
+        <div class="hosp-intro__text">{{ section.settings.intro }}</div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- TRUST LINE ---------- {%- endcomment -%}
+  {%- if section.settings.trust_label != blank -%}
+    <section class="hosp-trust">
+      <div class="hosp__inner hosp-trust__inner">
+        <p class="hosp-eyebrow">{{ section.settings.trust_label }}</p>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- FEATURE ROWS ---------- {%- endcomment -%}
+  {%- if section.blocks.size > 0 -%}
+    <section class="hosp-rows">
+      <div class="hosp__inner">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'feature_row' -%}
+            <div
+              class="hosp-row {% cycle 'hosp-row--normal', 'hosp-row--reverse' %}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="hosp-row__media">
+                {%- if block.settings.image != blank -%}
+                  <img
+                    src="{{ block.settings.image | image_url: width: 1600 }}"
+                    srcset="{{ block.settings.image | image_url: width: 800 }} 800w,
+                            {{ block.settings.image | image_url: width: 1600 }} 1600w"
+                    sizes="(min-width: 750px) 50vw, 100vw"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                    loading="lazy"
+                  >
+                {%- else -%}
+                  <div class="hosp-placeholder">{{ 'image' | placeholder_svg_tag }}</div>
+                {%- endif -%}
+              </div>
+              <div class="hosp-row__text">
+                {%- if block.settings.eyebrow != blank -%}
+                  <p class="hosp-eyebrow">{{ block.settings.eyebrow }}</p>
+                {%- endif -%}
+                <h2 class="hosp-row__title">{{ block.settings.heading }}</h2>
+                {%- if block.settings.body != blank -%}
+                  <div class="hosp-row__body">{{ block.settings.body }}</div>
+                {%- endif -%}
+                {%- if block.settings.cta_text != blank -%}
+                  <a href="#{{ form_anchor }}" class="button button-secondary hosp-row__cta">
+                    {{ block.settings.cta_text }}
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- STATEMENT ---------- {%- endcomment -%}
+  {%- if section.settings.statement != blank -%}
+    <section class="hosp-statement">
+      <div class="hosp__inner hosp-statement__inner">
+        <p class="hosp-statement__text">{{ section.settings.statement }}</p>
+        {%- if section.settings.statement_attribution != blank -%}
+          <p class="hosp-eyebrow">{{ section.settings.statement_attribution }}</p>
+        {%- endif -%}
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- FORM ---------- {%- endcomment -%}
+  <section id="{{ form_anchor }}" class="hosp-form">
+    <div class="hosp__inner hosp-form__inner">
+      <div class="hosp-form__head">
+        {%- if section.settings.form_title != blank -%}
+          <h2 class="hosp-form__title">{{ section.settings.form_title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.form_subtitle != blank -%}
+          <div class="hosp-form__sub">{{ section.settings.form_subtitle }}</div>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.airtable_src != blank -%}
+        <iframe
+          class="airtable-embed hosp-form__embed"
+          src="{{ section.settings.airtable_src }}"
+          title="{{ section.settings.form_title | default: 'Inquiry form' | escape }}"
+          frameborder="0"
+          width="100%"
+          height="{{ section.settings.form_height }}"
+          loading="lazy"
+        ></iframe>
+      {%- endif -%}
+    </div>
+  </section>
+
+</div>
+
+<script src="{{ 'hospitality-switcher.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "Hospitality landing",
+  "tag": "section",
+  "settings": [
+    { "type": "header", "content": "Appearance" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Program switcher" },
+    { "type": "checkbox", "id": "show_switcher", "label": "Show program tabs", "default": true },
+    { "type": "select", "id": "active_tab", "label": "Active tab", "options": [ { "value": "tab1", "label": "Tab 1" }, { "value": "tab2", "label": "Tab 2" }, { "value": "tab3", "label": "Tab 3" } ], "default": "tab1" },
+    { "type": "text", "id": "tab1_label", "label": "Tab 1 label", "default": "Hospitality & Studio" },
+    { "type": "text", "id": "tab1_url", "label": "Tab 1 link" },
+    { "type": "text", "id": "tab2_label", "label": "Tab 2 label", "default": "Retail Partners" },
+    { "type": "text", "id": "tab2_url", "label": "Tab 2 link" },
+    { "type": "text", "id": "tab3_label", "label": "Tab 3 label", "default": "Corporate Gifting" },
+    { "type": "text", "id": "tab3_url", "label": "Tab 3 link" },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Hero eyebrow", "default": "Hospitality & Studio" },
+    { "type": "text", "id": "hero_title", "label": "Hero title", "default": "A dedicated space for rest, in your space." },
+    { "type": "richtext", "id": "hero_lead", "label": "Hero lead" },
+    { "type": "text", "id": "hero_cta_text", "label": "Hero button text", "default": "Inquire" },
+    { "type": "header", "content": "Intro" },
+    { "type": "richtext", "id": "intro", "label": "Intro statement" },
+    { "type": "header", "content": "Trust line" },
+    { "type": "text", "id": "trust_label", "label": "Trust line", "info": "Small uppercase label above the feature rows." },
+    { "type": "header", "content": "Statement" },
+    { "type": "richtext", "id": "statement", "label": "Statement" },
+    { "type": "text", "id": "statement_attribution", "label": "Statement attribution" },
+    { "type": "header", "content": "Inquiry form" },
+    { "type": "text", "id": "form_title", "label": "Form title", "default": "Design your space with Walden" },
+    { "type": "richtext", "id": "form_subtitle", "label": "Form subtitle" },
+    { "type": "url", "id": "airtable_src", "label": "Airtable embed URL", "info": "The /embed/.../form URL from Airtable." },
+    { "type": "range", "id": "form_height", "label": "Form height", "min": 600, "max": 1600, "step": 50, "unit": "px", "default": 1000 }
+  ],
+  "blocks": [
+    {
+      "type": "feature_row",
+      "name": "Feature row",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Built to support all body types" },
+        { "type": "richtext", "id": "body", "label": "Body" },
+        { "type": "text", "id": "cta_text", "label": "Button text", "info": "Links to the inquiry form." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hospitality landing",
+      "blocks": [ { "type": "feature_row" }, { "type": "feature_row" }, { "type": "feature_row" } ]
+    }
+  ]
+}
+{% endschema %}

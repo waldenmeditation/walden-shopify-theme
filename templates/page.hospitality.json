@@ -21,152 +21,66 @@
         "padding-block-end": 80
       }
     },
-    "section_t7rJCC": {
-      "type": "section",
+    "hospitality_landing": {
+      "type": "hospitality-landing",
       "blocks": {
-        "ai_gen_block_976c4e4_bCB6Y7": {
-          "type": "ai_gen_block_976c4e4",
-          "name": "Image with Text",
+        "row_seating": {
+          "type": "feature_row",
           "settings": {
-            "image_position": "right",
-            "top_offset_override": 10,
-            "image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V007_47aad304-540f-4f61-9c08-8dd9ec82ff3d.jpg",
-            "subtitle": "",
-            "title": "Hospitality & Studio",
-            "description": "<p>We partner with retreats, hotels, and studios to create dedicated spaces for rest, and renewal. Access our full collection with volume ordering, partnership options, and design support for your space.</p>",
-            "button_text": "Sign Up",
-            "link_type": "url",
-            "button_link": "shopify://pages/form-hospitality",
-            "button_email_link": "",
-            "button_style": "button",
-            "subtitle_tag": "h4",
-            "title_tag": "h1"
-          },
-          "blocks": {}
-        },
-        "ai_gen_block_976c4e4_xn7TRp": {
-          "type": "ai_gen_block_976c4e4",
-          "name": "Image with Text",
-          "settings": {
-            "image_position": "left",
-            "top_offset_override": 0,
             "image": "shopify://shop_images/Frame_13.jpg",
-            "subtitle": "Seating Collection",
-            "title": "Meditation and Wellness Spaces",
-            "description": "<p>Our seating products are designed to support all body types and maintain a consistent shape and structure over time. Materials are durable, easy to clean, and suited for repeated use in shared spaces.</p>",
-            "button_text": "Shop Now",
-            "link_type": "url",
-            "button_link": "",
-            "button_email_link": "",
-            "button_style": "button",
-            "subtitle_tag": "h4",
-            "title_tag": "h2"
-          },
-          "blocks": {}
+            "eyebrow": "Seating Collection",
+            "heading": "Built to support every body",
+            "body": "<p>Our seating is designed to support all body types and hold a consistent shape over time. Materials are durable, easy to clean, and suited to repeated use in shared spaces.</p>",
+            "cta_text": "Request the collection"
+          }
         },
-        "ai_gen_block_976c4e4_fxxjDM": {
-          "type": "ai_gen_block_976c4e4",
-          "name": "Image with Text",
+        "row_journey": {
+          "type": "feature_row",
           "settings": {
-            "image_position": "right",
-            "top_offset_override": 0,
             "image": "shopify://shop_images/mecca-lyingmat-interior.png",
-            "subtitle": "Journey Set",
-            "title": "Immersive Experiences",
-            "description": "<p>Our lying mats are designed specifically for sound baths, breathwork and still practices. The Journey Set provides full-body support, allowing guests to rest deeply without distraction or discomfort.</p>",
-            "button_text": "",
-            "link_type": "url",
-            "button_link": "",
-            "button_email_link": "",
-            "button_style": "button",
-            "subtitle_tag": "h4",
-            "title_tag": "h2"
-          },
-          "blocks": {}
+            "eyebrow": "Journey Set",
+            "heading": "Immersive experiences",
+            "body": "<p>Our lying mats are designed specifically for sound baths, breathwork, and still practices. The Journey Set provides full-body support, letting guests rest deeply without distraction or discomfort.</p>",
+            "cta_text": "Discuss a partnership"
+          }
         },
-        "ai_gen_block_976c4e4_tagFEU": {
-          "type": "ai_gen_block_976c4e4",
-          "name": "Image with Text",
+        "row_home": {
+          "type": "feature_row",
           "settings": {
-            "image_position": "left",
-            "top_offset_override": 0,
             "image": "shopify://shop_images/2022.03.28_-_Beverly_Hills_Room_-_Tag_Detail_1.jpg",
-            "subtitle": "Home and Gifting",
-            "title": "Extending the Experience",
-            "description": "<p>Build out your retail and gift corner with Walden products for guests to continue their experience at home. Co-branded or exclusive product options are available through partnership.</p>",
-            "button_text": "",
-            "link_type": "url",
-            "button_link": "",
-            "button_email_link": "",
-            "button_style": "button",
-            "subtitle_tag": "h4",
-            "title_tag": "h2"
-          },
-          "blocks": {}
-        },
-        "image_6GptbK": {
-          "type": "image",
-          "name": "t:names.image",
-          "settings": {
-            "image": "shopify://shop_images/CleanShot_2022-04-18_at_15.17.31_2x-pichi-pichi.webp",
-            "link": "",
-            "image_ratio": "adapt",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
+            "eyebrow": "Home & Gifting",
+            "heading": "Extend the experience",
+            "body": "<p>Build out a retail and gift corner so guests can continue the practice at home. Co-branded or exclusive product options are available through partnership.</p>",
+            "cta_text": "Plan a retail corner"
+          }
         }
       },
-      "block_order": [
-        "ai_gen_block_976c4e4_bCB6Y7",
-        "ai_gen_block_976c4e4_xn7TRp",
-        "ai_gen_block_976c4e4_fxxjDM",
-        "ai_gen_block_976c4e4_tagFEU",
-        "image_6GptbK"
-      ],
-      "name": "t:names.custom_section",
+      "block_order": ["row_seating", "row_journey", "row_home"],
       "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 100,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 50,
-        "padding-block-end": 0
+        "color_scheme": "scheme-1",
+        "show_switcher": true,
+        "active_tab": "tab1",
+        "tab1_label": "Hospitality & Studio",
+        "tab1_url": "/pages/hospitality-and-studio",
+        "tab2_label": "Retail Partners",
+        "tab2_url": "/pages/retail-partners",
+        "tab3_label": "Corporate Gifting",
+        "tab3_url": "/pages/corporate-gifting",
+        "hero_image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V007_47aad304-540f-4f61-9c08-8dd9ec82ff3d.jpg",
+        "hero_eyebrow": "Hospitality & Studio",
+        "hero_title": "A dedicated space for rest, in your space.",
+        "hero_lead": "<p>We partner with retreats, hotels, and studios to create rooms for rest and renewal — with the full collection at volume pricing, partnership options, and design support for your space.</p>",
+        "hero_cta_text": "Inquire",
+        "intro": "<p>Work with us to develop a meditation and wellness room for your hotel, studio, or retreat. We can partner with you on the full experience — from product to layout to the details that make a space feel considered.</p>",
+        "trust_label": "Designed for spaces built around rest",
+        "statement": "<p>Dedicated spaces for rest and renewal, designed with you.</p>",
+        "statement_attribution": "",
+        "form_title": "Design your space with Walden",
+        "form_subtitle": "<p>Tell us about your property and we’ll follow up with a tailored proposal and partner pricing.</p>",
+        "airtable_src": "https://airtable.com/embed/appoGnqHCo2cg752n/pag2ToFTOywg8kPmE/form",
+        "form_height": 1000
       }
     }
   },
-  "order": [
-    "main",
-    "section_t7rJCC"
-  ]
+  "order": ["main", "hospitality_landing"]
 }

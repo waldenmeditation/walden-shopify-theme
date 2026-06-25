@@ -11,66 +11,76 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "blocks": {
-        "ai_gen_block_976c4e4_mUhMJz": {
-          "type": "ai_gen_block_976c4e4",
-          "name": "Image with Text",
-          "settings": {
-            "image_position": "right",
-            "top_offset_override": 10,
-            "image": "shopify://shop_images/BenchAndGong.jpg",
-            "subtitle": "",
-            "title": "Retail Partners",
-            "description": "<p>Our products are designed with purpose to invite thoughtful interaction. Become a retail partner and access our full collection with trade pricing and simple restocking.</p>",
-            "button_text": "Sign Up",
-            "link_type": "url",
-            "button_link": "shopify://pages/form-retail",
-            "button_email_link": "",
-            "button_style": "button",
-            "subtitle_tag": "h4",
-            "title_tag": "h2"
-          },
-          "blocks": {}
-        },
-        "image_EPiWmP": {
-          "type": "image",
-          "name": "t:names.image",
-          "settings": {
-            "image": "shopify://shop_images/Block-on-nighstand_18c1ca97-e2cc-4e04-8308-154bda35eaf7.jpg",
-            "link": "",
-            "image_ratio": "adapt",
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_976c4e4_mUhMJz",
-        "image_EPiWmP"
-      ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
-        "section_width": "full-width",
-        "gap": 60,
+        "section_width": "page-width-content",
+        "gap": 32,
         "color_scheme": "",
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "hospitality_landing": {
+      "type": "hospitality-landing",
+      "blocks": {
+        "row_1": {
+          "type": "feature_row",
+          "settings": {
+            "image": "shopify://shop_images/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg",
+            "eyebrow": "The Collection",
+            "heading": "Seating, sets, and surfaces",
+            "body": "<p>Salt lamps, journey sets, cushions, and mats — a giftable range that merchandises beautifully together and reorders simply through the partner portal.</p>",
+            "cta_text": "Request a line sheet"
+          }
+        },
+        "row_2": {
+          "type": "feature_row",
+          "settings": {
+            "image": "shopify://shop_images/Brass_Holder_SideTiltedView_Candle_V004-min.jpg",
+            "eyebrow": "Aroma",
+            "heading": "Brass, stone, and scent",
+            "body": "<p>Incense holders, vases, and aroma essentials — small-format pieces with strong attachment rates that anchor a beautiful counter display.</p>",
+            "cta_text": "See trade pricing"
+          }
+        },
+        "row_3": {
+          "type": "feature_row",
+          "settings": {
+            "image": "shopify://shop_images/Walden_Gong12i_InteriorShot_Front_Cropped_003_post_jpeg_1.png",
+            "eyebrow": "Sound & Seating",
+            "heading": "Pieces worth the shelf",
+            "body": "<p>Gongs, benches, and timers — quietly engineered objects that draw customers in and hold their place in the store over seasons.</p>",
+            "cta_text": "Apply to carry Walden"
+          }
+        }
+      },
+      "block_order": ["row_1", "row_2", "row_3"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_switcher": true,
+        "active_tab": "tab2",
+        "tab1_label": "Hospitality & Studio",
+        "tab1_url": "/pages/hospitality-and-studio",
+        "tab2_label": "Retail Partners",
+        "tab2_url": "/pages/retail-partners",
+        "tab3_label": "Corporate Gifting",
+        "tab3_url": "/pages/corporate-gifting",
+        "hero_image": "shopify://shop_images/all-products-wide-Edit-2_1.png",
+        "hero_eyebrow": "Retail Partners",
+        "hero_title": "Objects designed to be picked up.",
+        "hero_lead": "<p>Our products are designed with purpose, to invite thoughtful interaction. Become a retail partner and access the full collection with trade pricing and simple restocking.</p>",
+        "hero_cta_text": "Inquire",
+        "intro": "<p>A tight, considered collection that sells on craft, not discounting. We make it easy to carry Walden — with trade pricing, low minimums, and the support to merchandise it well.</p>",
+        "trust_label": "Carried by considered retailers",
+        "statement": "<p>A considered collection — easy to carry, easy to reorder.</p>",
+        "statement_attribution": "",
+        "form_title": "Carry Walden in your store",
+        "form_subtitle": "<p>Tell us about your store and we’ll send a line sheet with trade pricing and minimums.</p>",
+        "airtable_src": "https://airtable.com/embed/appoGnqHCo2cg752n/pag2ToFTOywg8kPmE/form",
+        "form_height": 1000
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main", "hospitality_landing"]
 }

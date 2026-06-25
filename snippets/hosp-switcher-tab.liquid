@@ -1,0 +1,16 @@
+{% comment %}
+  Renders one Hospitality landing program-switcher tab.
+  @param {string} label - Tab label
+  @param {string} url - Tab link (blank renders a non-link)
+  @param {string} id - This tab's id (tab1/tab2/tab3)
+  @param {string} active_tab - The currently active tab id
+{% endcomment %}
+{%- if label != blank -%}
+  {%- if id == active_tab -%}
+    <span class="hosp-switcher__tab is-active" aria-current="page">{{ label }}</span>
+  {%- elsif url != blank -%}
+    <a class="hosp-switcher__tab" href="{{ url }}">{{ label }}</a>
+  {%- else -%}
+    <span class="hosp-switcher__tab">{{ label }}</span>
+  {%- endif -%}
+{%- endif -%}

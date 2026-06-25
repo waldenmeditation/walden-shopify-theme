@@ -11,63 +11,76 @@
   "sections": {
     "main": {
       "type": "main-page",
-      "blocks": {
-        "ai_gen_block_976c4e4_8zpDVW": {
-          "type": "ai_gen_block_976c4e4",
-          "name": "Image with Text",
-          "settings": {
-            "image_position": "right",
-            "top_offset_override": 10,
-            "image": "shopify://shop_images/Block-on-nighstand_5a01891c-7343-4f70-8798-4b99a49f40ea.jpg",
-            "subtitle": "",
-            "title": "Corporate Gifting",
-            "description": "<p>Share Walden products with your team, clients, or event attendees. Access trade pricing, customization, and direct-to-recipient shipping coordination.</p>",
-            "button_text": "Contact Us",
-            "link_type": "email",
-            "button_link": "",
-            "button_email_link": "hello@walden.us",
-            "button_style": "button",
-            "subtitle_tag": "h4",
-            "title_tag": "h2"
-          },
-          "blocks": {}
-        },
-        "ai_gen_block_976c4e4_Tpagia": {
-          "type": "ai_gen_block_976c4e4",
-          "name": "Image with Text",
-          "settings": {
-            "image_position": "left",
-            "top_offset_override": 0,
-            "image": "shopify://shop_images/Etching.jpg",
-            "subtitle": "",
-            "title": "Make it Personal",
-            "description": "<p>Pair text with an image to focus on your chosen product, collection, or blog post. Add details on availability, style, or even provide a review.</p>",
-            "button_text": "Shop Now",
-            "link_type": "url",
-            "button_link": "",
-            "button_email_link": "",
-            "button_style": "button",
-            "subtitle_tag": "h4",
-            "title_tag": "h2"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_976c4e4_8zpDVW",
-        "ai_gen_block_976c4e4_Tpagia"
-      ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
-        "section_width": "full-width",
-        "gap": 60,
+        "section_width": "page-width-content",
+        "gap": 32,
         "color_scheme": "",
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "hospitality_landing": {
+      "type": "hospitality-landing",
+      "blocks": {
+        "row_1": {
+          "type": "feature_row",
+          "settings": {
+            "image": "shopify://shop_images/Etching.jpg",
+            "eyebrow": "Personalization",
+            "heading": "Make it unmistakably yours",
+            "body": "<p>Etch a logo, sew in a mark, or add a message. Customization is available across our catalog and from our sister company, Quiet Hours.</p>",
+            "cta_text": "Explore customization"
+          }
+        },
+        "row_2": {
+          "type": "feature_row",
+          "settings": {
+            "image": "shopify://shop_images/journey_set_gift.png",
+            "eyebrow": "Popular gifts",
+            "heading": "Curated, ready to send",
+            "body": "<p>Ready-to-order gift sets or a custom assortment built to your budget and brand — pieces your recipients actually keep, not swag that ends up in a drawer.</p>",
+            "cta_text": "See gift options"
+          }
+        },
+        "row_3": {
+          "type": "feature_row",
+          "settings": {
+            "image": "shopify://shop_images/Bench_Gift_Image.png",
+            "eyebrow": "Logistics",
+            "heading": "Sent for you, end to end",
+            "body": "<p>We coordinate direct-to-recipient shipping, addresses, and timing — so a thoughtful gift at scale stays effortless on your side.</p>",
+            "cta_text": "Plan a gift order"
+          }
+        }
+      },
+      "block_order": ["row_1", "row_2", "row_3"],
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_switcher": true,
+        "active_tab": "tab3",
+        "tab1_label": "Hospitality & Studio",
+        "tab1_url": "/pages/hospitality-and-studio",
+        "tab2_label": "Retail Partners",
+        "tab2_url": "/pages/retail-partners",
+        "tab3_label": "Corporate Gifting",
+        "tab3_url": "/pages/corporate-gifting",
+        "hero_image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V002-pichi_45700be4-6fcc-4175-bd43-d30f13599759.jpg",
+        "hero_eyebrow": "Corporate Gifting",
+        "hero_title": "A gift that says slow down.",
+        "hero_lead": "<p>Share Walden with your team, clients, or event attendees. Access trade pricing, customization, and direct-to-recipient shipping — all coordinated for you.</p>",
+        "hero_cta_text": "Inquire",
+        "intro": "<p>Personalize select products with a message, logo, or graphic mark. We offer custom etching and sewn-on options across our catalog and from our sister company, Quiet Hours.</p>",
+        "trust_label": "Gifting that earns a place on the desk",
+        "statement": "<p>Thoughtful at scale — a gift people actually keep.</p>",
+        "statement_attribution": "",
+        "form_title": "Plan your gift order",
+        "form_subtitle": "<p>Tell us the occasion and quantity and we’ll build a proposal with options and pricing.</p>",
+        "airtable_src": "https://airtable.com/embed/appoGnqHCo2cg752n/pag2ToFTOywg8kPmE/form",
+        "form_height": 1000
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main", "hospitality_landing"]
 }
