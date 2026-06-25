@@ -30,7 +30,7 @@
             "image": "shopify://shop_images/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg",
             "eyebrow": "",
             "heading": "Seating, sets, and surfaces",
-            "body": "<p>Salt lamps, journey sets, cushions, and mats — a giftable range that merchandises beautifully together and reorders simply through the partner portal.</p>",
+            "body": "<p>Salt lamps, journey sets, cushions, and mats — a giftable range that merchandises well together and reorders simply through the partner portal.</p>",
             "cta_text": "Request a line sheet"
           }
         },
@@ -40,7 +40,7 @@
             "image": "shopify://shop_images/Brass_Holder_SideTiltedView_Candle_V004-min.jpg",
             "eyebrow": "",
             "heading": "Brass, stone, and scent",
-            "body": "<p>Incense holders, vases, and aroma essentials — small-format pieces with strong attachment rates that anchor a beautiful counter display.</p>",
+            "body": "<p>Incense holders, vases, and aroma essentials — small pieces with strong attachment rates that anchor a counter and lift the average basket.</p>",
             "cta_text": "See trade pricing"
           }
         },
@@ -50,12 +50,16 @@
             "image": "shopify://shop_images/Walden_Gong12i_InteriorShot_Front_Cropped_003_post_jpeg_1.png",
             "eyebrow": "",
             "heading": "Pieces worth the shelf",
-            "body": "<p>Gongs, benches, and timers — quietly engineered objects that draw customers in and hold their place in the store over seasons.</p>",
+            "body": "<p>Gongs, benches, and timers — quietly engineered objects that draw customers in and hold their place on the floor, season after season.</p>",
             "cta_text": "Apply to carry Walden"
           }
         }
       },
-      "block_order": ["row_1", "row_2", "row_3"],
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "show_switcher": true,
@@ -68,13 +72,13 @@
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/all-products-wide-Edit-2_1.png",
         "hero_eyebrow": "",
-        "hero_title": "Objects designed to be picked up.",
-        "hero_lead": "<p>Our products are designed with purpose, to invite thoughtful interaction. Become a retail partner and access the full collection with trade pricing and simple restocking.</p>",
+        "hero_title": "Objects made to be picked up.",
+        "hero_lead": "<p>Our pieces are made to be handled — considered objects that invite a closer look. Become a retail partner for full access to the collection, trade pricing, and simple restocking.</p>",
         "hero_cta_text": "Inquire",
-        "intro": "<p>A tight, considered collection that sells on craft, not discounting. We make it easy to carry Walden — with trade pricing, low minimums, and the support to merchandise it well.</p>",
+        "intro": "<p>A tight, considered collection that sells on craft rather than discounts — easy to carry, with trade pricing, low minimums, and the support to merchandise it well.</p>",
         "trust_label": "Carried by considered retailers",
         "trust_logos": "SSENSE, Snow Peak, Bloomingdale’s, Urban Outfitters",
-        "statement": "<p>A considered collection — easy to carry, easy to reorder.</p>",
+        "statement": "<p>Pieces that sell on craft — simple to stock, simple to reorder.</p>",
         "statement_attribution": "",
         "form_title": "Carry Walden in your store",
         "form_subtitle": "<p>Tell us about your store and we’ll send a line sheet with trade pricing and minimums.</p>",
@@ -83,5 +87,8 @@
       }
     }
   },
-  "order": ["main", "hospitality_landing"]
+  "order": [
+    "main",
+    "hospitality_landing"
+  ]
 }

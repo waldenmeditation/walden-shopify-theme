@@ -30,7 +30,7 @@
             "image": "shopify://shop_images/Etching.jpg",
             "eyebrow": "",
             "heading": "Make it unmistakably yours",
-            "body": "<p>Etch a logo, sew in a mark, or add a message. Customization is available across our catalog and from our sister company, Quiet Hours.</p>",
+            "body": "<p>Etch a logo, sew in a mark, or add a message. Customization runs across our catalog and through our sister company, Quiet Hours.</p>",
             "cta_text": "Explore customization"
           }
         },
@@ -40,7 +40,7 @@
             "image": "shopify://shop_images/journey_set_gift.png",
             "eyebrow": "",
             "heading": "Curated, ready to send",
-            "body": "<p>Ready-to-order gift sets or a custom assortment built to your budget and brand — pieces your recipients actually keep, not swag that ends up in a drawer.</p>",
+            "body": "<p>Order ready-made gift sets or build a custom assortment to your budget and brand — pieces recipients keep, not swag that ends up in a drawer.</p>",
             "cta_text": "See gift options"
           }
         },
@@ -50,12 +50,16 @@
             "image": "shopify://shop_images/Bench_Gift_Image.png",
             "eyebrow": "",
             "heading": "Sent for you, end to end",
-            "body": "<p>We coordinate direct-to-recipient shipping, addresses, and timing — so a thoughtful gift at scale stays effortless on your side.</p>",
+            "body": "<p>We handle direct-to-recipient shipping, addresses, and timing — so a thoughtful gift at scale stays effortless on your side.</p>",
             "cta_text": "Plan a gift order"
           }
         }
       },
-      "block_order": ["row_1", "row_2", "row_3"],
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "show_switcher": true,
@@ -69,10 +73,10 @@
         "hero_image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V002-pichi_45700be4-6fcc-4175-bd43-d30f13599759.jpg",
         "hero_eyebrow": "",
         "hero_title": "A gift that says slow down.",
-        "hero_lead": "<p>Share Walden with your team, clients, or event attendees. Access trade pricing, customization, and direct-to-recipient shipping — all coordinated for you.</p>",
+        "hero_lead": "<p>Give Walden to your team, your clients, or your guests. Trade pricing, customization, and direct-to-recipient shipping — coordinated end to end, so a thoughtful gift at scale stays simple.</p>",
         "hero_cta_text": "Inquire",
-        "intro": "<p>Personalize select products with a message, logo, or graphic mark. We offer custom etching and sewn-on options across our catalog and from our sister company, Quiet Hours.</p>",
-        "trust_label": "Gifted by teams who care how they show up",
+        "intro": "<p>Personalize select pieces with a message, logo, or mark — custom etching and sewn-on details across our catalog and from our sister company, Quiet Hours.</p>",
+        "trust_label": "Gifted by teams who care",
         "trust_logos": "Equinox, Nike, Remedy Place, Open, Four Seasons",
         "statement": "<p>Thoughtful at scale — a gift people actually keep.</p>",
         "statement_attribution": "",
@@ -83,5 +87,8 @@
       }
     }
   },
-  "order": ["main", "hospitality_landing"]
+  "order": [
+    "main",
+    "hospitality_landing"
+  ]
 }
