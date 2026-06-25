@@ -4,6 +4,10 @@
    in place and update history so switching feels instant. Falls back to a
    normal navigation if anything is unavailable or JS is off. */
 (function () {
+  // Don't run inside the Shopify theme editor: hijacking tab clicks and
+  // swapping the section out breaks the editor's binding and makes the
+  // switcher settings (tabs 2 & 3) feel impossible to edit.
+  if (window.Shopify && window.Shopify.designMode) return;
   if (window.__hospSwitcherInit) return;
   window.__hospSwitcherInit = true;
 
