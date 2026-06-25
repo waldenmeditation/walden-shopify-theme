@@ -152,7 +152,23 @@
 }
 .hosp-trust__inner {
   text-align: center;
-  padding-block: 40px;
+  padding-block: 46px;
+}
+.hosp-trust__logos {
+  margin-top: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 22px 52px;
+}
+.hosp-trust__logo {
+  font-family: var(--font-paragraph--family);
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--color-foreground-heading);
+  opacity: 0.46;
 }
 
 /* ---------- FEATURE ROWS ---------- */

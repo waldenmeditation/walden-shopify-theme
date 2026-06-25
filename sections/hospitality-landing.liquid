@@ -71,10 +71,20 @@
   {%- endif -%}
 
   {%- comment -%} ---------- TRUST LINE ---------- {%- endcomment -%}
-  {%- if section.settings.trust_label != blank -%}
+  {%- if section.settings.trust_label != blank or section.settings.trust_logos != blank -%}
     <section class="hosp-trust">
       <div class="hosp__inner hosp-trust__inner">
-        <p class="hosp-eyebrow">{{ section.settings.trust_label }}</p>
+        {%- if section.settings.trust_label != blank -%}
+          <p class="hosp-eyebrow">{{ section.settings.trust_label }}</p>
+        {%- endif -%}
+        {%- if section.settings.trust_logos != blank -%}
+          <div class="hosp-trust__logos">
+            {%- assign trust_logos = section.settings.trust_logos | split: ',' -%}
+            {%- for logo in trust_logos -%}
+              <span class="hosp-trust__logo">{{ logo | strip }}</span>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
       </div>
     </section>
   {%- endif -%}
@@ -193,6 +203,7 @@
     { "type": "richtext", "id": "intro", "label": "Intro statement" },
     { "type": "header", "content": "Trust line" },
     { "type": "text", "id": "trust_label", "label": "Trust line", "info": "Small uppercase label above the feature rows." },
+    { "type": "text", "id": "trust_logos", "label": "Partner names", "info": "Comma-separated; shown as wordmarks below the trust line." },
     { "type": "header", "content": "Statement" },
     { "type": "richtext", "id": "statement", "label": "Statement" },
     { "type": "text", "id": "statement_attribution", "label": "Statement attribution" },
