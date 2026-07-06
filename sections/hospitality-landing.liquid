@@ -40,6 +40,7 @@
         width="{{ section.settings.hero_image.width }}"
         height="{{ section.settings.hero_image.height }}"
         loading="eager"
+        fetchpriority="high"
       >
     {%- else -%}
       <div class="hosp-hero__bg hosp-placeholder">{{ 'image' | placeholder_svg_tag }}</div>
@@ -140,7 +141,7 @@
   {%- if section.settings.statement != blank -%}
     <section class="hosp-statement">
       <div class="hosp__inner hosp-statement__inner">
-        <p class="hosp-statement__text">{{ section.settings.statement }}</p>
+        <div class="hosp-statement__text">{{ section.settings.statement }}</div>
         {%- if section.settings.statement_attribution != blank -%}
           <p class="hosp-eyebrow">{{ section.settings.statement_attribution }}</p>
         {%- endif -%}

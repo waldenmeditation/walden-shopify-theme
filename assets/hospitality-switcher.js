@@ -12,6 +12,9 @@
   window.__hospSwitcherInit = true;
 
   var cache = {};
+  // Tracks the pathname the swapped-in section belongs to, so popstate can
+  // tell a real tab navigation apart from hash-only jumps (CTA anchors).
+  var currentPath = window.location.pathname;
 
   function getSection(doc) {
     return (doc || document).querySelector('.hosp');
@@ -32,13 +35,18 @@
 
   function swap(html, url, push) {
     if (!html) { window.location.href = url; return; }
-    var incoming = getSection(new DOMParser().parseFromString(html, 'text/html'));
+    var doc = new DOMParser().parseFromString(html, 'text/html');
+    var incoming = getSection(doc);
     var current = getSection(document);
     if (!incoming || !current) { window.location.href = url; return; }
     current.replaceWith(incoming);
-    var title = new DOMParser().parseFromString(html, 'text/html').querySelector('title');
+    var title = doc.querySelector('title');
     if (title) document.title = title.textContent;
     if (push) history.pushState({ hosp: true }, '', url);
+    currentPath = new URL(url, window.location.origin).pathname;
+    // Keep keyboard users anchored: focus the new section without scrolling.
+    incoming.setAttribute('tabindex', '-1');
+    incoming.focus({ preventScroll: true });
     window.scrollTo(0, 0);
   }
 
@@ -60,6 +68,8 @@
   });
 
   window.addEventListener('popstate', function () {
+    // Hash-only history entries (CTA anchor jumps) — let the browser scroll.
+    if (window.location.pathname === currentPath) return;
     var url = window.location.pathname + window.location.search;
     Promise.resolve(prefetch(url)).then(function (html) {
       if (html) swap(html, url, false); else window.location.reload();
