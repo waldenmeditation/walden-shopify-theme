@@ -1,0 +1,77 @@
+{% doc %}
+  Native B2B inquiry form (Shopify contact form, brand-styled).
+  All custom fields arrive in the store's contact notification email and are
+  parsed by the Airtable sync routine — keep the field labels stable.
+
+  @param {string} program - Program tag included in the submission
+  @param {string} company_label - Label for the company field
+  @param {string} type_label - Label for the type select
+  @param {string} type_options - Comma-separated select options
+  @param {string} size_label - Label for the size field
+  @param {string} size_placeholder - Placeholder for the size field
+  @param {string} submit_label - Submit button text
+  @param {string} footnote - Reassurance line under the button
+{% enddoc %}
+
+{%- form 'contact', class: 'b2b-inquiry', id: 'b2b-inquiry-form' -%}
+  {%- if form.posted_successfully? -%}
+    <div class="b2b-inquiry__success" role="status">
+      <span class="b2b-inquiry__check" aria-hidden="true">✓</span>
+      <h3 class="b2b-inquiry__success-title">Thank you — your inquiry is in.</h3>
+      <p class="b2b-inquiry__success-body">
+        A member of the Walden trade team will reply within one business day.
+      </p>
+    </div>
+  {%- else -%}
+    {%- if form.errors -%}
+      <div class="b2b-inquiry__errors" role="alert">
+        {{ form.errors | default_errors }}
+      </div>
+    {%- endif -%}
+
+    <input type="hidden" name="contact[Program]" value="{{ program | escape }}">
+
+    <div class="b2b-inquiry__row">
+      <div class="b2b-inquiry__field">
+        <label for="b2b-name">Name</label>
+        <input type="text" id="b2b-name" name="contact[Name]" autocomplete="name" required>
+      </div>
+      <div class="b2b-inquiry__field">
+        <label for="b2b-company">{{ company_label | default: 'Company' }}</label>
+        <input type="text" id="b2b-company" name="contact[Company]" autocomplete="organization" required>
+      </div>
+    </div>
+
+    <div class="b2b-inquiry__field">
+      <label for="b2b-email">Work email</label>
+      <input type="email" id="b2b-email" name="contact[email]" autocomplete="email" required>
+    </div>
+
+    <div class="b2b-inquiry__row">
+      <div class="b2b-inquiry__field">
+        <label for="b2b-type">{{ type_label | default: 'Type' }}</label>
+        <select id="b2b-type" name="contact[Type]" required>
+          <option value="" disabled selected>Select…</option>
+          {%- assign opts = type_options | split: ',' -%}
+          {%- for opt in opts -%}
+            <option value="{{ opt | strip | escape }}">{{ opt | strip }}</option>
+          {%- endfor -%}
+        </select>
+      </div>
+      <div class="b2b-inquiry__field">
+        <label for="b2b-size">{{ size_label | default: 'Size' }} <span class="b2b-inquiry__optional">(optional)</span></label>
+        <input type="text" id="b2b-size" name="contact[Size]" placeholder="{{ size_placeholder | escape }}">
+      </div>
+    </div>
+
+    <div class="b2b-inquiry__field">
+      <label for="b2b-message">Anything else <span class="b2b-inquiry__optional">(optional)</span></label>
+      <textarea id="b2b-message" name="contact[body]" rows="3" placeholder="Timeline, budget, or specifics…"></textarea>
+    </div>
+
+    <button type="submit" class="button b2b-inquiry__submit">{{ submit_label | default: 'Submit inquiry' }}</button>
+    {%- if footnote != blank -%}
+      <p class="b2b-inquiry__footnote">{{ footnote }}</p>
+    {%- endif -%}
+  {%- endif -%}
+{%- endform -%}

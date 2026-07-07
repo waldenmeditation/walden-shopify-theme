@@ -21,45 +21,53 @@
         "padding-block-end": 80
       }
     },
-    "hospitality_landing": {
-      "type": "hospitality-landing",
+    "b2b_landing": {
+      "type": "b2b-landing",
       "blocks": {
-        "row_1": {
-          "type": "feature_row",
+        "benefit_1": {
+          "type": "benefit",
           "settings": {
-            "image": "shopify://shop_images/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg",
-            "eyebrow": "",
-            "heading": "Seating, sets, and surfaces",
-            "body": "<p>Salt lamps, journey sets, cushions, and mats — a giftable range that merchandises well together and reorders simply through the partner portal.</p>",
-            "cta_text": "Request a line sheet"
+            "title": "Trade pricing, low minimums",
+            "body": "<p>Easy to carry and easy to reorder — simple restocking through the partner portal.</p>"
           }
         },
-        "row_2": {
-          "type": "feature_row",
+        "benefit_2": {
+          "type": "benefit",
           "settings": {
-            "image": "shopify://shop_images/Brass_Holder_SideTiltedView_Candle_V004-min.jpg",
-            "eyebrow": "",
-            "heading": "Brass, stone, and scent",
-            "body": "<p>Incense holders, vases, and aroma essentials — small pieces with strong attachment rates that anchor a counter and lift the average basket.</p>",
-            "cta_text": "See trade pricing"
+            "title": "Merchandising support",
+            "body": "<p>Line sheets, display guidance, and a giftable range that merchandises beautifully together.</p>"
           }
         },
-        "row_3": {
-          "type": "feature_row",
+        "benefit_3": {
+          "type": "benefit",
           "settings": {
-            "image": "shopify://shop_images/Walden_Gong12i_InteriorShot_Front_Cropped_003_post_jpeg_1.png",
-            "eyebrow": "",
-            "heading": "Pieces worth the shelf",
-            "body": "<p>Gongs, benches, and timers — quietly engineered objects that draw customers in and hold their place on the floor, season after season.</p>",
-            "cta_text": "Apply to carry Walden"
+            "title": "High-attachment accents",
+            "body": "<p>Brass, stone, and aroma pieces that anchor a counter display and lift the average basket.</p>"
+          }
+        },
+        "step_1": {
+          "type": "step",
+          "settings": {
+            "title": "Tell us about your store",
+            "body": "<p>Share your store type, locations, and the categories you carry.</p>"
+          }
+        },
+        "step_2": {
+          "type": "step",
+          "settings": {
+            "title": "A line sheet, next day",
+            "body": "<p>We send trade pricing and minimums within one business day.</p>"
+          }
+        },
+        "step_3": {
+          "type": "step",
+          "settings": {
+            "title": "Stock, sell, restock",
+            "body": "<p>Simple reorders through the partner portal, season after season.</p>"
           }
         }
       },
-      "block_order": [
-        "row_1",
-        "row_2",
-        "row_3"
-      ],
+      "block_order": ["benefit_1", "benefit_2", "benefit_3", "step_1", "step_2", "step_3"],
       "settings": {
         "color_scheme": "scheme-1",
         "show_switcher": true,
@@ -73,22 +81,28 @@
         "hero_image": "shopify://shop_images/all-products-wide-Edit-2_1.png",
         "hero_eyebrow": "",
         "hero_title": "Objects made to be picked up.",
-        "hero_lead": "<p>Our pieces are made to be handled — considered objects that invite a closer look. Become a retail partner for full access to the collection, trade pricing, and simple restocking.</p>",
-        "hero_cta_text": "Learn More",
-        "intro": "<p>A tight, considered collection that sells on craft rather than discounts — easy to carry, with trade pricing, low minimums, and the support to merchandise it well.</p>",
+        "hero_lead": "<p>Our pieces are made to be handled — considered objects that invite a closer look. Become a retail partner for trade pricing, low minimums, and simple restocking.</p>",
+        "hero_cta_text": "Start an inquiry",
+        "hero_note": "Line sheet within one business day.",
         "trust_label": "Carried by considered retailers",
         "trust_logos": "SSENSE, Snow Peak, Bloomingdale’s, Urban Outfitters",
+        "benefits_heading": "A tight, considered collection that sells on craft rather than discounts.",
+        "band_image": "shopify://shop_images/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg",
+        "band_caption": "Seating, sets, and surfaces — the full range",
+        "steps_heading": "How it works",
         "statement": "<p>Pieces that sell on craft — simple to stock, simple to reorder.</p>",
-        "statement_attribution": "",
         "form_title": "Carry Walden in your store",
         "form_subtitle": "<p>Tell us about your store and we’ll send a line sheet with trade pricing and minimums.</p>",
-        "airtable_src": "https://airtable.com/embed/appoGnqHCo2cg752n/pag2ToFTOywg8kPmE/form",
-        "form_height": 1000
+        "form_program": "Retail Partners",
+        "form_company_label": "Store / company",
+        "form_type_label": "Store type",
+        "form_type_options": "Boutique / concept shop, Department store, Online retailer, Wellness / studio retail, Other",
+        "form_size_label": "Locations",
+        "form_size_placeholder": "e.g. 2 stores + online",
+        "form_submit_label": "Request wholesale access",
+        "form_footnote": "We reply within one business day, or write us directly at sales@walden.us."
       }
     }
   },
-  "order": [
-    "main",
-    "hospitality_landing"
-  ]
+  "order": ["main", "b2b_landing"]
 }

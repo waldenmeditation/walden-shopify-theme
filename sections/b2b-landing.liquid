@@ -1,0 +1,260 @@
+{% comment %}
+  B2B landing (Hospitality & Studio / Retail Partners / Corporate Gifting).
+  One continuous, conversion-focused flow: hero with inline trust, benefits
+  grid, collection image band, 3-step process, single statement, native
+  inquiry form. Type and color come from the theme (Geist + color schemes);
+  warm tones derive from --color-border. Program tabs swap instantly via
+  assets/b2b-landing.js while each program keeps its own URL.
+{% endcomment %}
+
+{{ 'section-b2b-landing.css' | asset_url | stylesheet_tag }}
+
+<div class="b2b color-{{ section.settings.color_scheme }}">
+
+  {%- comment -%} ---------- PROGRAM TABS ---------- {%- endcomment -%}
+  {%- if section.settings.show_switcher -%}
+    {%- assign active_tab = section.settings.active_tab -%}
+    <nav class="b2b-tabs" aria-label="Trade programs">
+      {%- render 'hosp-switcher-tab', label: section.settings.tab1_label, url: section.settings.tab1_url, id: 'tab1', active_tab: active_tab -%}
+      {%- render 'hosp-switcher-tab', label: section.settings.tab2_label, url: section.settings.tab2_url, id: 'tab2', active_tab: active_tab -%}
+      {%- render 'hosp-switcher-tab', label: section.settings.tab3_label, url: section.settings.tab3_url, id: 'tab3', active_tab: active_tab -%}
+    </nav>
+  {%- endif -%}
+
+  {%- comment -%} ---------- HERO ---------- {%- endcomment -%}
+  <header class="b2b-hero">
+    {%- if section.settings.hero_image != blank -%}
+      <img
+        class="b2b-hero__bg"
+        src="{{ section.settings.hero_image | image_url: width: 2400 }}"
+        srcset="{{ section.settings.hero_image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.hero_image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ section.settings.hero_image.alt | escape }}"
+        width="{{ section.settings.hero_image.width }}"
+        height="{{ section.settings.hero_image.height }}"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+    <div class="b2b-hero__scrim"></div>
+    <div class="b2b__inner b2b-hero__content color-scheme-6">
+      <div class="b2b-hero__copy">
+        {%- if section.settings.hero_eyebrow != blank -%}
+          <p class="b2b-eyebrow b2b-eyebrow--light">{{ section.settings.hero_eyebrow }}</p>
+        {%- endif -%}
+        <h1 class="b2b-hero__title">{{ section.settings.hero_title }}</h1>
+        {%- if section.settings.hero_lead != blank -%}
+          <div class="b2b-hero__lead">{{ section.settings.hero_lead }}</div>
+        {%- endif -%}
+        <div class="b2b-hero__actions">
+          <a href="#inquire" class="button button-secondary b2b-hero__cta">{{ section.settings.hero_cta_text | default: 'Start an inquiry' }}</a>
+          {%- if section.settings.hero_note != blank -%}
+            <span class="b2b-hero__note">{{ section.settings.hero_note }}</span>
+          {%- endif -%}
+        </div>
+      </div>
+      {%- if section.settings.trust_logos != blank -%}
+        <div class="b2b-hero__trust">
+          {%- if section.settings.trust_label != blank -%}
+            <span class="b2b-eyebrow b2b-eyebrow--light">{{ section.settings.trust_label }}</span>
+          {%- endif -%}
+          <div class="b2b-hero__logos">
+            {%- assign trust_logos = section.settings.trust_logos | split: ',' -%}
+            {%- for logo in trust_logos -%}
+              {%- liquid
+                assign logo_name = logo | strip
+                assign logo_key = logo_name | downcase | remove: "'" | remove: '’' | remove: '.' | replace: ' ', '-'
+                assign logo_asset = 'trust-logo-' | append: logo_key | append: '.svg'
+              -%}
+              <img
+                class="b2b-hero__logo"
+                src="{{ logo_asset | asset_url }}"
+                alt="{{ logo_name | escape }}"
+                width="110"
+                height="24"
+                loading="lazy"
+                onerror="var s=document.createElement('span');s.className='b2b-hero__logo-text';s.textContent=this.alt;this.replaceWith(s)"
+              >
+            {%- endfor -%}
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </header>
+
+  {%- comment -%} ---------- BENEFITS ---------- {%- endcomment -%}
+  {%- assign benefit_blocks = section.blocks | where: 'type', 'benefit' -%}
+  {%- if benefit_blocks.size > 0 -%}
+    <section class="b2b-benefits b2b-reveal" aria-label="What you get">
+      <div class="b2b__inner">
+        {%- if section.settings.benefits_heading != blank -%}
+          <h2 class="b2b-benefits__heading">{{ section.settings.benefits_heading }}</h2>
+        {%- endif -%}
+        <div class="b2b-benefits__grid">
+          {%- for block in benefit_blocks -%}
+            <div class="b2b-benefit" {{ block.shopify_attributes }}>
+              <span class="b2b-benefit__index">{{ forloop.index | prepend: '0' }}</span>
+              <h3 class="b2b-benefit__title">{{ block.settings.title }}</h3>
+              {%- if block.settings.body != blank -%}
+                <div class="b2b-benefit__body">{{ block.settings.body }}</div>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- COLLECTION BAND ---------- {%- endcomment -%}
+  {%- if section.settings.band_image != blank -%}
+    <section class="b2b-band b2b-reveal">
+      <img
+        src="{{ section.settings.band_image | image_url: width: 2400 }}"
+        srcset="{{ section.settings.band_image | image_url: width: 1200 }} 1200w,
+                {{ section.settings.band_image | image_url: width: 2400 }} 2400w"
+        sizes="100vw"
+        alt="{{ section.settings.band_image.alt | escape }}"
+        width="{{ section.settings.band_image.width }}"
+        height="{{ section.settings.band_image.height }}"
+        loading="lazy"
+      >
+      {%- if section.settings.band_caption != blank -%}
+        <p class="b2b-band__caption b2b-eyebrow">{{ section.settings.band_caption }}</p>
+      {%- endif -%}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- HOW IT WORKS ---------- {%- endcomment -%}
+  {%- assign step_blocks = section.blocks | where: 'type', 'step' -%}
+  {%- if step_blocks.size > 0 -%}
+    <section class="b2b-steps b2b-reveal" aria-label="How it works">
+      <div class="b2b__inner">
+        {%- if section.settings.steps_heading != blank -%}
+          <h2 class="b2b-steps__heading">{{ section.settings.steps_heading }}</h2>
+        {%- endif -%}
+        <ol class="b2b-steps__list">
+          {%- for block in step_blocks -%}
+            <li class="b2b-step" {{ block.shopify_attributes }}>
+              <h3 class="b2b-step__title">{{ block.settings.title }}</h3>
+              {%- if block.settings.body != blank -%}
+                <div class="b2b-step__body">{{ block.settings.body }}</div>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ol>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- STATEMENT ---------- {%- endcomment -%}
+  {%- if section.settings.statement != blank -%}
+    <section class="b2b-statement b2b-reveal">
+      <div class="b2b__inner b2b-statement__inner">
+        <div class="b2b-statement__text">{{ section.settings.statement }}</div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- INQUIRY FORM ---------- {%- endcomment -%}
+  <section id="inquire" class="b2b-form b2b-reveal">
+    <div class="b2b__inner b2b-form__inner">
+      <div class="b2b-form__head">
+        {%- if section.settings.form_title != blank -%}
+          <h2 class="b2b-form__title">{{ section.settings.form_title }}</h2>
+        {%- endif -%}
+        {%- if section.settings.form_subtitle != blank -%}
+          <div class="b2b-form__sub">{{ section.settings.form_subtitle }}</div>
+        {%- endif -%}
+      </div>
+      {%- render 'b2b-inquiry-form',
+        program: section.settings.form_program,
+        company_label: section.settings.form_company_label,
+        type_label: section.settings.form_type_label,
+        type_options: section.settings.form_type_options,
+        size_label: section.settings.form_size_label,
+        size_placeholder: section.settings.form_size_placeholder,
+        submit_label: section.settings.form_submit_label,
+        footnote: section.settings.form_footnote
+      -%}
+    </div>
+  </section>
+
+</div>
+
+<script src="{{ 'b2b-landing.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "B2B landing",
+  "tag": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Program switcher" },
+    { "type": "checkbox", "id": "show_switcher", "label": "Show program tabs", "default": true },
+    { "type": "select", "id": "active_tab", "label": "Active tab", "options": [ { "value": "tab1", "label": "Tab 1" }, { "value": "tab2", "label": "Tab 2" }, { "value": "tab3", "label": "Tab 3" } ], "default": "tab1" },
+    { "type": "text", "id": "tab1_label", "label": "Tab 1 label", "default": "Hospitality & Studio" },
+    { "type": "text", "id": "tab1_url", "label": "Tab 1 link" },
+    { "type": "text", "id": "tab2_label", "label": "Tab 2 label", "default": "Retail Partners" },
+    { "type": "text", "id": "tab2_url", "label": "Tab 2 link" },
+    { "type": "text", "id": "tab3_label", "label": "Tab 3 label", "default": "Corporate Gifting" },
+    { "type": "text", "id": "tab3_url", "label": "Tab 3 link" },
+    { "type": "header", "content": "Hero" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
+    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow" },
+    { "type": "text", "id": "hero_title", "label": "Title", "default": "A room for rest, within yours." },
+    { "type": "richtext", "id": "hero_lead", "label": "Lead" },
+    { "type": "text", "id": "hero_cta_text", "label": "Button text", "default": "Start an inquiry" },
+    { "type": "text", "id": "hero_note", "label": "Note beside button", "info": "e.g. We reply within one business day." },
+    { "type": "text", "id": "trust_label", "label": "Trust label" },
+    { "type": "text", "id": "trust_logos", "label": "Partner names", "info": "Comma-separated; maps to assets/trust-logo-<name>.svg with text fallback." },
+    { "type": "header", "content": "Benefits" },
+    { "type": "text", "id": "benefits_heading", "label": "Heading" },
+    { "type": "header", "content": "Collection band" },
+    { "type": "image_picker", "id": "band_image", "label": "Image" },
+    { "type": "text", "id": "band_caption", "label": "Caption" },
+    { "type": "header", "content": "How it works" },
+    { "type": "text", "id": "steps_heading", "label": "Heading", "default": "How it works" },
+    { "type": "header", "content": "Statement" },
+    { "type": "richtext", "id": "statement", "label": "Statement" },
+    { "type": "header", "content": "Inquiry form" },
+    { "type": "text", "id": "form_title", "label": "Title" },
+    { "type": "richtext", "id": "form_subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "form_program", "label": "Program tag", "info": "Included in the submission, e.g. Hospitality & Studio.", "default": "Hospitality & Studio" },
+    { "type": "text", "id": "form_company_label", "label": "Company field label", "default": "Property / company" },
+    { "type": "text", "id": "form_type_label", "label": "Type field label", "default": "Property type" },
+    { "type": "text", "id": "form_type_options", "label": "Type options", "info": "Comma-separated select options.", "default": "Hotel, Resort / Retreat, Yoga / Meditation studio, Spa / Wellness center, Other" },
+    { "type": "text", "id": "form_size_label", "label": "Size field label", "default": "Rooms or spaces" },
+    { "type": "text", "id": "form_size_placeholder", "label": "Size placeholder", "default": "e.g. 40 rooms + 1 studio" },
+    { "type": "text", "id": "form_submit_label", "label": "Submit button", "default": "Submit inquiry" },
+    { "type": "text", "id": "form_footnote", "label": "Footnote", "default": "We reply within one business day, or write us directly at sales@walden.us." }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Volume pricing" },
+        { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    },
+    {
+      "type": "step",
+      "name": "Step",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Tell us about your space" },
+        { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "B2B landing",
+      "blocks": [
+        { "type": "benefit" }, { "type": "benefit" }, { "type": "benefit" },
+        { "type": "step" }, { "type": "step" }, { "type": "step" }
+      ]
+    }
+  ]
+}
+{% endschema %}

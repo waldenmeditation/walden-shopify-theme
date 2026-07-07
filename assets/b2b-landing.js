@@ -1,27 +1,43 @@
-/* Hospitality landing — instant program-switcher.
-   Tabs are real links (each program has its own server-rendered URL).
-   This enhances them: prefetch on intent, then swap just the .hosp section
-   in place and update history so switching feels instant. Falls back to a
-   normal navigation if anything is unavailable or JS is off. */
+/* B2B landing — instant program tabs + scroll reveal.
+   Tabs are real links (each program is server-rendered at its own URL); this
+   enhances them with prefetch + in-place section swap. Skipped entirely in
+   the theme editor (designMode) so section settings stay editable. */
 (function () {
-  // Don't run inside the Shopify theme editor: hijacking tab clicks and
-  // swapping the section out breaks the editor's binding and makes the
-  // switcher settings (tabs 2 & 3) feel impossible to edit.
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initReveals(root) {
+    var els = (root || document).querySelectorAll('.b2b-reveal:not(.is-visible)');
+    if (reduceMotion || !('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('is-visible'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(function (el) { io.observe(el); });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () { initReveals(); });
+  } else {
+    initReveals();
+  }
+
   if (window.Shopify && window.Shopify.designMode) return;
-  if (window.__hospSwitcherInit) return;
-  window.__hospSwitcherInit = true;
+  if (window.__b2bLandingInit) return;
+  window.__b2bLandingInit = true;
 
   var cache = {};
-  // Tracks the pathname the swapped-in section belongs to, so popstate can
-  // tell a real tab navigation apart from hash-only jumps (CTA anchors).
   var currentPath = window.location.pathname;
 
   function getSection(doc) {
-    return (doc || document).querySelector('.hosp');
+    return (doc || document).querySelector('.b2b');
   }
 
   function tabLink(target) {
-    return target && target.closest ? target.closest('a.hosp-switcher__tab[href]') : null;
+    return target && target.closest ? target.closest('.b2b-tabs a[href]') : null;
   }
 
   function prefetch(url) {
@@ -42,15 +58,14 @@
     current.replaceWith(incoming);
     var title = doc.querySelector('title');
     if (title) document.title = title.textContent;
-    if (push) history.pushState({ hosp: true }, '', url);
+    if (push) history.pushState({ b2b: true }, '', url);
     currentPath = new URL(url, window.location.origin).pathname;
-    // Keep keyboard users anchored: focus the new section without scrolling.
     incoming.setAttribute('tabindex', '-1');
     incoming.focus({ preventScroll: true });
     window.scrollTo(0, 0);
+    initReveals(incoming);
   }
 
-  // Warm the cache on hover / focus so the click is instant.
   ['mouseover', 'focusin', 'touchstart'].forEach(function (evt) {
     document.addEventListener(evt, function (e) {
       var a = tabLink(e.target);
@@ -68,7 +83,7 @@
   });
 
   window.addEventListener('popstate', function () {
-    // Hash-only history entries (CTA anchor jumps) — let the browser scroll.
+    // Hash-only entries (the #inquire anchor) — let the browser handle it.
     if (window.location.pathname === currentPath) return;
     var url = window.location.pathname + window.location.search;
     Promise.resolve(prefetch(url)).then(function (html) {
