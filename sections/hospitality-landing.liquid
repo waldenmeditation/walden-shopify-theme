@@ -46,7 +46,11 @@
       <div class="hosp-hero__bg hosp-placeholder">{{ 'image' | placeholder_svg_tag }}</div>
     {%- endif -%}
     <div class="hosp-hero__scrim"></div>
-    <div class="hosp__inner hosp-hero__content">
+    {%- comment -%}
+      scheme-6 (transparent bg / light text) gives the hero the theme's own
+      white-outline secondary button over media, same as heroes elsewhere.
+    {%- endcomment -%}
+    <div class="hosp__inner hosp-hero__content color-scheme-6">
       <div class="hosp-hero__copy">
         {%- if section.settings.hero_eyebrow != blank -%}
           <p class="hosp-eyebrow hosp-eyebrow--light">{{ section.settings.hero_eyebrow }}</p>
@@ -56,7 +60,7 @@
           <div class="hosp-hero__lead">{{ section.settings.hero_lead }}</div>
         {%- endif -%}
         {%- if section.settings.hero_cta_text != blank -%}
-          <a href="#{{ form_anchor }}" class="hosp-hero__cta">{{ section.settings.hero_cta_text }}</a>
+          <a href="#{{ form_anchor }}" class="button button-secondary hosp-hero__cta">{{ section.settings.hero_cta_text }}</a>
         {%- endif -%}
       </div>
     </div>
@@ -82,7 +86,22 @@
           <div class="hosp-trust__logos">
             {%- assign trust_logos = section.settings.trust_logos | split: ',' -%}
             {%- for logo in trust_logos -%}
-              <span class="hosp-trust__logo">{{ logo | strip }}</span>
+              {%- liquid
+                assign logo_name = logo | strip
+                # Names map to assets/trust-logo-<key>.svg; when no asset was
+                # shipped for a name the onerror fallback renders it as text.
+                assign logo_key = logo_name | downcase | remove: "'" | remove: '’' | remove: '.' | replace: ' ', '-'
+                assign logo_asset = 'trust-logo-' | append: logo_key | append: '.svg'
+              -%}
+              <img
+                class="hosp-trust__logo-img"
+                src="{{ logo_asset | asset_url }}"
+                alt="{{ logo_name | escape }}"
+                width="120"
+                height="26"
+                loading="lazy"
+                onerror="var s=document.createElement('span');s.className='hosp-trust__logo';s.textContent=this.alt;this.replaceWith(s)"
+              >
             {%- endfor -%}
           </div>
         {%- endif -%}
