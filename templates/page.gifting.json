@@ -65,9 +65,60 @@
             "title": "We ship for you",
             "body": "<p>Direct to each recipient, on your timeline.</p>"
           }
+        },
+        "case_1": {
+          "type": "case_study",
+          "settings": {
+            "image": "shopify://shop_images/Etching.jpg",
+            "meta": "Customization",
+            "title": "Etched to order",
+            "body": "<p>Logos, marks, and messages etched onto select pieces — yours, unmistakably.</p>"
+          }
+        },
+        "case_2": {
+          "type": "case_study",
+          "settings": {
+            "image": "shopify://shop_images/Bench_Gift_Image.png",
+            "meta": "Gift sets",
+            "title": "Curated and delivered",
+            "body": "<p>Ready-made sets or custom assortments, shipped direct to every recipient.</p>"
+          }
+        },
+        "gal_1": {
+          "type": "gallery_image",
+          "settings": {
+            "image": "shopify://shop_images/Aroma_Gifts.png",
+            "caption": "Aroma gifts"
+          }
+        },
+        "gal_2": {
+          "type": "gallery_image",
+          "settings": {
+            "image": "shopify://shop_images/Salt_Lamp_Gift.png",
+            "caption": "The salt lamp"
+          }
+        },
+        "gal_3": {
+          "type": "gallery_image",
+          "settings": {
+            "image": "shopify://shop_images/cushion_set_gift_guide.png",
+            "caption": "Cushion sets"
+          }
         }
       },
-      "block_order": ["benefit_1", "benefit_2", "benefit_3", "step_1", "step_2", "step_3"],
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "step_1",
+        "step_2",
+        "step_3",
+        "case_1",
+        "case_2",
+        "gal_1",
+        "gal_2",
+        "gal_3"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "show_switcher": true,
@@ -100,9 +151,13 @@
         "form_size_label": "Estimated quantity",
         "form_size_placeholder": "e.g. 150 recipients",
         "form_submit_label": "Request a proposal",
-        "form_footnote": "We reply within one business day, or write us directly at sales@walden.us."
+        "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
+        "cases_heading": "How teams gift Walden"
       }
     }
   },
-  "order": ["main", "b2b_landing"]
+  "order": [
+    "main",
+    "b2b_landing"
+  ]
 }

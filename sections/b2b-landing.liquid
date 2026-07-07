@@ -106,22 +106,72 @@
     </section>
   {%- endif -%}
 
-  {%- comment -%} ---------- COLLECTION BAND ---------- {%- endcomment -%}
-  {%- if section.settings.band_image != blank -%}
+  {%- comment -%} ---------- MEDIA BAND (video with image fallback) ---------- {%- endcomment -%}
+  {%- if section.settings.band_video != blank or section.settings.band_video_url != blank or section.settings.band_image != blank -%}
     <section class="b2b-band b2b-reveal">
-      <img
-        src="{{ section.settings.band_image | image_url: width: 2400 }}"
-        srcset="{{ section.settings.band_image | image_url: width: 1200 }} 1200w,
-                {{ section.settings.band_image | image_url: width: 2400 }} 2400w"
-        sizes="100vw"
-        alt="{{ section.settings.band_image.alt | escape }}"
-        width="{{ section.settings.band_image.width }}"
-        height="{{ section.settings.band_image.height }}"
-        loading="lazy"
-      >
+      {%- if section.settings.band_video != blank -%}
+        {{ section.settings.band_video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, image_size: '1400x' }}
+      {%- elsif section.settings.band_video_url != blank -%}
+        <div class="b2b-band__embed">
+          {%- if section.settings.band_video_url.type == 'youtube' -%}
+            <iframe src="https://www.youtube.com/embed/{{ section.settings.band_video_url.id }}?rel=0&modestbranding=1" title="{{ section.settings.band_caption | default: 'Walden video' | escape }}" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+          {%- elsif section.settings.band_video_url.type == 'vimeo' -%}
+            <iframe src="https://player.vimeo.com/video/{{ section.settings.band_video_url.id }}?dnt=1" title="{{ section.settings.band_caption | default: 'Walden video' | escape }}" allow="autoplay; encrypted-media" allowfullscreen loading="lazy"></iframe>
+          {%- endif -%}
+        </div>
+      {%- elsif section.settings.band_image != blank -%}
+        <img
+          src="{{ section.settings.band_image | image_url: width: 2400 }}"
+          srcset="{{ section.settings.band_image | image_url: width: 1200 }} 1200w,
+                  {{ section.settings.band_image | image_url: width: 2400 }} 2400w"
+          sizes="100vw"
+          alt="{{ section.settings.band_image.alt | escape }}"
+          width="{{ section.settings.band_image.width }}"
+          height="{{ section.settings.band_image.height }}"
+          loading="lazy"
+        >
+      {%- endif -%}
       {%- if section.settings.band_caption != blank -%}
         <p class="b2b-band__caption b2b-eyebrow">{{ section.settings.band_caption }}</p>
       {%- endif -%}
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- CASE STUDIES ---------- {%- endcomment -%}
+  {%- assign case_blocks = section.blocks | where: 'type', 'case_study' -%}
+  {%- if case_blocks.size > 0 -%}
+    <section class="b2b-cases b2b-reveal" aria-label="Selected work">
+      <div class="b2b__inner">
+        {%- if section.settings.cases_heading != blank -%}
+          <h2 class="b2b-cases__heading">{{ section.settings.cases_heading }}</h2>
+        {%- endif -%}
+        <div class="b2b-cases__grid">
+          {%- for block in case_blocks -%}
+            <article class="b2b-case" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                <img
+                  class="b2b-case__image"
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  srcset="{{ block.settings.image | image_url: width: 700 }} 700w,
+                          {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                  sizes="(min-width: 900px) 50vw, 100vw"
+                  alt="{{ block.settings.image.alt | default: block.settings.title | escape }}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+              {%- if block.settings.meta != blank -%}
+                <p class="b2b-eyebrow b2b-case__meta">{{ block.settings.meta }}</p>
+              {%- endif -%}
+              <h3 class="b2b-case__title">{{ block.settings.title }}</h3>
+              {%- if block.settings.body != blank -%}
+                <div class="b2b-case__body">{{ block.settings.body }}</div>
+              {%- endif -%}
+            </article>
+          {%- endfor -%}
+        </div>
+      </div>
     </section>
   {%- endif -%}
 
@@ -143,6 +193,36 @@
             </li>
           {%- endfor -%}
         </ol>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- GALLERY STRIP ---------- {%- endcomment -%}
+  {%- assign gallery_blocks = section.blocks | where: 'type', 'gallery_image' -%}
+  {%- if gallery_blocks.size > 0 -%}
+    <section class="b2b-gallery b2b-reveal" aria-label="Gallery">
+      <div class="b2b__inner">
+        <div class="b2b-gallery__grid" style="--b2b-gallery-cols: {{ gallery_blocks.size | at_most: 4 }};">
+          {%- for block in gallery_blocks -%}
+            <figure class="b2b-gallery__item" {{ block.shopify_attributes }}>
+              {%- if block.settings.image != blank -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 900 }}"
+                  srcset="{{ block.settings.image | image_url: width: 500 }} 500w,
+                          {{ block.settings.image | image_url: width: 900 }} 900w"
+                  sizes="(min-width: 900px) 33vw, 100vw"
+                  alt="{{ block.settings.image.alt | default: block.settings.caption | escape }}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+              {%- if block.settings.caption != blank -%}
+                <figcaption class="b2b-eyebrow">{{ block.settings.caption }}</figcaption>
+              {%- endif -%}
+            </figure>
+          {%- endfor -%}
+        </div>
       </div>
     </section>
   {%- endif -%}
@@ -210,9 +290,13 @@
     { "type": "text", "id": "trust_logos", "label": "Partner names", "info": "Comma-separated; maps to assets/trust-logo-<name>.svg with text fallback." },
     { "type": "header", "content": "Benefits" },
     { "type": "text", "id": "benefits_heading", "label": "Heading" },
-    { "type": "header", "content": "Collection band" },
-    { "type": "image_picker", "id": "band_image", "label": "Image" },
+    { "type": "header", "content": "Media band" },
+    { "type": "video", "id": "band_video", "label": "Video", "info": "Hosted video; plays muted on loop. Takes priority over the URL and image." },
+    { "type": "video_url", "id": "band_video_url", "label": "Video URL", "accept": ["youtube", "vimeo"], "info": "Used if no hosted video is set." },
+    { "type": "image_picker", "id": "band_image", "label": "Image (fallback)" },
     { "type": "text", "id": "band_caption", "label": "Caption" },
+    { "type": "header", "content": "Case studies" },
+    { "type": "text", "id": "cases_heading", "label": "Heading", "default": "Selected spaces" },
     { "type": "header", "content": "How it works" },
     { "type": "text", "id": "steps_heading", "label": "Heading", "default": "How it works" },
     { "type": "header", "content": "Statement" },
@@ -244,6 +328,24 @@
       "settings": [
         { "type": "text", "id": "title", "label": "Title", "default": "Tell us about your space" },
         { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    },
+    {
+      "type": "case_study",
+      "name": "Case study",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "meta", "label": "Label", "info": "Small uppercase label, e.g. Member event." },
+        { "type": "text", "id": "title", "label": "Title", "default": "Project name" },
+        { "type": "richtext", "id": "body", "label": "Body" }
+      ]
+    },
+    {
+      "type": "gallery_image",
+      "name": "Gallery image",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "caption", "label": "Caption" }
       ]
     }
   ],

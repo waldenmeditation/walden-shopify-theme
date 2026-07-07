@@ -204,19 +204,90 @@
   color: var(--color-foreground);
 }
 
-/* ---------- COLLECTION BAND ---------- */
+/* ---------- MEDIA BAND ---------- */
 .b2b-band {
   padding-block: calc(var(--b2b-space) * 0.6);
 }
-.b2b-band img {
+.b2b-band img,
+.b2b-band video {
   display: block;
   width: 100%;
   height: clamp(380px, 58vh, 620px);
   object-fit: cover;
 }
+.b2b-band__embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 620px;
+}
+.b2b-band__embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
 .b2b-band__caption {
   text-align: center;
   margin-top: 18px;
+}
+
+/* ---------- CASE STUDIES ---------- */
+.b2b-cases {
+  padding-block: calc(var(--b2b-space) * 0.6);
+}
+.b2b-cases__heading {
+  margin: 0 0 clamp(36px, 5vw, 56px);
+  letter-spacing: -0.015em;
+}
+.b2b-cases__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(28px, 4vw, 56px);
+}
+.b2b-case__image {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  margin-bottom: 20px;
+}
+.b2b-case__meta {
+  margin-bottom: 8px;
+}
+.b2b-case__title {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: -0.01em;
+}
+.b2b-case__body p {
+  margin: 10px 0 0;
+  font-size: 14.5px;
+  line-height: 1.7;
+  max-width: 52ch;
+}
+
+/* ---------- GALLERY STRIP ---------- */
+.b2b-gallery {
+  padding-block: calc(var(--b2b-space) * 0.5);
+}
+.b2b-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--b2b-gallery-cols, 3), 1fr);
+  gap: clamp(14px, 2vw, 24px);
+}
+.b2b-gallery__item {
+  margin: 0;
+}
+.b2b-gallery__item img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+.b2b-gallery__item figcaption {
+  margin-top: 10px;
 }
 
 /* ---------- STEPS ---------- */
@@ -413,9 +484,13 @@
 /* ---------- MOBILE ---------- */
 @media screen and (max-width: 899px) {
   .b2b-benefits__grid,
-  .b2b-steps__list {
+  .b2b-steps__list,
+  .b2b-cases__grid {
     grid-template-columns: 1fr;
     gap: 30px;
+  }
+  .b2b-gallery__grid {
+    grid-template-columns: 1fr 1fr;
   }
 }
 @media screen and (max-width: 649px) {

@@ -65,9 +65,60 @@
             "title": "Stock, sell, restock",
             "body": "<p>Simple reorders through the partner portal, season after season.</p>"
           }
+        },
+        "case_1": {
+          "type": "case_study",
+          "settings": {
+            "image": "shopify://shop_images/BLOCK-TOP-DOWN-SOLO-NEUTRAL-min.jpg",
+            "meta": "On the counter",
+            "title": "Aroma, brass, and stone",
+            "body": "<p>Small-format pieces with strong attachment rates — an easy anchor for a considered counter display.</p>"
+          }
+        },
+        "case_2": {
+          "type": "case_study",
+          "settings": {
+            "image": "shopify://shop_images/Mesa_Holder.png",
+            "meta": "On the shelf",
+            "title": "Objects that hold their place",
+            "body": "<p>Quietly engineered pieces that draw a closer look and stay on the floor season after season.</p>"
+          }
+        },
+        "gal_1": {
+          "type": "gallery_image",
+          "settings": {
+            "image": "shopify://shop_images/Ritual_Incense.png",
+            "caption": "Ritual incense"
+          }
+        },
+        "gal_2": {
+          "type": "gallery_image",
+          "settings": {
+            "image": "shopify://shop_images/Moment_in_hand_1.png",
+            "caption": "Made to be handled"
+          }
+        },
+        "gal_3": {
+          "type": "gallery_image",
+          "settings": {
+            "image": "shopify://shop_images/PURE-SANDALWOOD-INCENSE-PDP-HERO-min.jpg",
+            "caption": "Pure sandalwood"
+          }
         }
       },
-      "block_order": ["benefit_1", "benefit_2", "benefit_3", "step_1", "step_2", "step_3"],
+      "block_order": [
+        "benefit_1",
+        "benefit_2",
+        "benefit_3",
+        "step_1",
+        "step_2",
+        "step_3",
+        "case_1",
+        "case_2",
+        "gal_1",
+        "gal_2",
+        "gal_3"
+      ],
       "settings": {
         "color_scheme": "scheme-1",
         "show_switcher": true,
@@ -100,9 +151,13 @@
         "form_size_label": "Locations",
         "form_size_placeholder": "e.g. 2 stores + online",
         "form_submit_label": "Request wholesale access",
-        "form_footnote": "We reply within one business day, or write us directly at sales@walden.us."
+        "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
+        "cases_heading": "In the store"
       }
     }
   },
-  "order": ["main", "b2b_landing"]
+  "order": [
+    "main",
+    "b2b_landing"
+  ]
 }
