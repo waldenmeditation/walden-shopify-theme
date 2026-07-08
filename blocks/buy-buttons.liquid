@@ -57,8 +57,9 @@
     assign stock_chip_text = product.metafields.custom.product_availability
     assign stock_chip_dot = 'orange'
   elsif inventory_managed and inventory_quantity <= 0 and inventory_policy == 'continue' and is_preorder == false
-    assign stock_chip_text = 'Backordered. Shipping may be delayed.'
-    assign stock_chip_dot = 'orange'
+    # Backorder chip temporarily disabled; branch kept so backordered items
+    # don't fall through to the "In stock" message.
+    assign stock_chip_text = ''
   elsif can_add_to_cart
     assign stock_chip_text = 'In stock. Ships in 1-2 days.'
     assign stock_chip_dot = 'green'
