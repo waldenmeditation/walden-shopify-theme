@@ -174,7 +174,9 @@
         "form_submit_label": "Submit inquiry",
         "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
         "cases_heading": "Selected spaces",
+        "cases_cta_prompt": "Have a space in mind?",
         "cases_cta_text": "Start an inquiry",
+        "steps_cta_prompt": "Ready when you are.",
         "steps_cta_text": "Start an inquiry",
         "steps_cta_note": "We reply within one business day.",
         "reels_heading": "In motion"

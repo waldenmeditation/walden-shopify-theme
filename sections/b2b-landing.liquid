@@ -175,6 +175,11 @@
         </div>
         {%- if section.settings.cases_cta_text != blank -%}
           <div class="b2b-cta">
+            {%- if section.settings.cases_cta_prompt != blank -%}
+              <div class="b2b-cta__copy">
+                <p class="b2b-cta__prompt">{{ section.settings.cases_cta_prompt }}</p>
+              </div>
+            {%- endif -%}
             <a href="#inquire" class="button">{{ section.settings.cases_cta_text }}</a>
           </div>
         {%- endif -%}
@@ -239,10 +244,17 @@
         </ol>
         {%- if section.settings.steps_cta_text != blank -%}
           <div class="b2b-cta">
-            <a href="#inquire" class="button">{{ section.settings.steps_cta_text }}</a>
-            {%- if section.settings.steps_cta_note != blank -%}
-              <span class="b2b-cta__note">{{ section.settings.steps_cta_note }}</span>
+            {%- if section.settings.steps_cta_prompt != blank or section.settings.steps_cta_note != blank -%}
+              <div class="b2b-cta__copy">
+                {%- if section.settings.steps_cta_prompt != blank -%}
+                  <p class="b2b-cta__prompt">{{ section.settings.steps_cta_prompt }}</p>
+                {%- endif -%}
+                {%- if section.settings.steps_cta_note != blank -%}
+                  <p class="b2b-cta__note">{{ section.settings.steps_cta_note }}</p>
+                {%- endif -%}
+              </div>
             {%- endif -%}
+            <a href="#inquire" class="button">{{ section.settings.steps_cta_text }}</a>
           </div>
         {%- endif -%}
       </div>
@@ -348,13 +360,15 @@
     { "type": "text", "id": "band_caption", "label": "Caption" },
     { "type": "header", "content": "Case studies" },
     { "type": "text", "id": "cases_heading", "label": "Heading", "default": "Selected spaces" },
+    { "type": "text", "id": "cases_cta_prompt", "label": "Prompt beside button", "info": "Short line to the left of the button, e.g. Have a project in mind?", "default": "Have a project in mind?" },
     { "type": "text", "id": "cases_cta_text", "label": "Button below case studies", "info": "Scrolls to the inquiry form. Leave blank to hide.", "default": "Start an inquiry" },
     { "type": "header", "content": "Vertical videos" },
     { "type": "text", "id": "reels_heading", "label": "Heading", "default": "In motion" },
     { "type": "header", "content": "How it works" },
     { "type": "text", "id": "steps_heading", "label": "Heading", "default": "How it works" },
+    { "type": "text", "id": "steps_cta_prompt", "label": "Prompt beside button", "default": "Ready when you are." },
     { "type": "text", "id": "steps_cta_text", "label": "Button below steps", "info": "Scrolls to the inquiry form. Leave blank to hide.", "default": "Start an inquiry" },
-    { "type": "text", "id": "steps_cta_note", "label": "Note beside button" },
+    { "type": "text", "id": "steps_cta_note", "label": "Note under the prompt" },
     { "type": "header", "content": "Statement" },
     { "type": "richtext", "id": "statement", "label": "Statement" },
     { "type": "header", "content": "Inquiry form" },
