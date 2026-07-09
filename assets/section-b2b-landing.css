@@ -244,9 +244,9 @@
   border: 0;
 }
 .b2b-band__caption {
-  text-align: center;
-  margin-top: 22px;
-  padding-inline: var(--page-margin, 20px);
+  max-width: var(--page-width, 1280px);
+  margin: 18px auto 0;
+  padding-inline: var(--page-margin, clamp(20px, 5vw, 40px));
 }
 
 /* ---------- MID-PAGE CTA ----------
