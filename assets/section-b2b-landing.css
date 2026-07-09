@@ -163,9 +163,11 @@
   filter: brightness(0) invert(1);
   opacity: 0.62;
 }
-.b2b-hero__logo[src*='mandarin-oriental'] { height: 38px; }
+.b2b-hero__logo[src*='mandarin-oriental'] { height: 40px; }
+.b2b-hero__logo[src*='six-senses'],
+.b2b-hero__logo[src*='intercontinental'] { height: 46px; }
 .b2b-hero__logo[src*='four-seasons'],
-.b2b-hero__logo[src*='the-ritz-carlton'] { height: 32px; }
+.b2b-hero__logo[src*='the-ritz-carlton'] { height: 38px; }
 .b2b-hero__logo-text {
   font-family: var(--font-paragraph--family);
   font-size: 13.5px;
@@ -177,7 +179,7 @@
 
 /* ---------- BENEFITS ---------- */
 .b2b-benefits {
-  padding-block: var(--b2b-space) calc(var(--b2b-space) * 0.6);
+  padding-block: var(--b2b-space) calc(var(--b2b-space) * 0.5);
 }
 /* Shared section-heading rhythm */
 .b2b-benefits__heading,
@@ -221,7 +223,7 @@
 
 /* ---------- MEDIA BAND ---------- */
 .b2b-band {
-  padding-block: calc(var(--b2b-space) * 0.6);
+  padding-block: calc(var(--b2b-space) * 0.5);
 }
 .b2b-band img,
 .b2b-band video {
@@ -245,7 +247,10 @@
 }
 .b2b-band__caption {
   max-width: var(--page-width, 1280px);
-  margin: 18px auto 0;
+  margin: 0 auto;
+  /* padding, not margin: base.css zeroes margin-block-start after an :empty
+     first child (the band img), so a margin here can never render */
+  padding-top: 16px;
   padding-inline: var(--page-margin, clamp(20px, 5vw, 40px));
 }
 
@@ -259,13 +264,11 @@
   flex-wrap: wrap;
   gap: 18px 32px;
   margin-top: clamp(48px, 7vw, 76px);
-  padding-top: 26px;
+  padding-top: 22px;
   border-top: 1px solid var(--color-border);
 }
 .b2b-cta:not(:has(.b2b-cta__copy)) {
   justify-content: center;
-  border-top: 0;
-  padding-top: 0;
 }
 .b2b-cta .button {
   flex-shrink: 0;
@@ -285,7 +288,7 @@
 
 /* ---------- CASE STUDIES ---------- */
 .b2b-cases {
-  padding-block: calc(var(--b2b-space) * 0.6);
+  padding-block: calc(var(--b2b-space) * 0.5);
 }
 .b2b-cases__heading {
   margin: 0 0 clamp(36px, 5vw, 56px);
@@ -317,7 +320,7 @@
 }
 .b2b-case__stat {
   margin: 18px 0 0;
-  padding-top: 14px;
+  padding-top: 16px;
   border-top: 1px solid var(--color-border);
   display: flex;
   align-items: baseline;
@@ -335,7 +338,7 @@
 
 /* ---------- VERTICAL VIDEOS ---------- */
 .b2b-reels {
-  padding-block: calc(var(--b2b-space) * 0.6);
+  padding-block: calc(var(--b2b-space) * 0.5);
 }
 .b2b-reels__heading {
   margin: 0 0 clamp(36px, 5vw, 56px);
@@ -389,7 +392,7 @@
 
 /* ---------- STEPS ---------- */
 .b2b-steps {
-  padding-block: calc(var(--b2b-space) * 0.6);
+  padding-block: calc(var(--b2b-space) * 0.5);
 }
 .b2b-steps__heading {
   margin: 0 0 clamp(36px, 5vw, 56px);
@@ -426,7 +429,8 @@
   font-size: 12px;
 }
 .b2b-step__title {
-  margin: 4px 0 0;
+  margin: 0;
+  padding-top: 4px;
   font-size: 19px;
   line-height: 1.35;
   letter-spacing: -0.01em;
@@ -439,7 +443,7 @@
 
 /* ---------- STATEMENT ---------- */
 .b2b-statement {
-  padding-block: calc(var(--b2b-space) * 0.9);
+  padding-block: var(--b2b-space);
 }
 .b2b-statement__inner {
   max-width: 860px;
@@ -586,6 +590,9 @@
   .b2b-cases__grid {
     grid-template-columns: 1fr;
     gap: 30px;
+  }
+  .b2b-cases__grid {
+    gap: 48px;
   }
   .b2b-gallery__grid {
     grid-template-columns: 1fr 1fr;
