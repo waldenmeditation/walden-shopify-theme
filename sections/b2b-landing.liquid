@@ -145,7 +145,7 @@
         {%- if section.settings.cases_heading != blank -%}
           <h2 class="b2b-cases__heading">{{ section.settings.cases_heading }}</h2>
         {%- endif -%}
-        <div class="b2b-cases__grid">
+        <div class="b2b-cases__grid" style="--b2b-cases-cols: {% if case_blocks.size >= 3 %}3{% else %}2{% endif %};">
           {%- for block in case_blocks -%}
             <article class="b2b-case" {{ block.shopify_attributes }}>
               {%- if block.settings.image != blank -%}
@@ -168,7 +168,52 @@
               {%- if block.settings.body != blank -%}
                 <div class="b2b-case__body">{{ block.settings.body }}</div>
               {%- endif -%}
+              {%- if block.settings.stat != blank -%}
+                <p class="b2b-case__stat">
+                  <span class="b2b-case__stat-value">{{ block.settings.stat }}</span>
+                  {%- if block.settings.stat_label != blank -%}
+                    <span class="b2b-case__stat-label">{{ block.settings.stat_label }}</span>
+                  {%- endif -%}
+                </p>
+              {%- endif -%}
             </article>
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  {%- comment -%} ---------- VERTICAL VIDEOS ---------- {%- endcomment -%}
+  {%- assign reel_blocks = section.blocks | where: 'type', 'vertical_video' -%}
+  {%- if reel_blocks.size > 0 -%}
+    <section class="b2b-reels b2b-reveal" aria-label="Videos">
+      <div class="b2b__inner">
+        {%- if section.settings.reels_heading != blank -%}
+          <h2 class="b2b-reels__heading">{{ section.settings.reels_heading }}</h2>
+        {%- endif -%}
+        <div class="b2b-reels__grid" style="--b2b-reels-cols: {{ reel_blocks.size | at_most: 4 }};">
+          {%- for block in reel_blocks -%}
+            <figure class="b2b-reel" {{ block.shopify_attributes }}>
+              <div class="b2b-reel__media">
+                {%- if block.settings.video != blank -%}
+                  {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', image_size: '800x' }}
+                {%- elsif block.settings.poster != blank -%}
+                  <img
+                    src="{{ block.settings.poster | image_url: width: 800 }}"
+                    srcset="{{ block.settings.poster | image_url: width: 500 }} 500w,
+                            {{ block.settings.poster | image_url: width: 800 }} 800w"
+                    sizes="(min-width: 900px) 30vw, 72vw"
+                    alt="{{ block.settings.poster.alt | default: block.settings.caption | escape }}"
+                    width="{{ block.settings.poster.width }}"
+                    height="{{ block.settings.poster.height }}"
+                    loading="lazy"
+                  >
+                {%- endif -%}
+              </div>
+              {%- if block.settings.caption != blank -%}
+                <figcaption class="b2b-eyebrow">{{ block.settings.caption }}</figcaption>
+              {%- endif -%}
+            </figure>
           {%- endfor -%}
         </div>
       </div>
@@ -297,6 +342,8 @@
     { "type": "text", "id": "band_caption", "label": "Caption" },
     { "type": "header", "content": "Case studies" },
     { "type": "text", "id": "cases_heading", "label": "Heading", "default": "Selected spaces" },
+    { "type": "header", "content": "Vertical videos" },
+    { "type": "text", "id": "reels_heading", "label": "Heading", "default": "In motion" },
     { "type": "header", "content": "How it works" },
     { "type": "text", "id": "steps_heading", "label": "Heading", "default": "How it works" },
     { "type": "header", "content": "Statement" },
@@ -337,7 +384,18 @@
         { "type": "image_picker", "id": "image", "label": "Image" },
         { "type": "text", "id": "meta", "label": "Label", "info": "Small uppercase label, e.g. Member event." },
         { "type": "text", "id": "title", "label": "Title", "default": "Project name" },
-        { "type": "richtext", "id": "body", "label": "Body" }
+        { "type": "richtext", "id": "body", "label": "Body" },
+        { "type": "text", "id": "stat", "label": "Stat", "info": "Optional highlight, e.g. 120 rooms." },
+        { "type": "text", "id": "stat_label", "label": "Stat label", "info": "Small line under the stat, e.g. furnished across two properties." }
+      ]
+    },
+    {
+      "type": "vertical_video",
+      "name": "Vertical video",
+      "settings": [
+        { "type": "video", "id": "video", "label": "Video", "info": "Portrait (9:16) hosted video; plays muted on loop while in view." },
+        { "type": "image_picker", "id": "poster", "label": "Poster image", "info": "Shown until a video is set." },
+        { "type": "text", "id": "caption", "label": "Caption" }
       ]
     },
     {

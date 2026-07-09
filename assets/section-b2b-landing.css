@@ -243,7 +243,7 @@
 }
 .b2b-cases__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(var(--b2b-cases-cols, 2), 1fr);
   gap: clamp(28px, 4vw, 56px);
 }
 .b2b-case__image {
@@ -266,6 +266,55 @@
   font-size: 14.5px;
   line-height: 1.7;
   max-width: 52ch;
+}
+.b2b-case__stat {
+  margin: 18px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+.b2b-case__stat-value {
+  color: var(--color-foreground-heading);
+  font-size: 22px;
+  letter-spacing: -0.01em;
+}
+.b2b-case__stat-label {
+  font-size: 12.5px;
+  color: var(--color-foreground-muted);
+}
+
+/* ---------- VERTICAL VIDEOS ---------- */
+.b2b-reels {
+  padding-block: calc(var(--b2b-space) * 0.6);
+}
+.b2b-reels__heading {
+  margin: 0 0 clamp(36px, 5vw, 56px);
+  letter-spacing: -0.015em;
+}
+.b2b-reels__grid {
+  display: grid;
+  grid-template-columns: repeat(var(--b2b-reels-cols, 3), 1fr);
+  gap: clamp(14px, 2vw, 24px);
+}
+.b2b-reel {
+  margin: 0;
+}
+.b2b-reel__media {
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--color-border) 26%, var(--color-background));
+}
+.b2b-reel__media video,
+.b2b-reel__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.b2b-reel figcaption {
+  margin-top: 10px;
 }
 
 /* ---------- GALLERY STRIP ---------- */
@@ -491,6 +540,27 @@
   }
   .b2b-gallery__grid {
     grid-template-columns: 1fr 1fr;
+  }
+  /* Reels become an edge-swipeable snap strip */
+  .b2b-reels .b2b__inner {
+    padding-inline: 0;
+  }
+  .b2b-reels__heading {
+    padding-inline: var(--page-margin, clamp(20px, 5vw, 40px));
+  }
+  .b2b-reels__grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: min(68vw, 320px);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: var(--page-margin, 20px);
+    padding-inline: var(--page-margin, clamp(20px, 5vw, 40px));
+    padding-bottom: 6px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .b2b-reel {
+    scroll-snap-align: start;
   }
 }
 @media screen and (max-width: 649px) {

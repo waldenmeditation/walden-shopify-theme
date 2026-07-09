@@ -19,10 +19,41 @@
     els.forEach(function (el) { io.observe(el); });
   }
 
+  function initReels(root) {
+    var vids = (root || document).querySelectorAll('.b2b-reel video');
+    if (!vids.length) return;
+    if (reduceMotion) {
+      vids.forEach(function (v) {
+        v.removeAttribute('autoplay');
+        v.pause();
+        v.setAttribute('controls', '');
+      });
+      return;
+    }
+    if (!('IntersectionObserver' in window)) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        var v = e.target;
+        if (e.isIntersecting) {
+          var p = v.play();
+          if (p && p.catch) p.catch(function () {});
+        } else {
+          v.pause();
+        }
+      });
+    }, { threshold: 0.25 });
+    vids.forEach(function (v) { io.observe(v); });
+  }
+
+  function init(root) {
+    initReveals(root);
+    initReels(root);
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { initReveals(); });
+    document.addEventListener('DOMContentLoaded', function () { init(); });
   } else {
-    initReveals();
+    init();
   }
 
   if (window.Shopify && window.Shopify.designMode) return;
@@ -63,7 +94,7 @@
     incoming.setAttribute('tabindex', '-1');
     incoming.focus({ preventScroll: true });
     window.scrollTo(0, 0);
-    initReveals(incoming);
+    init(incoming);
   }
 
   ['mouseover', 'focusin', 'touchstart'].forEach(function (evt) {

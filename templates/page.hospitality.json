@@ -84,6 +84,27 @@
             "body": "<p>Seating and detail work for a dedicated residential meditation room.</p>"
           }
         },
+        "reel_1": {
+          "type": "vertical_video",
+          "settings": {
+            "poster": "shopify://shop_images/Moment_in_hand_1.png",
+            "caption": "In practice"
+          }
+        },
+        "reel_2": {
+          "type": "vertical_video",
+          "settings": {
+            "poster": "shopify://shop_images/Ritual_Incense.png",
+            "caption": "Ritual incense"
+          }
+        },
+        "reel_3": {
+          "type": "vertical_video",
+          "settings": {
+            "poster": "shopify://shop_images/cushion_set_gift_guide.png",
+            "caption": "Cushion sets"
+          }
+        },
         "gal_1": {
           "type": "gallery_image",
           "settings": {
@@ -115,6 +136,9 @@
         "step_3",
         "case_1",
         "case_2",
+        "reel_1",
+        "reel_2",
+        "reel_3",
         "gal_1",
         "gal_2",
         "gal_3"
@@ -152,7 +176,8 @@
         "form_size_placeholder": "e.g. 40 rooms + 1 studio",
         "form_submit_label": "Submit inquiry",
         "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
-        "cases_heading": "Selected spaces"
+        "cases_heading": "Selected spaces",
+        "reels_heading": "In motion"
       }
     }
   },

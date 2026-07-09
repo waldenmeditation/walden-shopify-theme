@@ -84,6 +84,27 @@
             "body": "<p>Quietly engineered pieces that draw a closer look and stay on the floor season after season.</p>"
           }
         },
+        "reel_1": {
+          "type": "vertical_video",
+          "settings": {
+            "poster": "shopify://shop_images/Salt_Lamp_Gift.png",
+            "caption": "The salt lamp"
+          }
+        },
+        "reel_2": {
+          "type": "vertical_video",
+          "settings": {
+            "poster": "shopify://shop_images/5A1A8008-Edit_1.jpg",
+            "caption": "In the home"
+          }
+        },
+        "reel_3": {
+          "type": "vertical_video",
+          "settings": {
+            "poster": "shopify://shop_images/walden-mc-home-06.jpg",
+            "caption": "At rest"
+          }
+        },
         "gal_1": {
           "type": "gallery_image",
           "settings": {
@@ -115,6 +136,9 @@
         "step_3",
         "case_1",
         "case_2",
+        "reel_1",
+        "reel_2",
+        "reel_3",
         "gal_1",
         "gal_2",
         "gal_3"
@@ -152,7 +176,8 @@
         "form_size_placeholder": "e.g. 2 stores + online",
         "form_submit_label": "Request wholesale access",
         "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
-        "cases_heading": "In the store"
+        "cases_heading": "In the store",
+        "reels_heading": "In motion"
       }
     }
   },
