@@ -28,7 +28,7 @@
           "type": "benefit",
           "settings": {
             "title": "Make it yours",
-            "body": "<p>Etching and sewn-on marks across our catalog and our sister company, Quiet Hours.</p>"
+            "body": "<p>Etched logos and sewn-on marks across our catalog and our sister studio, Quiet Hours.</p>"
           }
         },
         "benefit_2": {
@@ -70,7 +70,6 @@
           "type": "case_study",
           "settings": {
             "image": "shopify://shop_images/Etching.jpg",
-            "meta": "Customization",
             "title": "Etched to order",
             "body": "<p>Logos, marks, and messages etched onto select pieces — yours, unmistakably.</p>"
           }
@@ -79,7 +78,6 @@
           "type": "case_study",
           "settings": {
             "image": "shopify://shop_images/Bench_Gift_Image.png",
-            "meta": "Gift sets",
             "title": "Curated and delivered",
             "body": "<p>Ready-made sets or custom assortments, shipped direct to every recipient.</p>"
           }
@@ -154,7 +152,6 @@
         "tab3_label": "Corporate Gifting",
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V002-pichi_45700be4-6fcc-4175-bd43-d30f13599759.jpg",
-        "hero_eyebrow": "",
         "hero_title": "A gift that says slow down.",
         "hero_lead": "<p>Give Walden to your team, clients, or guests — trade pricing, customization, and direct-to-recipient shipping, coordinated end to end.</p>",
         "hero_cta_text": "Start an inquiry",
@@ -177,6 +174,9 @@
         "form_submit_label": "Request a proposal",
         "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
         "cases_heading": "How teams gift Walden",
+        "cases_cta_text": "Start an inquiry",
+        "steps_cta_text": "Start an inquiry",
+        "steps_cta_note": "Proposal within one business day.",
         "reels_heading": "In motion"
       }
     }

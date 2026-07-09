@@ -70,18 +70,16 @@
           "type": "case_study",
           "settings": {
             "image": "shopify://shop_images/2022.04.26_-_Large_Gong_Stand_-_Equinox_Event-pichi_eed5c873-219b-4f7d-8bc2-def251000907.jpg",
-            "meta": "Member event",
             "title": "Equinox",
-            "body": "<p>A large gong installation for member programming.</p>"
+            "body": "<p>A large gong installation for member programming and sound events.</p>"
           }
         },
         "case_2": {
           "type": "case_study",
           "settings": {
             "image": "shopify://shop_images/2022.03.28_-_Beverly_Hills_Room_-_Tag_Detail_1.jpg",
-            "meta": "Private commission",
             "title": "A meditation room in Beverly Hills",
-            "body": "<p>Seating and detail work for a dedicated residential meditation room.</p>"
+            "body": "<p>A private commission — seating and detail work for a dedicated residential meditation room.</p>"
           }
         },
         "reel_1": {
@@ -154,7 +152,6 @@
         "tab3_label": "Corporate Gifting",
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V007_47aad304-540f-4f61-9c08-8dd9ec82ff3d.jpg",
-        "hero_eyebrow": "",
         "hero_title": "A room for rest, within yours.",
         "hero_lead": "<p>We work with hotels, retreats, and studios to design rooms made for rest — volume pricing, partnership terms, and design support included.</p>",
         "hero_cta_text": "Start an inquiry",
@@ -163,7 +160,7 @@
         "trust_logos": "Aman, Four Seasons, Six Senses, Mandarin Oriental, Auberge, The Ritz-Carlton",
         "benefits_heading": "Work with us to shape a meditation and rest room for your hotel, studio, or retreat.",
         "band_image": "shopify://shop_images/mecca-lyingmat-interior.png",
-        "band_caption": "The Journey Set — designed for sound baths, breathwork, and still practices",
+        "band_caption": "The Journey Set — made for sound baths, breathwork, and stillness",
         "steps_heading": "How it works",
         "statement": "<p>Spaces for rest, designed with you and made to last.</p>",
         "form_title": "Design your space with Walden",
@@ -177,6 +174,9 @@
         "form_submit_label": "Submit inquiry",
         "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
         "cases_heading": "Selected spaces",
+        "cases_cta_text": "Start an inquiry",
+        "steps_cta_text": "Start an inquiry",
+        "steps_cta_note": "We reply within one business day.",
         "reels_heading": "In motion"
       }
     }

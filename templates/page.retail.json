@@ -70,7 +70,6 @@
           "type": "case_study",
           "settings": {
             "image": "shopify://shop_images/BLOCK-TOP-DOWN-SOLO-NEUTRAL-min.jpg",
-            "meta": "On the counter",
             "title": "Aroma, brass, and stone",
             "body": "<p>Small-format pieces with strong attachment rates — an easy anchor for a considered counter display.</p>"
           }
@@ -79,7 +78,6 @@
           "type": "case_study",
           "settings": {
             "image": "shopify://shop_images/Mesa_Holder.png",
-            "meta": "On the shelf",
             "title": "Objects that hold their place",
             "body": "<p>Quietly engineered pieces that draw a closer look and stay on the floor season after season.</p>"
           }
@@ -154,9 +152,8 @@
         "tab3_label": "Corporate Gifting",
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/all-products-wide-Edit-2_1.png",
-        "hero_eyebrow": "",
         "hero_title": "Objects made to be picked up.",
-        "hero_lead": "<p>Our pieces are made to be handled — considered objects that invite a closer look. Become a retail partner for trade pricing, low minimums, and simple restocking.</p>",
+        "hero_lead": "<p>Considered objects that invite a closer look — partner with Walden for trade pricing, low minimums, and simple restocking.</p>",
         "hero_cta_text": "Start an inquiry",
         "hero_note": "Line sheet within one business day.",
         "trust_label": "Carried by considered retailers",
@@ -177,6 +174,9 @@
         "form_submit_label": "Request wholesale access",
         "form_footnote": "We reply within one business day, or write us directly at sales@walden.us.",
         "cases_heading": "In the store",
+        "cases_cta_text": "Start an inquiry",
+        "steps_cta_text": "Start an inquiry",
+        "steps_cta_note": "Line sheet within one business day.",
         "reels_heading": "In motion"
       }
     }

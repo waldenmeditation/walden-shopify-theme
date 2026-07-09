@@ -22,17 +22,19 @@
   padding-inline: var(--page-margin, clamp(20px, 5vw, 40px));
 }
 
-.b2b-eyebrow {
+.b2b-caption {
   margin: 0;
   font-family: var(--font-paragraph--family);
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  font-size: 12.5px;
+  line-height: 1.5;
   color: var(--color-foreground-muted);
 }
-.b2b-eyebrow--light {
-  color: rgb(255 255 255 / 0.75);
+
+/* Smooth anchor scroll for the in-page CTAs */
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.b2b) {
+    scroll-behavior: smooth;
+  }
 }
 
 /* ---------- TABS ---------- */
@@ -101,7 +103,7 @@
   max-width: 620px;
 }
 .b2b-hero__title {
-  margin: 16px 0 20px;
+  margin: 0 0 20px;
   color: #fff;
   letter-spacing: -0.015em;
   font-size: clamp(32px, 4.8vw, 54px);
@@ -141,6 +143,12 @@
   padding-top: 22px;
   border-top: 1px solid rgb(255 255 255 / 0.22);
 }
+.b2b-hero__trust-label {
+  font-family: var(--font-paragraph--family);
+  font-size: 12.5px;
+  color: rgb(255 255 255 / 0.66);
+  white-space: nowrap;
+}
 .b2b-hero__logos {
   display: flex;
   align-items: center;
@@ -171,11 +179,17 @@
 .b2b-benefits {
   padding-block: var(--b2b-space) calc(var(--b2b-space) * 0.6);
 }
-.b2b-benefits__heading {
+/* Shared section-heading rhythm */
+.b2b-benefits__heading,
+.b2b-cases__heading,
+.b2b-reels__heading,
+.b2b-steps__heading {
   margin: 0 0 clamp(36px, 5vw, 56px);
   letter-spacing: -0.015em;
-  max-width: 22ch;
   text-wrap: balance;
+}
+.b2b-benefits__heading {
+  max-width: 24ch;
 }
 .b2b-benefits__grid {
   display: grid;
@@ -195,6 +209,7 @@
 .b2b-benefit__title {
   margin: 12px 0 0;
   font-size: 19px;
+  line-height: 1.35;
   letter-spacing: -0.01em;
 }
 .b2b-benefit__body p {
@@ -230,7 +245,22 @@
 }
 .b2b-band__caption {
   text-align: center;
-  margin-top: 18px;
+  margin-top: 16px;
+  padding-inline: var(--page-margin, 20px);
+}
+
+/* ---------- MID-PAGE CTA ---------- */
+.b2b-cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: clamp(44px, 6vw, 68px);
+}
+.b2b-cta__note {
+  font-size: 12.5px;
+  color: var(--color-foreground-muted);
 }
 
 /* ---------- CASE STUDIES ---------- */
@@ -253,12 +283,10 @@
   object-fit: cover;
   margin-bottom: 20px;
 }
-.b2b-case__meta {
-  margin-bottom: 8px;
-}
 .b2b-case__title {
   margin: 0;
-  font-size: 20px;
+  font-size: 19px;
+  line-height: 1.35;
   letter-spacing: -0.01em;
 }
 .b2b-case__body p {
@@ -379,7 +407,8 @@
 }
 .b2b-step__title {
   margin: 4px 0 0;
-  font-size: 17px;
+  font-size: 19px;
+  line-height: 1.35;
   letter-spacing: -0.01em;
 }
 .b2b-step__body p {

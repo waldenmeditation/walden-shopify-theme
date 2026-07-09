@@ -40,9 +40,6 @@
     <div class="b2b-hero__scrim"></div>
     <div class="b2b__inner b2b-hero__content color-scheme-6">
       <div class="b2b-hero__copy">
-        {%- if section.settings.hero_eyebrow != blank -%}
-          <p class="b2b-eyebrow b2b-eyebrow--light">{{ section.settings.hero_eyebrow }}</p>
-        {%- endif -%}
         <h1 class="b2b-hero__title">{{ section.settings.hero_title }}</h1>
         {%- if section.settings.hero_lead != blank -%}
           <div class="b2b-hero__lead">{{ section.settings.hero_lead }}</div>
@@ -57,7 +54,7 @@
       {%- if section.settings.trust_logos != blank -%}
         <div class="b2b-hero__trust">
           {%- if section.settings.trust_label != blank -%}
-            <span class="b2b-eyebrow b2b-eyebrow--light">{{ section.settings.trust_label }}</span>
+            <span class="b2b-hero__trust-label">{{ section.settings.trust_label }}</span>
           {%- endif -%}
           <div class="b2b-hero__logos">
             {%- assign trust_logos = section.settings.trust_logos | split: ',' -%}
@@ -132,7 +129,7 @@
         >
       {%- endif -%}
       {%- if section.settings.band_caption != blank -%}
-        <p class="b2b-band__caption b2b-eyebrow">{{ section.settings.band_caption }}</p>
+        <p class="b2b-band__caption b2b-caption">{{ section.settings.band_caption }}</p>
       {%- endif -%}
     </section>
   {%- endif -%}
@@ -161,9 +158,6 @@
                   loading="lazy"
                 >
               {%- endif -%}
-              {%- if block.settings.meta != blank -%}
-                <p class="b2b-eyebrow b2b-case__meta">{{ block.settings.meta }}</p>
-              {%- endif -%}
               <h3 class="b2b-case__title">{{ block.settings.title }}</h3>
               {%- if block.settings.body != blank -%}
                 <div class="b2b-case__body">{{ block.settings.body }}</div>
@@ -179,6 +173,11 @@
             </article>
           {%- endfor -%}
         </div>
+        {%- if section.settings.cases_cta_text != blank -%}
+          <div class="b2b-cta">
+            <a href="#inquire" class="button">{{ section.settings.cases_cta_text }}</a>
+          </div>
+        {%- endif -%}
       </div>
     </section>
   {%- endif -%}
@@ -211,7 +210,7 @@
                 {%- endif -%}
               </div>
               {%- if block.settings.caption != blank -%}
-                <figcaption class="b2b-eyebrow">{{ block.settings.caption }}</figcaption>
+                <figcaption class="b2b-caption">{{ block.settings.caption }}</figcaption>
               {%- endif -%}
             </figure>
           {%- endfor -%}
@@ -238,6 +237,14 @@
             </li>
           {%- endfor -%}
         </ol>
+        {%- if section.settings.steps_cta_text != blank -%}
+          <div class="b2b-cta">
+            <a href="#inquire" class="button">{{ section.settings.steps_cta_text }}</a>
+            {%- if section.settings.steps_cta_note != blank -%}
+              <span class="b2b-cta__note">{{ section.settings.steps_cta_note }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
     </section>
   {%- endif -%}
@@ -263,7 +270,7 @@
                 >
               {%- endif -%}
               {%- if block.settings.caption != blank -%}
-                <figcaption class="b2b-eyebrow">{{ block.settings.caption }}</figcaption>
+                <figcaption class="b2b-caption">{{ block.settings.caption }}</figcaption>
               {%- endif -%}
             </figure>
           {%- endfor -%}
@@ -326,7 +333,6 @@
     { "type": "text", "id": "tab3_url", "label": "Tab 3 link" },
     { "type": "header", "content": "Hero" },
     { "type": "image_picker", "id": "hero_image", "label": "Hero image" },
-    { "type": "text", "id": "hero_eyebrow", "label": "Eyebrow" },
     { "type": "text", "id": "hero_title", "label": "Title", "default": "A room for rest, within yours." },
     { "type": "richtext", "id": "hero_lead", "label": "Lead" },
     { "type": "text", "id": "hero_cta_text", "label": "Button text", "default": "Start an inquiry" },
@@ -342,10 +348,13 @@
     { "type": "text", "id": "band_caption", "label": "Caption" },
     { "type": "header", "content": "Case studies" },
     { "type": "text", "id": "cases_heading", "label": "Heading", "default": "Selected spaces" },
+    { "type": "text", "id": "cases_cta_text", "label": "Button below case studies", "info": "Scrolls to the inquiry form. Leave blank to hide.", "default": "Start an inquiry" },
     { "type": "header", "content": "Vertical videos" },
     { "type": "text", "id": "reels_heading", "label": "Heading", "default": "In motion" },
     { "type": "header", "content": "How it works" },
     { "type": "text", "id": "steps_heading", "label": "Heading", "default": "How it works" },
+    { "type": "text", "id": "steps_cta_text", "label": "Button below steps", "info": "Scrolls to the inquiry form. Leave blank to hide.", "default": "Start an inquiry" },
+    { "type": "text", "id": "steps_cta_note", "label": "Note beside button" },
     { "type": "header", "content": "Statement" },
     { "type": "richtext", "id": "statement", "label": "Statement" },
     { "type": "header", "content": "Inquiry form" },
@@ -382,7 +391,6 @@
       "name": "Case study",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "text", "id": "meta", "label": "Label", "info": "Small uppercase label, e.g. Member event." },
         { "type": "text", "id": "title", "label": "Title", "default": "Project name" },
         { "type": "richtext", "id": "body", "label": "Body" },
         { "type": "text", "id": "stat", "label": "Stat", "info": "Optional highlight, e.g. 120 rooms." },
