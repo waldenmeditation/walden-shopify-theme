@@ -201,6 +201,17 @@
               <div class="b2b-reel__media">
                 {%- if block.settings.video != blank -%}
                   {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', image_size: '800x' }}
+                {%- elsif block.settings.video_file != blank -%}
+                  <video
+                    src="{{ block.settings.video_file | asset_url }}"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="metadata"
+                    {% if block.settings.poster != blank %}poster="{{ block.settings.poster | image_url: width: 800 }}"{% endif %}
+                    aria-label="{{ block.settings.caption | escape }}"
+                  ></video>
                 {%- elsif block.settings.poster != blank -%}
                   <img
                     src="{{ block.settings.poster | image_url: width: 800 }}"
@@ -416,6 +427,7 @@
       "name": "Vertical video",
       "settings": [
         { "type": "video", "id": "video", "label": "Video", "info": "Portrait (9:16) hosted video; plays muted on loop while in view." },
+        { "type": "text", "id": "video_file", "label": "Theme asset video", "info": "Filename of an .mp4 in the theme's assets (used if no hosted video is picked)." },
         { "type": "image_picker", "id": "poster", "label": "Poster image", "info": "Shown until a video is set." },
         { "type": "text", "id": "caption", "label": "Caption" }
       ]
