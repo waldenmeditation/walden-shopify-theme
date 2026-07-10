@@ -1,0 +1,81 @@
+/* Product film — "See it in use" band on product pages.
+   Same quiet language as the B2B landing: warm tint from --color-border,
+   theme type scale, portrait media with generous side copy. */
+
+.product-film {
+  background: color-mix(in srgb, var(--color-border) 12%, var(--color-background));
+}
+.product-film__inner {
+  max-width: var(--page-width, 1280px);
+  margin-inline: auto;
+  padding: clamp(56px, 8vw, 104px) var(--page-margin, clamp(20px, 5vw, 40px));
+  display: grid;
+  grid-template-columns: minmax(0, 400px) 1fr;
+  gap: clamp(36px, 6vw, 96px);
+  align-items: center;
+}
+.product-film__media {
+  position: relative;
+  margin: 0;
+}
+.product-film__media video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  object-fit: cover;
+  background: color-mix(in srgb, var(--color-border) 26%, var(--color-background));
+}
+.product-film__sound {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: 1px solid rgb(255 255 255 / 0.55);
+  background: rgb(0 0 0 / 0.4);
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.product-film__sound[hidden] {
+  display: none;
+}
+.product-film__sound:hover {
+  background: rgb(0 0 0 / 0.6);
+}
+.product-film__sound:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
+}
+.product-film__icon--on { display: none; }
+.product-film__sound.is-on .product-film__icon--on { display: block; }
+.product-film__sound.is-on .product-film__icon--off { display: none; }
+
+.product-film__heading {
+  margin: 0 0 16px;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+.product-film__body p {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 46ch;
+}
+.product-film__body p + p {
+  margin-top: 10px;
+}
+
+@media screen and (max-width: 749px) {
+  .product-film__inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  .product-film__media {
+    width: 100%;
+    max-width: 420px;
+  }
+}

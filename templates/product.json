@@ -955,10 +955,120 @@
         "padding-block-start": 0,
         "padding-block-end": 0
       }
+    },
+    "product_film": {
+      "type": "product-film",
+      "blocks": {
+        "film_cushion_set": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-cushion-mat-set.mp4",
+            "body": "<p>The Original Cushion + Mat Set in Medium Clay — proportions, materials, and the sit itself.</p>",
+            "product_handle": "walden-meditation-cushion-mat-set"
+          }
+        },
+        "film_cushion": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-cushion-mat-set.mp4",
+            "body": "<p>The Original Cushion, shown with the mat set in Medium Clay.</p>",
+            "product_handle": "walden-original-meditation-cushion"
+          }
+        },
+        "film_bench": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-bench-set.mp4",
+            "body": "<p>The Meditation Bench in a seated practice.</p>",
+            "product_handle": "meditation-bench"
+          }
+        },
+        "film_bench_cushion": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-bench-set.mp4",
+            "body": "<p>The Bench Cushion, shown with the full bench set.</p>",
+            "product_handle": "bench-cushion"
+          }
+        },
+        "film_bench_mat": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-bench-set.mp4",
+            "body": "<p>The Plush Mat, shown with the full bench set.</p>",
+            "product_handle": "bench-mat"
+          }
+        },
+        "film_palo": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-palo-santo.mp4",
+            "body": "<p>Lighting and resting a stick of palo santo.</p>",
+            "product_handle": "palo-santo-sticks"
+          }
+        },
+        "film_mesa": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-mesa-holder.mp4",
+            "body": "<p>The Mesa holder with palo santo — lit, resting, and at ease on a shelf.</p>",
+            "product_handle": "mesa-palo-santo-holder"
+          }
+        },
+        "film_incense_set": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-incense.mp4",
+            "body": "<p>A stick of incense, lit and settled.</p>",
+            "product_handle": "ritual-incense-set-2-0"
+          }
+        },
+        "film_incense_xl": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-incense.mp4",
+            "body": "<p>A stick of incense, lit and settled.</p>",
+            "product_handle": "australian-sandalwood-incense-sticks"
+          }
+        },
+        "film_block": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-block-incense.mp4",
+            "body": "<p>The Block incense holder in use.</p>",
+            "product_handle": "block-incense-holder-1"
+          }
+        },
+        "film_journey": {
+          "type": "film",
+          "settings": {
+            "video_file": "product-film-journey-set.mp4",
+            "body": "<p>The Journey Set, set up at home.</p>",
+            "product_handle": "breathwork"
+          }
+        }
+      },
+      "block_order": [
+        "film_cushion_set",
+        "film_cushion",
+        "film_bench",
+        "film_bench_cushion",
+        "film_bench_mat",
+        "film_palo",
+        "film_mesa",
+        "film_incense_set",
+        "film_incense_xl",
+        "film_block",
+        "film_journey"
+      ],
+      "settings": {
+        "heading": "See it in use"
+      }
     }
   },
   "order": [
     "product-information",
+    "product_film",
     "sanity_modules_Lk3sYZ",
     "blocks_VAG33V",
     "17595186258b53795e",
