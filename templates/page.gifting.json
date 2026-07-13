@@ -42,7 +42,7 @@
           "type": "benefit",
           "settings": {
             "title": "Sent for you",
-            "body": "<p>We handle recipient addresses, shipping, and timing — end to end.</p>"
+            "body": "<p>We handle recipient addresses, shipping, and timing, end to end.</p>"
           }
         },
         "step_1": {
@@ -71,7 +71,7 @@
           "settings": {
             "image": "shopify://shop_images/Etching.jpg",
             "title": "Etched to order",
-            "body": "<p>Logos, marks, and messages etched onto select pieces — yours, unmistakably.</p>"
+            "body": "<p>Logos, marks, and messages etched onto select pieces.</p>"
           }
         },
         "case_2": {
@@ -153,7 +153,7 @@
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/WALDEN_HOME_JOURNEYKITS_CLAY_V002-pichi_45700be4-6fcc-4175-bd43-d30f13599759.jpg",
         "hero_title": "A gift that says slow down.",
-        "hero_lead": "<p>Give Walden to your team, clients, or guests — trade pricing, customization, and direct-to-recipient shipping, coordinated end to end.</p>",
+        "hero_lead": "<p>Give Walden to your team, clients, or guests, with trade pricing, customization, and direct-to-recipient shipping coordinated end to end.</p>",
         "hero_cta_text": "Start an inquiry",
         "hero_note": "Proposal within one business day.",
         "trust_label": "Gifted by teams who care",
@@ -162,7 +162,7 @@
         "band_image": "shopify://shop_images/journey_set_gift.png",
         "band_caption": "Gift sets, ready to send",
         "steps_heading": "How it works",
-        "statement": "<p>Thoughtful at scale — a gift people actually keep.</p>",
+        "statement": "<p>Thoughtful at scale. A gift people actually keep.</p>",
         "form_title": "Plan your gift order",
         "form_subtitle": "<p>Tell us the occasion and quantity and we’ll build a proposal with options and pricing.</p>",
         "form_program": "Corporate Gifting",

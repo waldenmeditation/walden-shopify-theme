@@ -64,7 +64,9 @@
   {%- if left_img_url != '' -%}
     <div class="sanity-module__two-column-image-item">
       <img
-        src="{{ left_img_url }}"
+        src="{%- render 'sanity-img-src', url: left_img_url, w: 1400 -%}"
+        srcset="{%- render 'sanity-img-src', url: left_img_url, w: 700 %} 700w, {% render 'sanity-img-src', url: left_img_url, w: 1400 %} 1400w"
+        sizes="50vw"
         alt="{{ mod.leftImage.alt | default: fallback_alt | escape }}"
         width="{{ left_img_width }}"
         height="{{ left_img_height }}"
@@ -75,7 +77,9 @@
   {%- if right_img_url != '' -%}
     <div class="sanity-module__two-column-image-item">
       <img
-        src="{{ right_img_url }}"
+        src="{%- render 'sanity-img-src', url: right_img_url, w: 1400 -%}"
+        srcset="{%- render 'sanity-img-src', url: right_img_url, w: 700 %} 700w, {% render 'sanity-img-src', url: right_img_url, w: 1400 %} 1400w"
+        sizes="50vw"
         alt="{{ mod.rightImage.alt | default: fallback_alt | escape }}"
         width="{{ right_img_width }}"
         height="{{ right_img_height }}"

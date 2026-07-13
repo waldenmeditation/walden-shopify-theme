@@ -87,7 +87,9 @@
     {%- if top_left_url != blank -%}
       <div class="sanity-module__four-image-item">
         <img
-          src="{{ top_left_url | strip }}"
+          src="{%- render 'sanity-img-src', url: top_left_url, w: 1000 -%}"
+          srcset="{%- render 'sanity-img-src', url: top_left_url, w: 600 %} 600w, {% render 'sanity-img-src', url: top_left_url, w: 1000 %} 1000w"
+          sizes="45vw"
           alt="{{ fallback_alt | escape }}"
           loading="lazy"
         >
@@ -96,7 +98,9 @@
     {%- if bottom_left_url != blank -%}
       <div class="sanity-module__four-image-item">
         <img
-          src="{{ bottom_left_url | strip }}"
+          src="{%- render 'sanity-img-src', url: bottom_left_url, w: 1000 -%}"
+          srcset="{%- render 'sanity-img-src', url: bottom_left_url, w: 600 %} 600w, {% render 'sanity-img-src', url: bottom_left_url, w: 1000 %} 1000w"
+          sizes="45vw"
           alt="{{ fallback_alt | escape }}"
           loading="lazy"
         >
@@ -107,7 +111,9 @@
     {%- if top_right_url != blank -%}
       <div class="sanity-module__four-image-item">
         <img
-          src="{{ top_right_url | strip }}"
+          src="{%- render 'sanity-img-src', url: top_right_url, w: 1000 -%}"
+          srcset="{%- render 'sanity-img-src', url: top_right_url, w: 600 %} 600w, {% render 'sanity-img-src', url: top_right_url, w: 1000 %} 1000w"
+          sizes="45vw"
           alt="{{ fallback_alt | escape }}"
           loading="lazy"
         >
@@ -116,7 +122,9 @@
     {%- if bottom_right_url != blank -%}
       <div class="sanity-module__four-image-item">
         <img
-          src="{{ bottom_right_url | strip }}"
+          src="{%- render 'sanity-img-src', url: bottom_right_url, w: 1000 -%}"
+          srcset="{%- render 'sanity-img-src', url: bottom_right_url, w: 600 %} 600w, {% render 'sanity-img-src', url: bottom_right_url, w: 1000 %} 1000w"
+          sizes="45vw"
           alt="{{ fallback_alt | escape }}"
           loading="lazy"
         >

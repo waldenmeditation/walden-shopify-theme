@@ -896,7 +896,7 @@
           "type": "film",
           "settings": {
             "video_file": "product-film-cushion-mat-set.mp4",
-            "body": "<p>The Original Cushion + Mat Set in Medium Clay — proportions, materials, and the sit itself.</p>",
+            "body": "<p>The cushion and mat set, in practice.</p>",
             "product_handle": "walden-meditation-cushion-mat-set",
             "has_sound": true
           }
@@ -905,7 +905,7 @@
           "type": "film",
           "settings": {
             "video_file": "product-film-cushion-mat-set.mp4",
-            "body": "<p>The Original Cushion, shown with the mat set in Medium Clay.</p>",
+            "body": "<p>The Original Cushion, shown with its mat.</p>",
             "product_handle": "walden-original-meditation-cushion",
             "has_sound": true
           }
@@ -950,7 +950,7 @@
           "type": "film",
           "settings": {
             "video_file": "product-film-mesa-palo.mp4",
-            "body": "<p>The Mesa holder with palo santo — lit, resting, and at ease on a shelf.</p>",
+            "body": "<p>The Mesa holder with palo santo, lit and at rest.</p>",
             "product_handle": "mesa-palo-santo-holder",
             "has_sound": true
           }

@@ -1,0 +1,17 @@
+{%- comment -%}
+  Outputs a Sanity CDN image URL with resize/format transforms so CMS
+  images ship at display size instead of original resolution (which was
+  costing multiple MB per image). Non-Sanity URLs and URLs that already
+  carry params pass through untouched.
+  Params: url, w (target pixel width)
+{%- endcomment -%}
+{%- liquid
+  assign u = url | strip
+  if u contains 'cdn.sanity.io' and u contains '?'
+    echo u
+  elsif u contains 'cdn.sanity.io'
+    echo u | append: '?w=' | append: w | append: '&fm=webp&q=75'
+  else
+    echo u
+  endif
+-%}

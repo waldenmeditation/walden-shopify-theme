@@ -47,7 +47,9 @@
     <div class="sanity-module__three-column-image-item">
       {%- if col_img_url != '' -%}
         <img
-          src="{{ col_img_url }}"
+          src="{%- render 'sanity-img-src', url: col_img_url, w: 800 -%}"
+          srcset="{%- render 'sanity-img-src', url: col_img_url, w: 500 %} 500w, {% render 'sanity-img-src', url: col_img_url, w: 800 %} 800w"
+          sizes="(min-width: 750px) 30vw, 90vw"
           alt="{{ column.image.alt | default: column.heading | default: fallback_alt | escape }}"
           width="{{ col_img_width }}"
           height="{{ col_img_height }}"

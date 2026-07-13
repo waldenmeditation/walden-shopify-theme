@@ -28,7 +28,7 @@
           "type": "benefit",
           "settings": {
             "title": "Trade pricing, low minimums",
-            "body": "<p>Easy to carry and easy to reorder — simple restocking through the partner portal.</p>"
+            "body": "<p>Easy to carry and easy to reorder, with simple restocking through the partner portal.</p>"
           }
         },
         "benefit_2": {
@@ -71,7 +71,7 @@
           "settings": {
             "image": "shopify://shop_images/BLOCK-TOP-DOWN-SOLO-NEUTRAL-min.jpg",
             "title": "Aroma, brass, and stone",
-            "body": "<p>Small-format pieces with strong attachment rates — an easy anchor for a considered counter display.</p>"
+            "body": "<p>Small-format pieces with strong attachment rates, an easy anchor for a considered counter display.</p>"
           }
         },
         "case_2": {
@@ -153,16 +153,16 @@
         "tab3_url": "/pages/corporate-gifting",
         "hero_image": "shopify://shop_images/all-products-wide-Edit-2_1.png",
         "hero_title": "Objects made to be picked up.",
-        "hero_lead": "<p>Considered objects that invite a closer look — partner with Walden for trade pricing, low minimums, and simple restocking.</p>",
+        "hero_lead": "<p>Considered objects that invite a closer look. Partner with Walden for trade pricing, low minimums, and simple restocking.</p>",
         "hero_cta_text": "Start an inquiry",
         "hero_note": "Line sheet within one business day.",
         "trust_label": "Carried by considered retailers",
         "trust_logos": "SSENSE, Snow Peak, Bloomingdale’s, Urban Outfitters",
         "benefits_heading": "A tight, considered collection that sells on craft rather than discounts.",
         "band_image": "shopify://shop_images/Group_3_7ffe3771-e247-46f9-be90-03dc3a9d7662.jpg",
-        "band_caption": "Seating, sets, and surfaces — the full range",
+        "band_caption": "The full range of seating, sets, and surfaces",
         "steps_heading": "How it works",
-        "statement": "<p>Pieces that sell on craft — simple to stock, simple to reorder.</p>",
+        "statement": "<p>Pieces that sell on craft. Simple to stock, simple to reorder.</p>",
         "form_title": "Carry Walden in your store",
         "form_subtitle": "<p>Tell us about your store and we’ll send a line sheet with trade pricing and minimums.</p>",
         "form_program": "Retail Partners",
