@@ -1,7 +1,5 @@
-/* Product film — an editorial spread, not a band: quiet copy at left,
-   the primary film standing tall beside it, a second cut smaller and
-   staggered down. White ground, no rules, no CTA (the buy box is one
-   scroll above and the sticky bar is always present). */
+/* Product film — simple and symmetric: centered heading and caption,
+   equal portrait frames side by side beneath. White ground, no CTA. */
 
 .product-film {
   background: var(--color-background);
@@ -10,17 +8,13 @@
   max-width: var(--page-width, 1280px);
   margin-inline: auto;
   padding: clamp(48px, 7vw, 96px) var(--page-margin, clamp(20px, 5vw, 40px));
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: clamp(32px, 5vw, 76px);
 }
 .product-film__copy {
-  max-width: 300px;
-  align-self: center;
+  text-align: center;
+  margin-bottom: clamp(32px, 4.5vw, 56px);
 }
 .product-film__heading {
-  margin: 0 0 14px;
+  margin: 0 0 10px;
   font-size: clamp(24px, 2.4vw, 30px);
   line-height: 1.2;
   letter-spacing: -0.015em;
@@ -31,31 +25,25 @@
   margin: 0;
   font-family: var(--font-paragraph--family);
   font-size: 14.5px;
-  line-height: 1.7;
+  line-height: 1.65;
   color: var(--color-foreground-muted);
-  max-width: 30ch;
-}
-.product-film__body p + p {
-  margin-top: 8px;
 }
 
+.product-film__frames {
+  display: flex;
+  justify-content: center;
+  gap: clamp(12px, 1.6vw, 20px);
+}
 .product-film__frame {
   position: relative;
-  flex-shrink: 0;
 }
 .product-film__frame video {
   display: block;
-  height: clamp(460px, 66vh, 660px);
+  height: clamp(440px, 62vh, 640px);
   width: auto;
   aspect-ratio: 9 / 16;
   object-fit: cover;
   background: color-mix(in srgb, var(--color-border) 20%, var(--color-background));
-}
-.product-film__frame--secondary {
-  margin-top: clamp(72px, 11vw, 150px);
-}
-.product-film__frame--secondary video {
-  height: clamp(340px, 48vh, 490px);
 }
 
 .product-film__sound {
@@ -87,39 +75,27 @@
 .product-film__sound.is-on .product-film__icon--on { display: block; }
 .product-film__sound.is-on .product-film__icon--off { display: none; }
 
-@media screen and (max-width: 899px) {
-  .product-film__inner {
-    flex-wrap: wrap;
-    gap: 24px;
-  }
-  .product-film__copy {
-    width: 100%;
-    max-width: none;
-    padding-top: 0;
+@media screen and (max-width: 749px) {
+  .product-film__frames {
+    gap: 10px;
   }
   .product-film__frame {
     flex: 1 1 0;
     min-width: 0;
   }
-  .product-film__frame video,
-  .product-film__frame--secondary video {
+  .product-film__frame video {
     height: auto;
     width: 100%;
   }
-  .product-film__frame--secondary {
-    margin-top: clamp(28px, 9vw, 56px);
-  }
 }
 
-/* Quiet reveals, copy first, frames following */
 @media (prefers-reduced-motion: no-preference) {
   .product-film .pdp-reveal {
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
-  .product-film .pdp-reveal:nth-child(2) { transition-delay: 0.1s; }
-  .product-film .pdp-reveal:nth-child(3) { transition-delay: 0.2s; }
+  .product-film__frames .pdp-reveal:nth-child(2) { transition-delay: 0.12s; }
   .product-film .pdp-reveal.is-visible {
     opacity: 1;
     transform: none;

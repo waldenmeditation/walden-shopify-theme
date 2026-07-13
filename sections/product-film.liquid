@@ -37,7 +37,7 @@
           <div class="product-film__body">{{ film.settings.body }}</div>
         {%- endif -%}
       </div>
-      {%- assign frame_index = 0 -%}
+      <div class="product-film__frames">
       {%- for block in section.blocks -%}
         {%- liquid
           assign bh = block.settings.product_handle | strip | downcase
@@ -47,9 +47,8 @@
           if block.settings.video == blank and block.settings.video_file == blank
             continue
           endif
-          assign frame_index = frame_index | plus: 1
         -%}
-        <div class="product-film__frame{% if frame_index > 1 %} product-film__frame--secondary{% endif %} pdp-reveal" {{ block.shopify_attributes }}>
+        <div class="product-film__frame pdp-reveal" {{ block.shopify_attributes }}>
           {%- if block.settings.video != blank -%}
             {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', image_size: '900x' }}
           {%- else -%}
@@ -77,6 +76,7 @@
           {%- endif -%}
         </div>
       {%- endfor -%}
+      </div>
     </div>
   </section>
   <script src="{{ 'product-film.js' | asset_url }}" defer="defer"></script>
