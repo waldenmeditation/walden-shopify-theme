@@ -898,7 +898,7 @@
             "video_file": "product-film-cushion-mat-set.mp4",
             "body": "<p>The Original Cushion + Mat Set in Medium Clay — proportions, materials, and the sit itself.</p>",
             "product_handle": "walden-meditation-cushion-mat-set",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_cushion": {
@@ -907,7 +907,7 @@
             "video_file": "product-film-cushion-mat-set.mp4",
             "body": "<p>The Original Cushion, shown with the mat set in Medium Clay.</p>",
             "product_handle": "walden-original-meditation-cushion",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_bench": {
@@ -916,7 +916,7 @@
             "video_file": "product-film-bench-set.mp4",
             "body": "<p>The Meditation Bench in a seated practice.</p>",
             "product_handle": "meditation-bench",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_bench_cushion": {
@@ -925,7 +925,7 @@
             "video_file": "product-film-bench-set.mp4",
             "body": "<p>The Bench Cushion, shown with the full bench set.</p>",
             "product_handle": "bench-cushion",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_bench_mat": {
@@ -934,7 +934,7 @@
             "video_file": "product-film-bench-set.mp4",
             "body": "<p>The Plush Mat, shown with the full bench set.</p>",
             "product_handle": "bench-mat",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_palo": {
@@ -943,7 +943,7 @@
             "video_file": "product-film-palo-santo.mp4",
             "body": "<p>Lighting and resting a stick of palo santo.</p>",
             "product_handle": "palo-santo-sticks",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_mesa": {
@@ -952,7 +952,7 @@
             "video_file": "product-film-mesa-palo.mp4",
             "body": "<p>The Mesa holder with palo santo — lit, resting, and at ease on a shelf.</p>",
             "product_handle": "mesa-palo-santo-holder",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_incense_set": {
@@ -961,7 +961,7 @@
             "video_file": "product-film-incense.mp4",
             "body": "<p>A stick of incense, lit and settled.</p>",
             "product_handle": "ritual-incense-set-2-0",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_incense_xl": {
@@ -970,33 +970,33 @@
             "video_file": "product-film-incense.mp4",
             "body": "<p>A stick of incense, lit and settled.</p>",
             "product_handle": "australian-sandalwood-incense-sticks",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_block": {
           "type": "film",
           "settings": {
-            "video_file": "b2b-reel-block-incense.mp4",
+            "video_file": "product-film-block-broll.mp4",
             "body": "<p>The Block incense holder in use.</p>",
             "product_handle": "block-incense-holder-1",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_journey": {
           "type": "film",
           "settings": {
-            "video_file": "b2b-reel-journey-bedroom.mp4",
+            "video_file": "product-film-journey-bedroom.mp4",
             "body": "<p>The Journey Set, set up at home.</p>",
             "product_handle": "breathwork",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_journey_2": {
           "type": "film",
           "settings": {
             "product_handle": "breathwork",
-            "video_file": "b2b-reel-journey-outdoor.mp4",
-            "has_sound": false
+            "video_file": "product-film-journey-outdoor.mp4",
+            "has_sound": true
           }
         },
         "film_mesa_2": {
@@ -1004,7 +1004,7 @@
           "settings": {
             "product_handle": "mesa-palo-santo-holder",
             "video_file": "product-film-mesa-holder.mp4",
-            "has_sound": false
+            "has_sound": true
           }
         },
         "film_block_2": {
@@ -1012,7 +1012,7 @@
           "settings": {
             "product_handle": "block-incense-holder-1",
             "video_file": "product-film-block-incense.mp4",
-            "has_sound": false
+            "has_sound": true
           }
         }
       },
