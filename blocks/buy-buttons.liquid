@@ -326,47 +326,6 @@
     text-underline-offset: 3px;
   }
 
-  .restock-notify {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .restock-notify__email {
-    flex: 1;
-    min-width: 0;
-    padding: 0.7rem 1rem;
-    font-size: 0.875rem;
-    color: var(--color-input-text, inherit);
-    background: var(--color-input-background, #fff);
-    border: 1px solid var(--color-input-border, #ddd);
-    border-radius: 6px;
-  }
-
-  .restock-notify__email:focus-visible {
-    outline: none;
-    border-color: var(--color-foreground-heading, #111);
-  }
-
-  .restock-notify__button {
-    flex-shrink: 0;
-    padding: 0.7rem 1.1rem;
-    font-size: 0.875rem;
-    color: var(--color-foreground-heading, #111);
-    background: transparent;
-    border: 1px solid var(--color-foreground-heading, #111);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: opacity 0.15s ease;
-  }
-
-  .restock-notify__button:hover {
-    opacity: 0.7;
-  }
-
-  .restock-notify__button[disabled] {
-    opacity: 0.5;
-    cursor: default;
-  }
 {% endstylesheet %}
 
 <span
@@ -413,34 +372,21 @@
           {% endif %}
 
           <div class="conversion-chips" ref="shippingNote">
-            {%- if can_add_to_cart == false and variant != null -%}
+            {%- if can_add_to_cart == false and variant != null and alt_variant -%}
               {%- comment -%}
-                The button already says sold out; this space suggests another
-                color and offers a back in stock notification instead.
+                The button already says sold out; this space suggests the same
+                configuration in an available color instead. JS swaps the color
+                in place via the variant picker; the href is the no-JS fallback.
               {%- endcomment -%}
-              {%- if alt_variant -%}
-                <a class="conversion-chip conversion-chip--link" href="{{ product.url }}?variant={{ alt_variant.id }}">
-                  Available in {{ alt_color }}
-                </a>
-              {%- endif -%}
-              {%- if template.name == 'product' -%}
-                <div
-                  class="restock-notify"
-                  data-restock
-                  data-product="{{ product.title | escape }}"
-                  data-variant="{{ variant.title | escape }}"
-                  data-variant-id="{{ variant.id }}"
-                >
-                  <input
-                    type="email"
-                    class="restock-notify__email"
-                    placeholder="Email me when it's back"
-                    aria-label="Email address for a back in stock notification"
-                    data-restock-email
-                  >
-                  <button type="button" class="restock-notify__button" data-restock-submit>Notify me</button>
-                </div>
-              {%- endif -%}
+              <a
+                class="conversion-chip conversion-chip--link"
+                href="{{ product.url }}?variant={{ alt_variant.id }}"
+                data-variant-swap
+                data-swap-option="{{ product.options_with_values[color_index].name | escape }}"
+                data-swap-value="{{ alt_color | escape }}"
+              >
+                Available in {{ alt_color }}
+              </a>
             {%- elsif stock_chip_text != '' -%}
               <div class="conversion-chip">
                 <span class="conversion-chip__dot conversion-chip__dot--{{ stock_chip_dot }}"></span>

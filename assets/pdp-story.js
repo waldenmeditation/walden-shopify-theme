@@ -92,52 +92,23 @@
     });
   }
 
-  // Back in stock notify: posts a Shopify contact form via fetch (the chip
-  // area lives inside the product form, so a nested <form> is not an option).
-  // Delegated so it survives the section re-render on variant change.
-  function initRestock() {
-    if (window.__pdpRestockInit) return;
-    window.__pdpRestockInit = true;
-
-    function submit(wrap) {
-      var input = wrap.querySelector('[data-restock-email]');
-      var btn = wrap.querySelector('[data-restock-submit]');
-      if (!input || !btn) return;
-      if (!input.value || !input.checkValidity()) {
-        input.reportValidity();
-        return;
-      }
-      btn.disabled = true;
-      btn.textContent = 'Sending';
-      var fd = new FormData();
-      fd.append('form_type', 'contact');
-      fd.append('utf8', '✓');
-      fd.append('contact[email]', input.value);
-      fd.append('contact[Restock]', wrap.dataset.product + ' / ' + wrap.dataset.variant + ' (variant ' + wrap.dataset.variantId + ')');
-      fetch('/contact', { method: 'POST', body: fd })
-        .then(function () {
-          var done = document.createElement('div');
-          done.className = 'conversion-chip';
-          done.textContent = "Thanks. We'll email you when it's back in stock.";
-          wrap.replaceWith(done);
-        })
-        .catch(function () {
-          btn.disabled = false;
-          btn.textContent = 'Notify me';
-        });
-    }
-
+  // "Available in <color>" chip: swap the color in place by selecting the
+  // matching variant-picker swatch (same smooth morph as clicking it), with
+  // the href as the no-JS fallback. Delegated so it survives re-renders.
+  function initVariantSwap() {
+    if (window.__pdpSwapInit) return;
+    window.__pdpSwapInit = true;
     document.addEventListener('click', function (e) {
-      var btn = e.target.closest && e.target.closest('[data-restock-submit]');
-      if (!btn) return;
-      submit(btn.closest('[data-restock]'));
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter') return;
-      var input = e.target.closest && e.target.closest('[data-restock-email]');
-      if (!input) return;
+      var chip = e.target.closest && e.target.closest('[data-variant-swap]');
+      if (!chip) return;
+      var option = (chip.dataset.swapOption || 'Color').replace(/"/g, '\\"');
+      var value = (chip.dataset.swapValue || '').replace(/"/g, '\\"');
+      var input = document.querySelector(
+        'input[type="radio"][name^="' + option + '-"][value="' + value + '"]'
+      );
+      if (!input) return; // no picker found: let the link navigate
       e.preventDefault();
-      submit(input.closest('[data-restock]'));
+      if (!input.checked) input.click();
     });
   }
 
@@ -145,7 +116,7 @@
     initReveals();
     initStickyAtc();
     initScrollButtons();
-    initRestock();
+    initVariantSwap();
   }
 
   if (document.readyState === 'loading') {
