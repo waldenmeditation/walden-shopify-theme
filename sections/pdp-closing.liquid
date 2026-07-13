@@ -1,0 +1,95 @@
+{% comment %}
+  PDP closing band — the objection-handling close before reviews and
+  recommendations: a short reassuring statement, the live concierge
+  button, and the returns/shipping microline. Replaces the bare
+  "Have questions?" text block.
+{% endcomment %}
+
+<div class="pdp-closing pdp-reveal">
+  <div class="pdp-closing__inner">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="pdp-closing__heading">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.body != blank -%}
+      <div class="pdp-closing__body">{{ section.settings.body }}</div>
+    {%- endif -%}
+    <div class="pdp-closing__actions">
+      {%- render 'inbox-launcher',
+        label: section.settings.chat_label,
+        radius: '2px',
+        classes: 'button button-secondary'
+      -%}
+      <button type="button" class="button" data-pdp-scroll-buy>{{ section.settings.cta_text | default: 'Choose yours' }}</button>
+    </div>
+    {%- if section.settings.note != blank -%}
+      <p class="pdp-closing__note">{{ section.settings.note }}</p>
+    {%- endif -%}
+  </div>
+</div>
+<script src="{{ 'pdp-story.js' | asset_url }}" defer="defer"></script>
+
+{% stylesheet %}
+  .pdp-closing {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-background);
+  }
+  .pdp-closing__inner {
+    max-width: 620px;
+    margin-inline: auto;
+    padding: clamp(56px, 8vw, 104px) var(--page-margin, clamp(20px, 5vw, 40px));
+    text-align: center;
+  }
+  .pdp-closing__heading {
+    margin: 0 0 12px;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+  .pdp-closing__body p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--color-foreground);
+  }
+  .pdp-closing__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px 16px;
+    margin-top: 26px;
+  }
+  .pdp-closing__note {
+    margin: 16px 0 0;
+    font-family: var(--font-paragraph--family);
+    font-size: 12.5px;
+    color: var(--color-foreground-muted);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pdp-closing.pdp-reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .pdp-closing.pdp-reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP closing",
+  "tag": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Have questions? We're here to help." },
+    { "type": "richtext", "id": "body", "label": "Body" },
+    { "type": "text", "id": "chat_label", "label": "Chat button label", "default": "Chat with Live Concierge" },
+    { "type": "text", "id": "cta_text", "label": "Buy button label", "info": "Scrolls back to the buy box.", "default": "Choose yours" },
+    { "type": "text", "id": "note", "label": "Microline under buttons" }
+  ],
+  "presets": [
+    { "name": "PDP closing" }
+  ]
+}
+{% endschema %}

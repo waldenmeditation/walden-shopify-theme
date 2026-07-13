@@ -34,7 +34,7 @@
      margins collapse, so every seam is exactly --pdp-story-gap. */
   .sanity-modules {
     --pdp-story-gap: clamp(56px, 8vw, 112px);
-    padding-block: calc(var(--pdp-story-gap) * 0.75) var(--pdp-story-gap);
+    padding-block: calc(var(--pdp-story-gap) * 0.75) calc(var(--pdp-story-gap) * 0.5);
   }
   .sanity-modules .sanity-module {
     margin-block: var(--pdp-story-gap);
@@ -44,6 +44,57 @@
   }
   .sanity-modules .sanity-module:last-child {
     margin-bottom: 0;
+  }
+
+  /* CMS spacer modules collapse into the shared rhythm — one token governs
+     every seam instead of token + arbitrary pixel heights. */
+  .sanity-modules .sanity-module:has(> .sanity-module__spacer) {
+    display: none;
+  }
+
+  /* Chapter headings breathe more than ordinary seams */
+  .sanity-modules .sanity-module:has(> .sanity-module__heading) {
+    margin-block: calc(var(--pdp-story-gap) * 1.3);
+  }
+
+  /* Alternating editorial widths for consecutive full-width images:
+     full-bleed, then right-set, then left-set. CMS-constrained images
+     (explicit maxWidth/alignment) are untouched. */
+  .sanity-module.story-img--1 .sanity-module__image,
+  .sanity-module.story-img--2 .sanity-module__image {
+    width: min(76%, 1080px);
+  }
+  .sanity-module.story-img--1 .sanity-module__image {
+    margin-left: auto;
+  }
+  .sanity-module.story-img--2 .sanity-module__image {
+    margin-right: auto;
+  }
+  @media screen and (width < 750px) {
+    .sanity-module.story-img--1 .sanity-module__image,
+    .sanity-module.story-img--2 .sanity-module__image {
+      width: 100%;
+    }
+  }
+
+  /* Mid-story CTA — hairline row, centered, scrolls back to the buy box */
+  .pdp-story-cta {
+    width: 90%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-top: 26px;
+    border-top: 1px solid var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 14px 18px;
+    text-align: center;
+  }
+  .pdp-story-cta__note {
+    font-family: var(--font-paragraph--family);
+    font-size: 12.5px;
+    color: var(--color-foreground-muted);
   }
 
   @media screen and (width >= 750px) {
@@ -232,7 +283,8 @@
     }
   }
 
-  /* Quiet scroll reveal, one module at a time */
+  /* Quiet scroll reveal, one module at a time; full-width imagery also
+     settles from a slight zoom for depth. */
   @media (prefers-reduced-motion: no-preference) {
     .sanity-module.pdp-reveal {
       opacity: 0;
@@ -243,10 +295,22 @@
       opacity: 1;
       transform: none;
     }
+    .sanity-module.story-img .sanity-module__image {
+      overflow: hidden;
+    }
+    .sanity-module.story-img .sanity-module__image img {
+      transform: scale(1.045);
+      transition: transform 1.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .sanity-module.story-img.is-visible .sanity-module__image img {
+      transform: none;
+    }
   }
 {% endstylesheet %}
 
 {%- if modules != blank and modules.size > 0 -%}
+  {%- assign known_types = 'twoColumnImageModule,headingModule,threeColumnImageModule,spacerModule,imageModule,fourImageModule,videoModule' | split: ',' -%}
+  {%- assign flow_img = 0 -%}
   <div class="sanity-modules">
     {%- for mod in modules -%}
       {%- liquid
@@ -265,9 +329,22 @@
         if mod.html or mod.text or mod.body or mod.content
           assign has_text = true
         endif
+
+        comment
+          Consecutive full-width CMS images (the untyped fallback path) cycle
+          through an editorial rhythm: full-bleed, then right, then left.
+        endcomment
+        assign flow_class = ''
+        unless known_types contains mod_type
+          if has_image
+            assign flow_step = flow_img | modulo: 3
+            assign flow_class = ' story-img story-img--' | append: flow_step
+            assign flow_img = flow_img | plus: 1
+          endif
+        endunless
       -%}
 
-      <div class="sanity-module{% unless mod_type == 'spacerModule' %} pdp-reveal{% endunless %}">
+      <div class="sanity-module{% unless mod_type == 'spacerModule' %} pdp-reveal{% endunless %}{{ flow_class }}">
         {%- case mod_type -%}
           {%- when 'twoColumnImageModule' -%}
             {%- render 'sanity-module-two-column-image',
@@ -336,6 +413,17 @@
             {%- endif -%}
         {%- endcase -%}
       </div>
+
+      {%- if section.settings.story_cta_after > 0
+        and forloop.index == section.settings.story_cta_after
+        and section.settings.story_cta_text != blank -%}
+        <div class="sanity-module pdp-reveal pdp-story-cta">
+          <button type="button" class="button" data-pdp-scroll-buy>{{ section.settings.story_cta_text }}</button>
+          {%- if section.settings.story_cta_note != blank -%}
+            <span class="pdp-story-cta__note">{{ section.settings.story_cta_note }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
     {%- endfor -%}
   </div>
   <script src="{{ 'pdp-story.js' | asset_url }}" defer="defer"></script>
@@ -407,6 +495,31 @@
       "max": 1000,
       "step": 5,
       "default": 700
+    },
+    {
+      "type": "header",
+      "content": "Mid-story call to action"
+    },
+    {
+      "type": "range",
+      "id": "story_cta_after",
+      "label": "Insert after module #",
+      "info": "0 disables the CTA. Only renders if the product has at least that many modules.",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "story_cta_text",
+      "label": "Button text",
+      "default": "Choose yours"
+    },
+    {
+      "type": "text",
+      "id": "story_cta_note",
+      "label": "Note beside button"
     },
     {
       "type": "paragraph",
