@@ -524,10 +524,7 @@
         "text_spacing": 64,
         "text_margin_inline_start": 40,
         "text_margin_inline_end": 40,
-        "text_max_width": 600,
-        "story_cta_after": 7,
-        "story_cta_text": "Choose yours",
-        "story_cta_note": "30-day returns, always."
+        "text_max_width": 600
       }
     },
     "17595186258b53795e": {
@@ -987,8 +984,7 @@
           "settings": {
             "video_file": "product-film-journey-set.mp4",
             "body": "<p>The Journey Set, set up at home.</p>",
-            "product_handle": "breathwork",
-            "bullets": "<ul><li>Complete set for lying meditation and deep practice</li><li>Foldable design for easy storage and transport</li><li>Soft, supportive materials for body, head, and eyes</li></ul>"
+            "product_handle": "breathwork"
           }
         }
       },
@@ -1007,45 +1003,8 @@
       ],
       "settings": {
         "heading": "See it in use",
-        "cta_text": "Choose yours",
-        "cta_note": "30-day returns, always."
+        "cta_text": "Choose yours"
       }
-    },
-    "pdp_value_props": {
-      "type": "pdp-value-props",
-      "blocks": {
-        "prop_1": {
-          "type": "prop",
-          "settings": {
-            "text": "Handcrafted in Brooklyn, New York"
-          }
-        },
-        "prop_2": {
-          "type": "prop",
-          "settings": {
-            "text": "30-day returns"
-          }
-        },
-        "prop_3": {
-          "type": "prop",
-          "settings": {
-            "text": "Free US shipping over $100"
-          }
-        },
-        "prop_4": {
-          "type": "prop",
-          "settings": {
-            "text": "10,000+ customers meditate with Walden"
-          }
-        }
-      },
-      "block_order": [
-        "prop_1",
-        "prop_2",
-        "prop_3",
-        "prop_4"
-      ],
-      "settings": {}
     },
     "pdp_sticky_atc": {
       "type": "pdp-sticky-atc",
@@ -1057,18 +1016,15 @@
       "type": "pdp-closing",
       "settings": {
         "heading": "Have questions? We're here to help.",
-        "body": "<p>Talk to a real person about sizing, materials, or building your practice — or take 30 days to decide at home.</p>",
-        "chat_label": "Chat with Live Concierge",
-        "cta_text": "Choose yours",
-        "note": "30-day returns · Free US shipping over $100"
+        "body": "<p>Talk to a real person about sizing, materials, or building your practice.</p>",
+        "chat_label": "Chat with Live Concierge"
       }
     }
   },
   "order": [
     "product-information",
-    "pdp_value_props",
-    "sanity_modules_Lk3sYZ",
     "product_film",
+    "sanity_modules_Lk3sYZ",
     "pdp_closing",
     "17595186258b53795e",
     "product_recommendations_UeDczP",
