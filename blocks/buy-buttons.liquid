@@ -68,6 +68,38 @@
     assign stock_chip_dot = 'red'
   endif
 
+  # Sold out: look for the same size/style in another color to suggest
+  assign alt_variant = null
+  assign alt_color = ''
+  assign color_index = -1
+  for opt in product.options_with_values
+    assign opt_name = opt.name | downcase
+    if opt_name == 'color' or opt_name == 'colour'
+      assign color_index = forloop.index0
+    endif
+  endfor
+  if can_add_to_cart == false and variant != null and color_index > -1
+    for v in product.variants
+      unless v.available
+        continue
+      endunless
+      assign options_match = true
+      for opt in product.options_with_values
+        assign opt_i = forloop.index0
+        if opt_i == color_index
+          continue
+        endif
+        if v.options[opt_i] != variant.options[opt_i]
+          assign options_match = false
+        endif
+      endfor
+      if options_match
+        assign alt_variant = v
+        assign alt_color = v.options[color_index]
+        break
+      endif
+    endfor
+  endif
 %}
 
 {% stylesheet %}
@@ -282,6 +314,59 @@
   .conversion-chip__laurel--flip {
     transform: scaleX(-1);
   }
+
+  .conversion-chip--link {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .conversion-chip--link:hover {
+    background: color-mix(in srgb, var(--color-foreground, #333) 10%, transparent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .restock-notify {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .restock-notify__email {
+    flex: 1;
+    min-width: 0;
+    padding: 0.7rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-input-text, inherit);
+    background: var(--color-input-background, #fff);
+    border: 1px solid var(--color-input-border, #ddd);
+    border-radius: 6px;
+  }
+
+  .restock-notify__email:focus-visible {
+    outline: none;
+    border-color: var(--color-foreground-heading, #111);
+  }
+
+  .restock-notify__button {
+    flex-shrink: 0;
+    padding: 0.7rem 1.1rem;
+    font-size: 0.875rem;
+    color: var(--color-foreground-heading, #111);
+    background: transparent;
+    border: 1px solid var(--color-foreground-heading, #111);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .restock-notify__button:hover {
+    opacity: 0.7;
+  }
+
+  .restock-notify__button[disabled] {
+    opacity: 0.5;
+    cursor: default;
+  }
 {% endstylesheet %}
 
 <span
@@ -328,7 +413,35 @@
           {% endif %}
 
           <div class="conversion-chips" ref="shippingNote">
-            {%- if stock_chip_text != '' -%}
+            {%- if can_add_to_cart == false and variant != null -%}
+              {%- comment -%}
+                The button already says sold out; this space suggests another
+                color and offers a back in stock notification instead.
+              {%- endcomment -%}
+              {%- if alt_variant -%}
+                <a class="conversion-chip conversion-chip--link" href="{{ product.url }}?variant={{ alt_variant.id }}">
+                  Available in {{ alt_color }}
+                </a>
+              {%- endif -%}
+              {%- if template.name == 'product' -%}
+                <div
+                  class="restock-notify"
+                  data-restock
+                  data-product="{{ product.title | escape }}"
+                  data-variant="{{ variant.title | escape }}"
+                  data-variant-id="{{ variant.id }}"
+                >
+                  <input
+                    type="email"
+                    class="restock-notify__email"
+                    placeholder="Email me when it's back"
+                    aria-label="Email address for a back in stock notification"
+                    data-restock-email
+                  >
+                  <button type="button" class="restock-notify__button" data-restock-submit>Notify me</button>
+                </div>
+              {%- endif -%}
+            {%- elsif stock_chip_text != '' -%}
               <div class="conversion-chip">
                 <span class="conversion-chip__dot conversion-chip__dot--{{ stock_chip_dot }}"></span>
                 {{ stock_chip_text }}
