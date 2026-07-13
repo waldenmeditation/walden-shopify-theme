@@ -1,46 +1,67 @@
-/* Product film — "See it in use" band on product pages.
-   Same quiet language as the B2B landing: warm tint from --color-border,
-   theme type scale, portrait media with generous side copy. */
+/* Product film — an editorial spread, not a band: quiet copy at left,
+   the primary film standing tall beside it, a second cut smaller and
+   staggered down. White ground, no rules, no CTA (the buy box is one
+   scroll above and the sticky bar is always present). */
 
 .product-film {
-  background: color-mix(in srgb, var(--color-border) 12%, var(--color-background));
+  background: var(--color-background);
 }
 .product-film__inner {
   max-width: var(--page-width, 1280px);
   margin-inline: auto;
-  padding: clamp(56px, 8vw, 104px) var(--page-margin, clamp(20px, 5vw, 40px));
-  display: grid;
-  grid-template-columns: minmax(0, 400px) 1fr;
-  gap: clamp(36px, 6vw, 96px);
-  align-items: center;
+  padding: clamp(48px, 7vw, 96px) var(--page-margin, clamp(20px, 5vw, 40px));
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: clamp(32px, 5vw, 76px);
 }
-.product-film__media {
+.product-film__copy {
+  max-width: 280px;
+  padding-top: clamp(20px, 4vw, 56px);
+}
+.product-film__heading {
+  margin: 0 0 10px;
+  font-size: 21px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+.product-film__body p {
   margin: 0;
+  font-family: var(--font-paragraph--family);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--color-foreground-muted);
 }
-.product-film__media--multi {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(10px, 1.4vw, 16px);
+.product-film__body p + p {
+  margin-top: 8px;
 }
-.product-film__inner--multi {
-  grid-template-columns: minmax(0, 660px) 1fr;
-}
+
 .product-film__frame {
   position: relative;
+  flex-shrink: 0;
 }
-.product-film__media video {
+.product-film__frame video {
   display: block;
-  width: 100%;
+  height: clamp(460px, 66vh, 660px);
+  width: auto;
   aspect-ratio: 9 / 16;
   object-fit: cover;
-  background: color-mix(in srgb, var(--color-border) 26%, var(--color-background));
+  background: color-mix(in srgb, var(--color-border) 20%, var(--color-background));
 }
+.product-film__frame--secondary {
+  margin-top: clamp(72px, 11vw, 150px);
+}
+.product-film__frame--secondary video {
+  height: clamp(340px, 48vh, 490px);
+}
+
 .product-film__sound {
   position: absolute;
-  right: 14px;
-  bottom: 14px;
-  width: 42px;
-  height: 42px;
+  right: 12px;
+  bottom: 12px;
+  width: 40px;
+  height: 40px;
   display: grid;
   place-items: center;
   border-radius: 50%;
@@ -64,82 +85,41 @@
 .product-film__sound.is-on .product-film__icon--on { display: block; }
 .product-film__sound.is-on .product-film__icon--off { display: none; }
 
-.product-film__heading {
-  margin: 0 0 16px;
-  letter-spacing: -0.015em;
-  text-wrap: balance;
-}
-.product-film__body p {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.7;
-  max-width: 46ch;
-}
-.product-film__body p + p {
-  margin-top: 10px;
-}
-.product-film__bullets ul {
-  list-style: none;
-  margin: 22px 0 0;
-  padding: 0;
-  max-width: 48ch;
-}
-.product-film__bullets li {
-  margin-top: 8px;
-  font-family: var(--font-paragraph--family);
-  font-size: 14px;
-  line-height: 1.6;
-  color: var(--color-foreground-muted);
-}
-.product-film__cta {
-  margin-top: 30px;
-}
-.product-film .pdp-link {
-  appearance: none;
-  background: none;
-  border: 0;
-  padding: 0;
-  font-family: var(--font-paragraph--family);
-  font-size: 14px;
-  letter-spacing: 0.01em;
-  color: var(--color-foreground-heading);
-  text-decoration: underline;
-  text-underline-offset: 5px;
-  text-decoration-thickness: 1px;
-  cursor: pointer;
-  transition: opacity 0.15s ease;
-}
-.product-film .pdp-link:hover {
-  opacity: 0.6;
+@media screen and (max-width: 899px) {
+  .product-film__inner {
+    flex-wrap: wrap;
+    gap: 24px;
+  }
+  .product-film__copy {
+    width: 100%;
+    max-width: none;
+    padding-top: 0;
+  }
+  .product-film__frame {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .product-film__frame video,
+  .product-film__frame--secondary video {
+    height: auto;
+    width: 100%;
+  }
+  .product-film__frame--secondary {
+    margin-top: clamp(28px, 9vw, 56px);
+  }
 }
 
-/* Reveal (styles here so the band animates even without the B2B sheet) */
+/* Quiet reveals, copy first, frames following */
 @media (prefers-reduced-motion: no-preference) {
   .product-film .pdp-reveal {
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+    transform: translateY(20px);
+    transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
   }
-  .product-film .pdp-reveal:nth-child(2) { transition-delay: 0.08s; }
-  .product-film .pdp-reveal:nth-child(3) { transition-delay: 0.16s; }
-  .product-film .pdp-reveal:nth-child(4) { transition-delay: 0.24s; }
+  .product-film .pdp-reveal:nth-child(2) { transition-delay: 0.1s; }
+  .product-film .pdp-reveal:nth-child(3) { transition-delay: 0.2s; }
   .product-film .pdp-reveal.is-visible {
     opacity: 1;
     transform: none;
-  }
-}
-
-@media screen and (max-width: 749px) {
-  .product-film__inner,
-  .product-film__inner--multi {
-    grid-template-columns: 1fr;
-    gap: 28px;
-  }
-  .product-film__media {
-    width: 100%;
-    max-width: 420px;
-  }
-  .product-film__media--multi {
-    max-width: none;
   }
 }

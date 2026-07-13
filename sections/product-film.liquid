@@ -28,63 +28,55 @@
 {%- if film != blank -%}
   {{ 'section-product-film.css' | asset_url | stylesheet_tag }}
   <section class="product-film">
-    <div class="product-film__inner{% if film_count > 1 %} product-film__inner--multi{% endif %}">
-      <figure class="product-film__media{% if film_count > 1 %} product-film__media--multi{% endif %}">
-        {%- for block in section.blocks -%}
-          {%- liquid
-            assign bh = block.settings.product_handle | strip | downcase
-            if bh == blank or bh != product.handle
-              continue
-            endif
-            if block.settings.video == blank and block.settings.video_file == blank
-              continue
-            endif
-          -%}
-          <div class="product-film__frame" {{ block.shopify_attributes }}>
-            {%- if block.settings.video != blank -%}
-              {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', image_size: '900x' }}
-            {%- else -%}
-              <video
-                src="{{ block.settings.video_file | asset_url }}"
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="metadata"
-                aria-label="{{ section.settings.heading | default: 'Product video' | escape }}"
-              ></video>
-            {%- endif -%}
-            {%- if block.settings.has_sound -%}
-              <button type="button" class="product-film__sound" aria-pressed="false" aria-label="Unmute video" hidden>
-                <svg class="product-film__icon product-film__icon--off" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M8 2.5 4.5 5.5H2v5h2.5L8 13.5v-11Z" fill="currentColor"/>
-                  <path d="m10.5 6 4 4m0-4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-                <svg class="product-film__icon product-film__icon--on" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-                  <path d="M8 2.5 4.5 5.5H2v5h2.5L8 13.5v-11Z" fill="currentColor"/>
-                  <path d="M10.5 5.5a3.6 3.6 0 0 1 0 5M12 3.5a6 6 0 0 1 0 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-                </svg>
-              </button>
-            {%- endif -%}
-          </div>
-        {%- endfor -%}
-      </figure>
-      <div class="product-film__copy">
+    <div class="product-film__inner">
+      <div class="product-film__copy pdp-reveal">
         {%- if section.settings.heading != blank -%}
-          <h2 class="product-film__heading pdp-reveal">{{ section.settings.heading }}</h2>
+          <h2 class="product-film__heading">{{ section.settings.heading }}</h2>
         {%- endif -%}
         {%- if film.settings.body != blank -%}
-          <div class="product-film__body pdp-reveal">{{ film.settings.body }}</div>
-        {%- endif -%}
-        {%- if film.settings.bullets != blank -%}
-          <div class="product-film__bullets pdp-reveal">{{ film.settings.bullets }}</div>
-        {%- endif -%}
-        {%- if section.settings.cta_text != blank -%}
-          <div class="product-film__cta pdp-reveal">
-            <button type="button" class="pdp-link" data-pdp-scroll-buy>{{ section.settings.cta_text }}</button>
-          </div>
+          <div class="product-film__body">{{ film.settings.body }}</div>
         {%- endif -%}
       </div>
+      {%- assign frame_index = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign bh = block.settings.product_handle | strip | downcase
+          if bh == blank or bh != product.handle
+            continue
+          endif
+          if block.settings.video == blank and block.settings.video_file == blank
+            continue
+          endif
+          assign frame_index = frame_index | plus: 1
+        -%}
+        <div class="product-film__frame{% if frame_index > 1 %} product-film__frame--secondary{% endif %} pdp-reveal" {{ block.shopify_attributes }}>
+          {%- if block.settings.video != blank -%}
+            {{ block.settings.video | video_tag: autoplay: true, loop: true, muted: true, controls: false, playsinline: true, preload: 'metadata', image_size: '900x' }}
+          {%- else -%}
+            <video
+              src="{{ block.settings.video_file | asset_url }}"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+              aria-label="{{ section.settings.heading | default: 'Product video' | escape }}"
+            ></video>
+          {%- endif -%}
+          {%- if block.settings.has_sound -%}
+            <button type="button" class="product-film__sound" aria-pressed="false" aria-label="Unmute video" hidden>
+              <svg class="product-film__icon product-film__icon--off" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 2.5 4.5 5.5H2v5h2.5L8 13.5v-11Z" fill="currentColor"/>
+                <path d="m10.5 6 4 4m0-4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+              <svg class="product-film__icon product-film__icon--on" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8 2.5 4.5 5.5H2v5h2.5L8 13.5v-11Z" fill="currentColor"/>
+                <path d="M10.5 5.5a3.6 3.6 0 0 1 0 5M12 3.5a6 6 0 0 1 0 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </button>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
     </div>
   </section>
   <script src="{{ 'product-film.js' | asset_url }}" defer="defer"></script>
@@ -96,9 +88,7 @@
   "name": "Product film",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "See it in use" },
-    { "type": "text", "id": "cta_text", "label": "Button text", "info": "Scrolls back to the buy box. Leave blank to hide.", "default": "Choose yours" },
-    { "type": "text", "id": "cta_note", "label": "Note beside button" }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "See it in use" }
   ],
   "blocks": [
     {
