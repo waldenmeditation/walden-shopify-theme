@@ -53,15 +53,27 @@
       </figure>
       <div class="product-film__copy">
         {%- if section.settings.heading != blank -%}
-          <h2 class="product-film__heading">{{ section.settings.heading }}</h2>
+          <h2 class="product-film__heading pdp-reveal">{{ section.settings.heading }}</h2>
         {%- endif -%}
         {%- if film.settings.body != blank -%}
-          <div class="product-film__body">{{ film.settings.body }}</div>
+          <div class="product-film__body pdp-reveal">{{ film.settings.body }}</div>
+        {%- endif -%}
+        {%- if film.settings.bullets != blank -%}
+          <div class="product-film__bullets pdp-reveal">{{ film.settings.bullets }}</div>
+        {%- endif -%}
+        {%- if section.settings.cta_text != blank -%}
+          <div class="product-film__cta pdp-reveal">
+            <button type="button" class="button" data-pdp-scroll-buy>{{ section.settings.cta_text }}</button>
+            {%- if section.settings.cta_note != blank -%}
+              <span class="product-film__cta-note">{{ section.settings.cta_note }}</span>
+            {%- endif -%}
+          </div>
         {%- endif -%}
       </div>
     </div>
   </section>
   <script src="{{ 'product-film.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'pdp-story.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}
@@ -69,7 +81,9 @@
   "name": "Product film",
   "tag": "section",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "See it in use" }
+    { "type": "text", "id": "heading", "label": "Heading", "default": "See it in use" },
+    { "type": "text", "id": "cta_text", "label": "Button text", "info": "Scrolls back to the buy box. Leave blank to hide.", "default": "Choose yours" },
+    { "type": "text", "id": "cta_note", "label": "Note beside button" }
   ],
   "blocks": [
     {
@@ -79,7 +93,8 @@
         { "type": "text", "id": "product_handle", "label": "Product handle", "info": "The video shows only on this product's page, e.g. breathwork." },
         { "type": "video", "id": "video", "label": "Video", "info": "Portrait (9:16) hosted video. Takes priority over the asset filename." },
         { "type": "text", "id": "video_file", "label": "Theme asset video", "info": "Filename of an .mp4 in the theme's assets." },
-        { "type": "richtext", "id": "body", "label": "Text beside the video" }
+        { "type": "richtext", "id": "body", "label": "Text beside the video" },
+        { "type": "richtext", "id": "bullets", "label": "Bullet list", "info": "Rendered as hairline rows under the text." }
       ]
     }
   ],

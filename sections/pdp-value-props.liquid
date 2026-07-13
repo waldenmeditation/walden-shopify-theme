@@ -1,0 +1,68 @@
+{% comment %}
+  PDP value props — one quiet hairline row of factual reassurances
+  (returns, shipping, provenance) directly under the buy area. Pure
+  theme content; no CMS dependency.
+{% endcomment %}
+
+{%- if section.blocks.size > 0 -%}
+  <div class="pdp-props pdp-reveal">
+    <ul class="pdp-props__list">
+      {%- for block in section.blocks -%}
+        <li class="pdp-props__item" {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+      {%- endfor -%}
+    </ul>
+  </div>
+  <script src="{{ 'pdp-story.js' | asset_url }}" defer="defer"></script>
+{%- endif -%}
+
+{% stylesheet %}
+  .pdp-props {
+    border-block: 1px solid var(--color-border);
+    background: var(--color-background);
+  }
+  .pdp-props__list {
+    list-style: none;
+    max-width: var(--page-width, 1280px);
+    margin: 0 auto;
+    padding: 20px var(--page-margin, clamp(20px, 5vw, 40px));
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 40px;
+  }
+  .pdp-props__item {
+    font-family: var(--font-paragraph--family);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+  }
+  @media screen and (width < 750px) {
+    .pdp-props__list {
+      justify-content: flex-start;
+      row-gap: 10px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "PDP value props",
+  "tag": "section",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "prop",
+      "name": "Value prop",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "30-day returns" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PDP value props",
+      "blocks": [{ "type": "prop" }, { "type": "prop" }, { "type": "prop" }]
+    }
+  ]
+}
+{% endschema %}

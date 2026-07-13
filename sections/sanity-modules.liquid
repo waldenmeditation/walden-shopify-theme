@@ -30,6 +30,22 @@
 {%- if sanity_dataset == 'unset' -%}{%- assign sanity_dataset = '' -%}{%- endif -%}
 
 {% stylesheet %}
+  /* One shared vertical rhythm for the whole CMS story: adjacent module
+     margins collapse, so every seam is exactly --pdp-story-gap. */
+  .sanity-modules {
+    --pdp-story-gap: clamp(56px, 8vw, 112px);
+    padding-block: calc(var(--pdp-story-gap) * 0.75) var(--pdp-story-gap);
+  }
+  .sanity-modules .sanity-module {
+    margin-block: var(--pdp-story-gap);
+  }
+  .sanity-modules .sanity-module:first-child {
+    margin-top: 0;
+  }
+  .sanity-modules .sanity-module:last-child {
+    margin-bottom: 0;
+  }
+
   @media screen and (width >= 750px) {
     .sanity-modules .sanity-module__text {
       margin-inline-start: var(--sanity-text-margin-inline-start, 0px);
@@ -47,7 +63,7 @@
   .sanity-module__two-column-image {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: var(--two-column-gap, 16px);
+    gap: var(--two-column-gap, clamp(12px, 1.6vw, 20px));
   }
 
   .sanity-module__two-column-image img {
@@ -59,8 +75,17 @@
 
   .sanity-module__heading {
     width: 100%;
-    margin-top: 24px;
-    margin-bottom: 44px;
+    margin: 0 auto;
+    max-width: 1200px;
+    padding-inline: var(--page-margin, clamp(20px, 5vw, 40px));
+  }
+
+  .sanity-module__heading :is(h1, h2, h3, h4) {
+    margin: 0;
+    font-size: clamp(26px, 3.2vw, 38px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
   }
 
   .sanity-module__heading--left {
@@ -71,6 +96,11 @@
     text-align: center;
   }
 
+  .sanity-module__heading--center :is(h1, h2, h3, h4) {
+    margin-inline: auto;
+    max-width: 26ch;
+  }
+
   .sanity-module__heading--right {
     text-align: right;
   }
@@ -78,14 +108,14 @@
   .sanity-module__three-column-image {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--three-col-gap, 32px);
+    gap: var(--three-col-gap, clamp(24px, 3vw, 40px));
     width: 90%;
     max-width: var(--three-col-max-width, 1200px);
-    margin: 24px auto;
+    margin: 0 auto;
   }
 
   .sanity-module__three-column-image-item {
-    text-align: center;
+    text-align: left;
   }
 
   .sanity-module__three-column-image-item img {
@@ -95,20 +125,27 @@
   }
 
   .sanity-module__three-column-image-heading {
-    margin-top: 20px;
-    padding-top: 20px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--color-border);
+    font-family: var(--font-paragraph--family);
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-foreground-heading);
   }
 
   @media screen and (width < 750px) {
     .sanity-module__three-column-image {
       grid-template-columns: 1fr;
+      gap: 36px;
     }
   }
 
   .sanity-module__image--constrained {
-    width: 80%;
+    width: 90%;
     max-width: var(--image-max-width, 800px);
-    margin: 24px auto;
+    margin: 0 auto;
   }
 
   .sanity-module__image--constrained.sanity-module__image--left {
@@ -144,7 +181,7 @@
     gap: var(--four-image-gap, 20px);
     width: 90%;
     max-width: var(--four-image-max-width, 1200px);
-    margin: 24px auto;
+    margin: 0 auto;
   }
 
   .sanity-module__four-image-left,
@@ -178,7 +215,7 @@
   .sanity-module__video {
     width: 90%;
     max-width: var(--video-max-width, 1200px);
-    margin: 24px auto;
+    margin: 0 auto;
   }
 
   .sanity-module__video video {
@@ -192,6 +229,19 @@
   @media screen and (width < 750px) {
     .sanity-module__video {
       width: 100%;
+    }
+  }
+
+  /* Quiet scroll reveal, one module at a time */
+  @media (prefers-reduced-motion: no-preference) {
+    .sanity-module.pdp-reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.8s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    }
+    .sanity-module.pdp-reveal.is-visible {
+      opacity: 1;
+      transform: none;
     }
   }
 {% endstylesheet %}
@@ -217,7 +267,7 @@
         endif
       -%}
 
-      <div class="sanity-module">
+      <div class="sanity-module{% unless mod_type == 'spacerModule' %} pdp-reveal{% endunless %}">
         {%- case mod_type -%}
           {%- when 'twoColumnImageModule' -%}
             {%- render 'sanity-module-two-column-image',
@@ -288,6 +338,7 @@
       </div>
     {%- endfor -%}
   </div>
+  <script src="{{ 'pdp-story.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}
 
 {% schema %}

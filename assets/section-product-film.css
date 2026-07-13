@@ -68,6 +68,50 @@
 .product-film__body p + p {
   margin-top: 10px;
 }
+.product-film__bullets ul {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  max-width: 48ch;
+}
+.product-film__bullets li {
+  padding: 12px 0;
+  border-top: 1px solid var(--color-border);
+  font-family: var(--font-paragraph--family);
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--color-foreground);
+}
+.product-film__bullets li:last-child {
+  border-bottom: 1px solid var(--color-border);
+}
+.product-film__cta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 28px;
+}
+.product-film__cta-note {
+  font-size: 12.5px;
+  color: var(--color-foreground-muted);
+}
+
+/* Reveal (styles here so the band animates even without the B2B sheet) */
+@media (prefers-reduced-motion: no-preference) {
+  .product-film .pdp-reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity 0.7s cubic-bezier(0.22, 0.61, 0.36, 1), transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+  .product-film .pdp-reveal:nth-child(2) { transition-delay: 0.08s; }
+  .product-film .pdp-reveal:nth-child(3) { transition-delay: 0.16s; }
+  .product-film .pdp-reveal:nth-child(4) { transition-delay: 0.24s; }
+  .product-film .pdp-reveal.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
 
 @media screen and (max-width: 749px) {
   .product-film__inner {
