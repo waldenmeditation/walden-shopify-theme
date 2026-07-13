@@ -1,34 +1,40 @@
-/* Product film — play while in view, pause off-screen, sound toggle.
-   Reduced motion: no autoplay, native controls instead. */
+/* Product film — play while in view, pause off-screen, per-frame sound
+   toggle. Reduced motion: no autoplay, native controls instead. */
 (function () {
   function init() {
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     document.querySelectorAll('.product-film').forEach(function (sec) {
       if (sec.__filmInit) return;
       sec.__filmInit = true;
-      var video = sec.querySelector('video');
-      var btn = sec.querySelector('.product-film__sound');
-      if (!video) return;
+      var videos = sec.querySelectorAll('video');
+      if (!videos.length) return;
       if (reduce) {
-        video.removeAttribute('autoplay');
-        video.pause();
-        video.setAttribute('controls', '');
+        videos.forEach(function (v) {
+          v.removeAttribute('autoplay');
+          v.pause();
+          v.setAttribute('controls', '');
+        });
         return;
       }
-      if (btn) btn.hidden = false;
       if ('IntersectionObserver' in window) {
-        new IntersectionObserver(function (entries) {
+        var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (e) {
+            var v = e.target;
             if (e.isIntersecting) {
-              var p = video.play();
+              var p = v.play();
               if (p && p.catch) p.catch(function () {});
             } else {
-              video.pause();
+              v.pause();
             }
           });
-        }, { threshold: 0.2 }).observe(video);
+        }, { threshold: 0.2 });
+        videos.forEach(function (v) { io.observe(v); });
       }
-      if (btn) {
+      sec.querySelectorAll('.product-film__sound').forEach(function (btn) {
+        var frame = btn.closest('.product-film__frame') || sec;
+        var video = frame.querySelector('video');
+        if (!video) return;
+        btn.hidden = false;
         btn.addEventListener('click', function () {
           video.muted = !video.muted;
           btn.classList.toggle('is-on', !video.muted);
@@ -39,7 +45,7 @@
             if (p && p.catch) p.catch(function () {});
           }
         });
-      }
+      });
     });
   }
   if (document.readyState === 'loading') {

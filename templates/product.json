@@ -984,7 +984,16 @@
           "settings": {
             "video_file": "product-film-journey-set.mp4",
             "body": "<p>The Journey Set, set up at home.</p>",
-            "product_handle": "breathwork"
+            "product_handle": "breathwork",
+            "has_sound": true
+          }
+        },
+        "film_journey_2": {
+          "type": "film",
+          "settings": {
+            "product_handle": "breathwork",
+            "video_file": "b2b-reel-journey-outdoor.mp4",
+            "has_sound": false
           }
         }
       },
@@ -999,7 +1008,8 @@
         "film_incense_set",
         "film_incense_xl",
         "film_block",
-        "film_journey"
+        "film_journey",
+        "film_journey_2"
       ],
       "settings": {
         "heading": "See it in use",
