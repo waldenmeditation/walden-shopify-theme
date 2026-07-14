@@ -91,57 +91,6 @@
     "image_text_subtitle_spacing": 26,
     "image_text_title_spacing": 22,
     "image_text_description_spacing": 0,
-    "content_for_index": [],
-    "blocks": {
-      "733389323033596483": {
-        "type": "shopify://apps/okendo/blocks/theme-settings/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
-        "disabled": false,
-        "settings": {
-          "show_preview_data": true
-        }
-      },
-      "855628211100114053": {
-        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
-        "disabled": false,
-        "settings": {}
-      },
-      "15683396631634586217": {
-        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
-        "disabled": false,
-        "settings": {
-          "button_color": "#ededed",
-          "secondary_color": "#231f20",
-          "ternary_color": "#808080",
-          "button_icon": "team",
-          "button_text": "live_chat",
-          "button_horizontal_position": "bottom_right",
-          "button_vertical_position": "lowest",
-          "greeting_message": "We're here to help. Chat with our live concierge for product or order questions."
-        }
-      },
-      "1537173939754162885": {
-        "type": "shopify://apps/accesspro-accessibility/blocks/accesspro-widget/d1a2aee8-6737-4a3e-a6aa-13d82b562c31",
-        "disabled": false,
-        "settings": {}
-      },
-      "7539343560218715217": {
-        "type": "shopify://apps/lucky-orange-heatmaps-replay/blocks/lucky_orange_tracking/019b2899-e426-7dbd-b9e7-ff9f0bb0d0f3",
-        "disabled": false,
-        "settings": {}
-      },
-      "3667842014806057753": {
-        "type": "shopify://apps/one-click-upsell/blocks/app-embed/bfe6e378-b73a-4871-b8d3-7d6ede22678e",
-        "disabled": false,
-        "settings": {
-          "allowed_templates": ""
-        }
-      },
-      "11753626725791430220": {
-        "type": "shopify://apps/one-click-upsell/blocks/cart-drawer/bfe6e378-b73a-4871-b8d3-7d6ede22678e",
-        "disabled": false,
-        "settings": {}
-      }
-    },
     "color_schemes": {
       "scheme-1": {
         "settings": {
@@ -416,7 +365,54 @@
           "selected_variant_hover_border_color": "#1a1a1a"
         }
       }
-    }
+    },
+    "content_for_index": [],
+    "blocks": {
+      "733389323033596483": {
+        "type": "shopify://apps/okendo/blocks/theme-settings/bb689e69-ea70-4661-8fb7-ad24a2e23c29",
+        "disabled": false,
+        "settings": {
+          "show_preview_data": true
+        }
+      },
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": false,
+        "settings": {}
+      },
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "button_color": "#ededed",
+          "secondary_color": "#231f20",
+          "ternary_color": "#808080",
+          "button_icon": "team",
+          "button_text": "live_chat",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest",
+          "greeting_message": "We're here to help. Chat with our live concierge for product or order questions."
+        }
+      },
+      "1537173939754162885": {
+        "type": "shopify://apps/accesspro-accessibility/blocks/accesspro-widget/d1a2aee8-6737-4a3e-a6aa-13d82b562c31",
+        "disabled": false,
+        "settings": {}
+      },
+      "7539343560218715217": {
+        "type": "shopify://apps/lucky-orange-heatmaps-replay/blocks/lucky_orange_tracking/019b2899-e426-7dbd-b9e7-ff9f0bb0d0f3",
+        "disabled": false,
+        "settings": {}
+      }
+    },
+    "free_shipping_threshold": 100,
+    "cart_addons_heading": "Complete your practice",
+    "cart_addons": [
+      "palo-santo-sticks",
+      "australian-sandalwood-incense-sticks",
+      "personalized-cushion-badge",
+      "weighted-eye-mask-1"
+    ]
   },
   "presets": {
     "Fabric": {
