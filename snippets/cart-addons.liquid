@@ -1,0 +1,169 @@
+{% doc %}
+  One-tap add-on products for the cart drawer.
+  Products come from settings.cart_addons; anything already in the cart is hidden.
+  Single-variant products add directly; multi-variant products link to the PDP.
+{% enddoc %}
+
+{% stylesheet %}
+  .cart-addons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+    padding: var(--cart-drawer-padding);
+    border-block-start: 1px solid var(--color-border);
+
+    @media screen and (width >= 750px) {
+      padding: var(--cart-drawer-padding-desktop);
+    }
+  }
+
+  .cart-addons__heading {
+    font-size: var(--cart-font-size--sm, 0.875rem);
+    margin: 0;
+    color: rgb(from var(--color-foreground) r g b / var(--opacity-subdued-text, 0.7));
+  }
+
+  .cart-addons__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cart-addons__item {
+    display: flex;
+    align-items: center;
+    gap: var(--gap-sm);
+  }
+
+  .cart-addons__image {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: var(--style-border-radius-inputs, 2px);
+    flex-shrink: 0;
+  }
+
+  .cart-addons__info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    flex-grow: 1;
+  }
+
+  .cart-addons__title {
+    font-size: var(--cart-font-size--sm, 0.875rem);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .cart-addons__price {
+    font-size: var(--cart-font-size--sm, 0.875rem);
+    color: rgb(from var(--color-foreground) r g b / var(--opacity-subdued-text, 0.7));
+  }
+
+  .cart-addons__action .button {
+    font-size: var(--cart-font-size--sm, 0.875rem);
+    padding: var(--padding-2xs) var(--padding-sm);
+    min-height: 0;
+    min-width: 0;
+  }
+
+  .cart-addons__action .add-to-cart-icon {
+    display: none;
+  }
+{% endstylesheet %}
+
+{%- liquid
+  assign addon_products = settings.cart_addons
+  assign cart_product_ids = cart.items | map: 'product_id'
+-%}
+
+{%- if addon_products.count > 0 -%}
+  {%- capture addon_rows -%}
+    {%- for addon_product in addon_products -%}
+      {%- liquid
+        unless addon_product.available
+          continue
+        endunless
+        if cart_product_ids contains addon_product.id
+          continue
+        endif
+      -%}
+      <li class="cart-addons__item">
+        {%- if addon_product.featured_media -%}
+          <img
+            class="cart-addons__image"
+            src="{{ addon_product.featured_media.preview_image | image_url: width: 96 }}"
+            alt="{{ addon_product.featured_media.preview_image.alt | escape }}"
+            width="48"
+            height="48"
+            loading="lazy"
+          >
+        {%- endif -%}
+        <div class="cart-addons__info">
+          <p class="cart-addons__title">{{ addon_product.title }}</p>
+          <span class="cart-addons__price cart-secondary-typography">
+            {{- addon_product.selected_or_first_available_variant.price | money -}}
+          </span>
+        </div>
+        <div class="cart-addons__action">
+          {%- if addon_product.variants.size == 1 -%}
+            <product-form-component
+              data-section-id="{{ section.id }}"
+              data-product-id="{{ addon_product.id }}"
+              on:submit="/handleSubmit"
+            >
+              <div
+                class="visually-hidden"
+                aria-live="assertive"
+                role="status"
+                aria-atomic="true"
+                ref="liveRegion"
+              ></div>
+              {%- assign addon_form_id = 'cart-addon-form-' | append: addon_product.id -%}
+              {%- form 'product', addon_product, id: addon_form_id, novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                <input
+                  type="hidden"
+                  name="id"
+                  ref="variantId"
+                  value="{{ addon_product.selected_or_first_available_variant.id }}"
+                >
+                <input type="hidden" name="quantity" value="1">
+                {% render 'add-to-cart-button',
+                  add_to_cart_text: 'Add',
+                  class: 'button-secondary cart-addons__button',
+                  can_add_to_cart: true,
+                  product: addon_product
+                %}
+              {%- endform -%}
+            </product-form-component>
+          {%- else -%}
+            <a
+              class="button button-secondary cart-addons__button"
+              href="{{ addon_product.url }}"
+            >
+              View
+            </a>
+          {%- endif -%}
+        </div>
+      </li>
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- if addon_rows contains 'cart-addons__item' -%}
+    <div class="cart-addons">
+      {%- if settings.cart_addons_heading != blank -%}
+        <p class="cart-addons__heading">{{ settings.cart_addons_heading }}</p>
+      {%- endif -%}
+      <ul class="cart-addons__list">
+        {{ addon_rows }}
+      </ul>
+    </div>
+  {%- endif -%}
+{%- endif -%}

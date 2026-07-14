@@ -240,11 +240,24 @@
                 "padding-inline-end": 16
               },
               "blocks": {}
+            },
+            "review_stars_dtcp0": {
+              "type": "review",
+              "name": "t:names.product_review_stars",
+              "settings": {
+                "product": "{{ closest.product }}",
+                "stars_style": "single",
+                "show_number": true,
+                "rating_color": "foreground",
+                "type_preset": "paragraph",
+                "alignment": "left"
+              }
             }
           },
           "block_order": [
             "product_card_gallery_RaBfTi",
             "product_title_pUGDib",
+            "review_stars_dtcp0",
             "price_itxEDQ",
             "swatches_mHfnh7",
             "group_edYw8H"

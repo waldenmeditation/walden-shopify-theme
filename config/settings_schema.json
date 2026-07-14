@@ -28,83 +28,83 @@
       }
     ]
   },
- {
-  "name": "Global Spacing",
-  "settings": [
-    {
-      "type": "range",
-      "id": "spacing_subtitle",
-      "label": "Subtitle spacing",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "spacing_title",
-      "label": "Title spacing",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "spacing_description",
-      "label": "Description spacing",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "default": 24
-    },
-    {
-      "type": "range",
-      "id": "spacing_vertical",
-      "label": "Block vertical spacing",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "image_text_side_offset",
-      "label": "Text side offset",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "image_text_top_offset",
-      "label": "Text top offset",
-      "min": 0,
-      "max": 100,
-      "step": 2,
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "image_text_mobile_margin",
-      "label": "Mobile text margin",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "image_text_mobile_vertical_offset",
-      "label": "Mobile vertical offset",
-      "min": 0,
-      "max": 200,
-      "step": 4,
-      "default": 0
-    }
-  ]
-},
+  {
+    "name": "Global Spacing",
+    "settings": [
+      {
+        "type": "range",
+        "id": "spacing_subtitle",
+        "label": "Subtitle spacing",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "spacing_title",
+        "label": "Title spacing",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 24
+      },
+      {
+        "type": "range",
+        "id": "spacing_description",
+        "label": "Description spacing",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 24
+      },
+      {
+        "type": "range",
+        "id": "spacing_vertical",
+        "label": "Block vertical spacing",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "default": 40
+      },
+      {
+        "type": "range",
+        "id": "image_text_side_offset",
+        "label": "Text side offset",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "image_text_top_offset",
+        "label": "Text top offset",
+        "min": 0,
+        "max": 100,
+        "step": 2,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "image_text_mobile_margin",
+        "label": "Mobile text margin",
+        "min": 0,
+        "max": 100,
+        "step": 4,
+        "default": 0
+      },
+      {
+        "type": "range",
+        "id": "image_text_mobile_vertical_offset",
+        "label": "Mobile vertical offset",
+        "min": 0,
+        "max": 200,
+        "step": 4,
+        "default": 0
+      }
+    ]
+  },
   {
     "name": "t:names.colors",
     "settings": [
@@ -1869,6 +1869,37 @@
         "label": "t:settings.checkout_buttons",
         "info": "t:info.checkout_buttons",
         "default": true
+      },
+      {
+        "type": "header",
+        "content": "Free shipping bar"
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Free shipping threshold",
+        "info": "In your store currency, e.g. 100. Set to 0 to hide the progress bar.",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Cart add-ons"
+      },
+      {
+        "type": "paragraph",
+        "content": "One-tap add-ons shown in the cart drawer. Products already in the cart are hidden automatically."
+      },
+      {
+        "type": "text",
+        "id": "cart_addons_heading",
+        "label": "Add-ons heading",
+        "default": "Complete your practice"
+      },
+      {
+        "type": "product_list",
+        "id": "cart_addons",
+        "label": "Add-on products",
+        "limit": 4
       }
     ]
   },
