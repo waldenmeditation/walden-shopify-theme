@@ -29,6 +29,22 @@
     }
   }
 
+  /* Compact, subdued star rating on product cards */
+  .product-card .rating-wrapper {
+    width: auto;
+    gap: var(--gap-3xs);
+    --star-fill-color: rgb(from var(--color-foreground) r g b / 0.55);
+  }
+
+  .product-card .rating {
+    --star-size: 0.7rem !important;
+  }
+
+  .product-card .rating-wrapper .rating-count {
+    font-size: 0.75rem;
+    letter-spacing: 0.02em;
+  }
+
   /* Hide the variant swatches for product cards that show a swatches variant picker */
   :is(.product-card):has(swatches-variant-picker-component) .quick-add .variant-option--swatches {
     display: none;

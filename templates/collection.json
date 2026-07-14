@@ -247,7 +247,7 @@
               "settings": {
                 "product": "{{ closest.product }}",
                 "stars_style": "single",
-                "show_number": true,
+                "show_number": false,
                 "rating_color": "foreground",
                 "type_preset": "paragraph",
                 "alignment": "left"
