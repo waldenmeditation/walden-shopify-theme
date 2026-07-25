@@ -63,21 +63,23 @@
       }
 
       const startIndex = mediaIdToIndex.get(variant.featured_media.id);
-      let endIndex;
-
-      // Find the next variant's featured media index
-      let nextVariantIndex = -1;
-      for (let j = i + 1; j < productVariants.length; j++) {
-        if (productVariants[j].featured_media) {
-          nextVariantIndex = mediaIdToIndex.get(productVariants[j].featured_media.id);
-          break;
-        }
+      if (startIndex === undefined) {
+        // Featured media is tagged skip/all, so it isn't in the waterfall pool
+        variantMediaMap[variant.id] = [...getPartialAllMediaForVariant(variant), ...allMedia];
+        return;
       }
 
-      if (nextVariantIndex !== -1) {
-        endIndex = nextVariantIndex;
-      } else {
-        endIndex = productMedia.length;
+      // Variants can share a featured image (e.g. one color across several
+      // second-option values), so the end of this variant's range is the
+      // nearest featured index strictly after startIndex across ALL variants,
+      // not simply the next variant in the list.
+      let endIndex = productMedia.length;
+      for (const other of productVariants) {
+        if (!other.featured_media) continue;
+        const otherIndex = mediaIdToIndex.get(other.featured_media.id);
+        if (otherIndex !== undefined && otherIndex > startIndex && otherIndex < endIndex) {
+          endIndex = otherIndex;
+        }
       }
 
       console.log(`Slicing for variant ${variant.id}: from ${startIndex} to ${endIndex}`);
