@@ -407,12 +407,7 @@
     },
     "free_shipping_threshold": 100,
     "cart_addons_heading": "Complete your practice",
-    "cart_addons": [
-      "palo-santo-sticks",
-      "australian-sandalwood-incense-sticks",
-      "personalized-cushion-badge",
-      "weighted-eye-mask-1"
-    ]
+    "cart_addons": []
   },
   "presets": {
     "Fabric": {

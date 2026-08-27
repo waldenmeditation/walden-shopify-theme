@@ -738,10 +738,10 @@ class SpaceBuilder extends Component {
       if (aromaVariant) items.push({ id: aromaVariant.id, quantity: 1 });
     }
 
-    if (this.#incenseIncluded && this.#data.includedIncense) {
-      const includedVariant = this.#data.includedIncense.variants?.[0];
-      if (includedVariant) items.push({ id: includedVariant.id, quantity: 1 });
-    } else if (this.#selectedIncenseVariantIndex >= 0) {
+    // The included incense ships inside the aroma set itself, so it must never become a
+    // separate paid line item: #updateTotal() leaves it out of the quoted price, and the
+    // configurator hides the skip/edit controls for it, so the customer has no way to drop it.
+    if (!this.#incenseIncluded && this.#selectedIncenseVariantIndex >= 0) {
       const incenseVariant = this.#data.incense?.variants?.[this.#selectedIncenseVariantIndex];
       if (incenseVariant) items.push({ id: incenseVariant.id, quantity: 1 });
     }
