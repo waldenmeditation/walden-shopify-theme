@@ -126,7 +126,7 @@
       for i in (media_start_index..media_end_index)
         assign media_to_add = media_source[i]
         unless media_to_add.alt contains "all-" or media_to_add.alt == "all" or media_to_add.alt == "skip"
-          assign temp_media_list = temp_media_list | concat: [media_to_add]
+          assign temp_media_list = temp_media_list | concat: self[media_to_add]
         endunless
       endfor
     endif
@@ -137,14 +137,14 @@
     for media in media_source
       assign media_alt_lower = media.alt | downcase
       if media_alt_lower == partial_all_alt
-        assign temp_media_list = temp_media_list | concat: [media]
+        assign temp_media_list = temp_media_list | concat: self[media]
       endif
     endfor
 
     # Add images with alt tag "all" to appear for all variants
     for media in media_source
       if media.alt == "all"
-        assign temp_media_list = temp_media_list | concat: [media]
+        assign temp_media_list = temp_media_list | concat: self[media]
       endif
     endfor
 
@@ -971,3 +971,19 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "          assign temp_media_list = temp_media_list | concat: [media_to_add]"
+  to: "          assign temp_media_list = temp_media_list | concat: self[media_to_add]"
+  position: 4249..4328
+- from: "        assign temp_media_list = temp_media_list | concat: [media]"
+  to: "        assign temp_media_list = temp_media_list | concat: self[media]"
+  position: 4726..4796
+- from: "        assign temp_media_list = temp_media_list | concat: [media]"
+  to: "        assign temp_media_list = temp_media_list | concat: self[media]"
+  position: 4942..5012
+{% endcomment %}

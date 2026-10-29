@@ -48,7 +48,7 @@
 
   {% for media in product.media %}
     {% if media.alt and media.alt == selected_variant_title %}
-      {% assign matching_images = matching_images | concat: [media] %}
+      {% assign matching_images = matching_images | concat: self[media] %}
     {% endif %}
   {% endfor %}
 
@@ -626,3 +626,13 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% assign matching_images = matching_images | concat: [media] %}"
+  to: "{% assign matching_images = matching_images | concat: self[media] %}"
+  position: 1382..1450
+{% endcomment %}

@@ -14,27 +14,9 @@
 {% assign show_controls = block.settings.video_show_controls %}
 
 {% if block.settings.source == 'uploaded' %}
-  {%
-    render 'video',
-    video: block.settings.video,
-    video_class: 'spacing-style size-style border-style',
-    video_loop: block.settings.video_loop,
-    video_style: video_style,
-    disable_controls: {{ show_controls | default: true | not }},    video_preview_image: block.settings.video.preview_image,
-    additional_attributes: block.shopify_attributes
-  %}
+  {% render 'video', video: block.settings.video, video_class: 'spacing-style size-style border-style', video_loop: block.settings.video_loop, video_style: video_style, disable_controls: nil, default: true, video_preview_image: block.settings.video.preview_image, additional_attributes: block.shopify_attributes %}
 {% else %}
-  {%
-    render 'video',
-    video_from_url: true,
-    video: block.settings.video_url.id,
-    video_class: 'spacing-style size-style border-style',
-    video_type: block.settings.video_url.type,
-    video_style: video_style,
-    disable_controls: {{ show_controls | default: true | not }},    video_alt: block.settings.alt,
-    video_preview_image: block.settings.cover_image,
-    additional_attributes: block.shopify_attributes
-  %}
+  {% render 'video', video_from_url: true, video: block.settings.video_url.id, video_class: 'spacing-style size-style border-style', video_type: block.settings.video_url.type, video_style: video_style, disable_controls: nil, default: true, video_alt: block.settings.alt, video_preview_image: block.settings.cover_image, additional_attributes: block.shopify_attributes %}
 {% endif %}
 
 {% schema %}
@@ -259,3 +241,43 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%
+        render 'video',
+        video: block.settings.video,
+        video_class: 'spacing-style size-style border-style',
+        video_loop: block.settings.video_loop,
+        video_style: video_style,
+        disable_controls: {{ show_controls | default: true | not }},    video_preview_image: block.settings.video.preview_image,
+        additional_attributes: block.shopify_attributes
+      %}
+  to: "{% render 'video', video: block.settings.video, video_class: 'spacing-style
+    size-style border-style', video_loop: block.settings.video_loop, video_style:
+    video_style, disable_controls: nil, default: true, video_preview_image: block.settings.video.preview_image,
+    additional_attributes: block.shopify_attributes %}"
+  position: 730..1042
+- from: |-
+    {%
+        render 'video',
+        video_from_url: true,
+        video: block.settings.video_url.id,
+        video_class: 'spacing-style size-style border-style',
+        video_type: block.settings.video_url.type,
+        video_style: video_style,
+        disable_controls: {{ show_controls | default: true | not }},    video_alt: block.settings.alt,
+        video_preview_image: block.settings.cover_image,
+        additional_attributes: block.shopify_attributes
+      %}
+  to: "{% render 'video', video_from_url: true, video: block.settings.video_url.id,
+    video_class: 'spacing-style size-style border-style', video_type: block.settings.video_url.type,
+    video_style: video_style, disable_controls: nil, default: true, video_alt: block.settings.alt,
+    video_preview_image: block.settings.cover_image, additional_attributes: block.shopify_attributes
+    %}"
+  position: 1056..1424
+{% endcomment %}
