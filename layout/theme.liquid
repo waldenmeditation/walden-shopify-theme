@@ -51,6 +51,7 @@
     </style>
     <style>
       /* Live Concierge: Inbox bubble stays hidden until opened from a concierge link */
+      shopify-chat:not([data-concierge-open]),
       inbox-online-store-chat:not([data-concierge-open]) { display: none !important; }
     </style>
   </head>
@@ -104,7 +105,13 @@ if (!window.__inboxLauncherLoaded) {
     const OPEN_ATTR = 'data-concierge-open';
     let sawOpen = false;
 
-    function host() { return $('inbox-online-store-chat'); }
+    // <shopify-chat> is the current Inbox web component (show()/close()/open);
+    // <inbox-online-store-chat> is the legacy widget driven via its shadow toggle.
+    function host() { return $('shopify-chat, inbox-online-store-chat'); }
+    function isModern(h) { return h?.localName === 'shopify-chat'; }
+    function hostReady(h) {
+      return isModern(h) ? !!customElements.get('shopify-chat') : !!h?.shadowRoot;
+    }
     function toggle() {
       const h = host();
       return h?.shadowRoot?.querySelector('button[data-spec="toggle-button"]')
@@ -112,16 +119,20 @@ if (!window.__inboxLauncherLoaded) {
           || null;
     }
     function onHostReady(cb) {
-      if (host()?.shadowRoot) return cb();
-      const mo = new MutationObserver(() => {
-        if (host()?.shadowRoot) { mo.disconnect(); cb(); }
-      });
+      if (hostReady(host())) return cb();
+      const check = () => {
+        if (!hostReady(host())) return false;
+        mo.disconnect(); cb(); return true;
+      };
+      const mo = new MutationObserver(check);
       mo.observe(document.documentElement, { childList: true, subtree: true });
+      customElements.whenDefined('shopify-chat').then(check);
     }
 
-    // Widget open state: prefer host is-open, fall back to toggle aria-expanded
+    // Widget open state: shopify-chat exposes .open; legacy uses is-open or toggle aria-expanded
     function widgetOpen() {
       const h = host();
+      if (isModern(h)) return !!h.open || h.hasAttribute('open');
       if (h?.hasAttribute('is-open')) return h.getAttribute('is-open') === 'true';
       const t = toggle();
       if (t?.hasAttribute('aria-expanded')) return t.getAttribute('aria-expanded') === 'true';
@@ -154,8 +165,11 @@ if (!window.__inboxLauncherLoaded) {
         watchHost();
         h.setAttribute(OPEN_ATTR, '');
         if (widgetOpen()) { sawOpen = true; return; }
-        // Let the host render visibly before clicking its toggle
-        requestAnimationFrame(() => toggle()?.click());
+        // Let the host render visibly before opening it
+        requestAnimationFrame(() => {
+          if (isModern(h)) h.show();
+          else toggle()?.click();
+        });
       });
     }
 
