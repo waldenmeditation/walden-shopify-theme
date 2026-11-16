@@ -49,6 +49,10 @@
         --image-text-mobile-vertical-spacing: {{ settings.spacing_vertical }}px;
       }
     </style>
+    <style>
+      /* Live Concierge: Inbox bubble stays hidden until opened from a concierge link */
+      inbox-online-store-chat:not([data-concierge-open]) { display: none !important; }
+    </style>
   </head>
 
   <body class="page-width-{{ settings.page_width }} card-hover-effect-{{ settings.card_hover_effect }}">
@@ -94,7 +98,11 @@
 if (!window.__inboxLauncherLoaded) {
   window.__inboxLauncherLoaded = true;
   (function () {
+    // Live Concierge: hide Shopify Inbox's floating bubble and only show the
+    // chat when opened via a "Live Concierge" nav link or [data-inbox-launcher].
     const $ = (s, r=document) => r.querySelector(s);
+    const OPEN_ATTR = 'data-concierge-open';
+    let sawOpen = false;
 
     function host() { return $('inbox-online-store-chat'); }
     function toggle() {
@@ -110,31 +118,75 @@ if (!window.__inboxLauncherLoaded) {
       });
       mo.observe(document.documentElement, { childList: true, subtree: true });
     }
-    function openInbox() {
+
+    // Widget open state: prefer host is-open, fall back to toggle aria-expanded
+    function widgetOpen() {
+      const h = host();
+      if (h?.hasAttribute('is-open')) return h.getAttribute('is-open') === 'true';
       const t = toggle();
-      if (t) { t.click(); return; }
-      onHostReady(() => toggle()?.click());
+      if (t?.hasAttribute('aria-expanded')) return t.getAttribute('aria-expanded') === 'true';
+      return null;
+    }
+    function syncVisibility() {
+      const h = host();
+      if (!h || !h.hasAttribute(OPEN_ATTR)) return;
+      const open = widgetOpen();
+      if (open) sawOpen = true;
+      if (open === false && sawOpen) {
+        h.removeAttribute(OPEN_ATTR);
+        sawOpen = false;
+      }
+      document.querySelectorAll('[data-inbox-launcher]')
+        .forEach(b => b.setAttribute('aria-expanded', String(!!open)));
+    }
+    function watchHost() {
+      const h = host();
+      if (!h || h.__conciergeWatched) return;
+      h.__conciergeWatched = true;
+      const mo = new MutationObserver(syncVisibility);
+      mo.observe(h, { attributes: true });
+      if (h.shadowRoot) mo.observe(h.shadowRoot, { attributes: true, childList: true, subtree: true });
     }
 
-    // Click only, let the drawer close first for stability
-    document.addEventListener('click', (e) => {
-      const a = e.target.closest('a, [role="link"]');
-      if (!a) return;
+    function openInbox() {
+      onHostReady(() => {
+        const h = host();
+        watchHost();
+        h.setAttribute(OPEN_ATTR, '');
+        if (widgetOpen()) { sawOpen = true; return; }
+        // Let the host render visibly before clicking its toggle
+        requestAnimationFrame(() => toggle()?.click());
+      });
+    }
 
+    function isConciergeLink(a) {
+      if (!a) return false;
       const href = (a.getAttribute('href') || '').toLowerCase();
-      const isNavTrigger =
-        a.classList?.contains('js-open-concierge') ||
+      return a.classList?.contains('js-open-concierge') ||
         href === '#open-concierge' ||
+        href.endsWith('/#open-concierge') ||
+        href.includes('openchat=1') ||
         a.textContent.trim().toLowerCase() === 'live concierge';
+    }
 
-      if (!isNavTrigger) return;
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-inbox-launcher]')) {
+        e.preventDefault();
+        openInbox();
+        return;
+      }
+      const a = e.target.closest('a, [role="link"]');
+      if (!isConciergeLink(a)) return;
 
       e.preventDefault();
+      e.stopPropagation();
       // Give mobile menu a tick to close, then open chat
       setTimeout(openInbox, 120);
       // Best-effort drawer close
       $('.menu-drawer__close-button, [data-drawer-close], [data-header-drawer]')?.click?.();
     }, { capture: true });
+
+    onHostReady(watchHost);
 
     // Optional: open on ?openChat=1 deep links
     if (new URLSearchParams(location.search).has('openChat')) {
