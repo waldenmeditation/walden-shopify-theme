@@ -218,7 +218,8 @@
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
             "mobile_button_size": 14,
-            "image_asset": "hinoki-meditation-bench-holiday-2026.jpg"
+            "image_asset": "hinoki-meditation-bench-holiday-2026.jpg",
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },
@@ -282,7 +283,8 @@
             "mobile_header_size": 20,
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
-            "mobile_button_size": 14
+            "mobile_button_size": 14,
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },
@@ -316,7 +318,8 @@
             "mobile_header_size": 20,
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
-            "mobile_button_size": 14
+            "mobile_button_size": 14,
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },
@@ -376,7 +379,8 @@
             "mobile_header_size": 20,
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
-            "mobile_button_size": 14
+            "mobile_button_size": 14,
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },
@@ -410,7 +414,8 @@
             "mobile_header_size": 20,
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
-            "mobile_button_size": 14
+            "mobile_button_size": 14,
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },
@@ -444,7 +449,8 @@
             "mobile_header_size": 20,
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
-            "mobile_button_size": 14
+            "mobile_button_size": 14,
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },
@@ -504,7 +510,8 @@
             "mobile_header_size": 20,
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
-            "mobile_button_size": 14
+            "mobile_button_size": 14,
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },
@@ -539,7 +546,8 @@
             "mobile_callout_size": 13,
             "mobile_description_size": 14,
             "mobile_button_size": 14,
-            "image_asset": "block-incense-holder-top-down.jpg"
+            "image_asset": "block-incense-holder-top-down.jpg",
+            "image_aspect_ratio": "4 / 3"
           },
           "blocks": {}
         },

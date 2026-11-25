@@ -50,7 +50,11 @@
     height: auto;
     object-fit: fill;
     display: block;
-    
+    {% if block.settings.image_aspect_ratio != 'natural' %}
+      aspect-ratio: {{ block.settings.image_aspect_ratio }};
+      object-fit: cover;
+      object-position: center;
+    {% endif %}
   }
 
   .ai-product-section-image-placeholder-{{ ai_gen_id }} {
@@ -305,6 +309,19 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image shape",
+      "info": "Crops the image to a fixed shape so features line up",
+      "options": [
+        { "value": "natural", "label": "Original" },
+        { "value": "4 / 3", "label": "Landscape (4:3)" },
+        { "value": "3 / 2", "label": "Wide (3:2)" },
+        { "value": "1 / 1", "label": "Square" }
+      ],
+      "default": "natural"
     },
     {
       "type": "text",
