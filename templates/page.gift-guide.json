@@ -151,9 +151,8 @@
         "ai_gen_block_cf1af6b_czk6Ap": {
           "type": "ai_gen_block_cf1af6b",
           "name": "Black Friday Banner",
-          "disabled": true,
           "settings": {
-            "background_image": "shopify://shop_images/image_40.png",
+            "background_image": "",
             "placeholder_color": "#f4f4f4",
             "show_overlay": false,
             "overlay_opacity": 30,
@@ -162,13 +161,14 @@
             "horizontal_padding": 40,
             "mobile_horizontal_padding": 20,
             "text_left": "Limited Black Friday Discount",
-            "text_right": "Save 25% This Week Only",
-            "text_mobile": "Black Friday — Save 25% This Week Only",
+            "text_right": "Save 15% This Week Only",
+            "text_mobile": "Black Friday — Save 15% This Week Only",
             "text_color": "#ffffff",
             "text_size": 18,
             "mobile_text_size": 14,
             "text_weight": "500",
-            "link": ""
+            "link": "",
+            "background_asset": "black-friday-banner-2026.png"
           },
           "blocks": {}
         },
@@ -197,7 +197,7 @@
             "image": "shopify://shop_images/Bench_Gift_Image.png",
             "header": "The Meditation Bench",
             "show_callout": true,
-            "callout_text": "2025 Gift Guide Favorite",
+            "callout_text": "2026 Gift Guide Favorite",
             "callout_circle_color": "#0d2b80",
             "description": "<p>A thoughtful gift for dedicated practitioners. The Meditation Bench provides grounded support for those who find comfort in a kneeling posture, helping maintain alignment and ease through longer sits.</p>",
             "button_text": "Shop The Meditation Bench",
@@ -618,9 +618,9 @@
         "ai_gen_block_c3f8186_YCNfEp",
         "text_Nf9z38",
         "ai_gen_block_041c896_73z4M3",
+        "ai_gen_block_cf1af6b_czk6Ap",
         "ai_gen_block_3b8e8e1_rJaMUP",
         "ai_gen_block_7d33e5c_ALzz9B",
-        "ai_gen_block_cf1af6b_czk6Ap",
         "ai_gen_block_c3f8186_XWbHCr",
         "ai_gen_block_eaf5122_DGgdR7",
         "ai_gen_block_3ec3c90_8r7qGD",

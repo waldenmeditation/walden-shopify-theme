@@ -118,6 +118,13 @@
       width="{{ block.settings.background_image.width }}"
       height="{{ block.settings.background_image.height }}"
     >
+  {% elsif block.settings.background_asset != blank %}
+    <img
+      src="{{ block.settings.background_asset | asset_url }}"
+      alt=""
+      class="ai-banner-background-{{ ai_gen_id }}"
+      loading="lazy"
+    >
   {% else %}
     <div class="ai-banner-placeholder-{{ ai_gen_id }}">
       {{ 'lifestyle-1' | placeholder_svg_tag }}
@@ -167,6 +174,12 @@
       "type": "image_picker",
       "id": "background_image",
       "label": "Background image"
+    },
+    {
+      "type": "text",
+      "id": "background_asset",
+      "label": "Theme asset image (fallback)",
+      "info": "Filename in the theme's assets folder, used when no background image is selected"
     },
     {
       "type": "color",
