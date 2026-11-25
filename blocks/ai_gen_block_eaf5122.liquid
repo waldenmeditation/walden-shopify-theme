@@ -190,6 +190,13 @@
           height="{{ block.settings.image.height }}"
           class="ai-product-section-image-{{ ai_gen_id }}"
         >
+      {% elsif block.settings.image_asset != blank %}
+        <img
+          src="{{ block.settings.image_asset | asset_url }}"
+          alt="{{ block.settings.header | escape }}"
+          loading="lazy"
+          class="ai-product-section-image-{{ ai_gen_id }}"
+        >
       {% else %}
         <div class="ai-product-section-image-placeholder-{{ ai_gen_id }}">
           {{ 'product-1' | placeholder_svg_tag }}
@@ -298,6 +305,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_asset",
+      "label": "Theme asset image (fallback)",
+      "info": "Filename in the theme's assets folder, used when no image is selected"
     },
     {
       "type": "header",
