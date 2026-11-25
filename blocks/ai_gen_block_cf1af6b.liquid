@@ -8,6 +8,8 @@
   .ai-banner-wrapper-{{ ai_gen_id }} {
     position: relative;
     width: 100%;
+    max-width: {{ block.settings.max_width }}px;
+    margin: 0 auto;
     height: {{ block.settings.height }}px;
     overflow: hidden;
     display: block;
@@ -226,6 +228,16 @@
       "unit": "px",
       "label": "Mobile height",
       "default": 160
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 500,
+      "max": 1400,
+      "step": 50,
+      "unit": "px",
+      "label": "Max width",
+      "default": 1400
     },
     {
       "type": "range",
