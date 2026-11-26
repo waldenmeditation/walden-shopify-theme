@@ -42,7 +42,6 @@
 {%- assign has_sale = false -%}
 {%- if compare_cents and price_cents and compare_cents > price_cents -%}
   {%- assign has_sale = true -%}
-  {%- assign savings_percent = compare_cents | minus: price_cents | times: 100.0 | divided_by: compare_cents | round -%}
 {%- endif -%}
 
 <div ref="priceContainer">
@@ -55,10 +54,6 @@
   {% if show_sale_price_first == true and has_sale %}
     <s class="compare-at-price">{{ compare_display }}</s>
   {% endif %}
-
-  {%- if has_sale and savings_percent > 0 -%}
-    <span class="price-savings">Save {{ savings_percent }}%</span>
-  {%- endif -%}
 
   {%- if selected_variant.unit_price and show_unit_price -%}
     {%- liquid

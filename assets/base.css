@@ -2007,13 +2007,6 @@ deferred-media[class] :is(.deferred-media__poster-button img, .deferred-media__p
   text-decoration-thickness: 1.5px;
 }
 
-.price-savings {
-  display: inline-block;
-  margin-inline-start: 0.5em;
-  font-size: 0.85em;
-  white-space: nowrap;
-}
-
 .pdp-atc__price .compare-at-price {
   margin-inline-end: 0.4em;
 }

@@ -50,10 +50,10 @@
 
     // Mirror the live price (updates when the variant changes).
     if (barPrice && mainPrice) {
-      // Copy price + compare-at (sale) markup; skip savings label and unit price to keep the bar compact.
+      // Copy price + compare-at (sale) markup; skip unit price to keep the bar compact.
       var syncPrice = function () {
         var clone = mainPrice.cloneNode(true);
-        clone.querySelectorAll('.price-savings, .unit-price').forEach(function (el) { el.remove(); });
+        clone.querySelectorAll('.unit-price').forEach(function (el) { el.remove(); });
         if ((clone.textContent || '').trim()) barPrice.innerHTML = clone.innerHTML;
       };
       syncPrice();
